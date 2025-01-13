@@ -1,0 +1,40 @@
+# Ajout des règles de base dans .gitignore
+cat << EOF > .gitignore
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Build
+dist/
+build/
+.next/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# System
+.DS_Store
+*.pem
+
+# Tests
+coverage/
+
+# Cache
+.eslintcache
+.cache/
+EOF
