@@ -3,14 +3,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { NotionStrategy } from './notion.strategy';
 import { ConfigService } from '@nestjs/config';
 import { AuthService } from '../auth.service';
-import { NotionService } from '../../notion/notion.service';
 
-jest.mock('passport-oauth2');
+global.fetch = jest.fn(); // Mock fetch pour les appels API
 
 describe('NotionStrategy', () => {
   let strategy: NotionStrategy;
   let authService: AuthService;
-  let notionService: NotionService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,18 +33,11 @@ describe('NotionStrategy', () => {
             validateNotionUser: jest.fn(),
           },
         },
-        {
-          provide: NotionService,
-          useValue: {
-            getUserInfo: jest.fn(),
-          },
-        },
       ],
     }).compile();
 
     strategy = module.get<NotionStrategy>(NotionStrategy);
     authService = module.get<AuthService>(AuthService);
-    notionService = module.get<NotionService>(NotionService);
   });
 
   it('should be defined', () => {
@@ -55,7 +46,7 @@ describe('NotionStrategy', () => {
 
   describe('validate', () => {
     it('should validate Notion user', async () => {
-      const mockNotionUser = {
+      const mockNotionResponse = {
         bot_id: 'test-bot-id',
         owner: {
           user: {
@@ -72,13 +63,39 @@ describe('NotionStrategy', () => {
         name: 'Test User',
       };
 
-      jest.spyOn(notionService, 'getUserInfo').mockResolvedValue(mockNotionUser);
+      // Mock de l'appel fetch
+      (global.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: true,
+        json: () => Promise.resolve(mockNotionResponse),
+      });
+
       jest.spyOn(authService, 'validateNotionUser').mockResolvedValue(mockUser as any);
 
       const result = await strategy.validate('test-token', 'refresh-token', {});
 
       expect(result).toEqual(mockUser);
-      expect(notionService.getUserInfo).toHaveBeenCalledWith('test-token');
+      expect(global.fetch).toHaveBeenCalledWith(
+        'https://api.notion.com/v1/users/me',
+        expect.any(Object)
+      );
+      expect(authService.validateNotionUser).toHaveBeenCalledWith({
+        id: mockNotionResponse.bot_id,
+        email: mockNotionResponse.owner.user.email,
+        name: mockNotionResponse.owner.user.name,
+        accessToken: 'test-token',
+        workspaceId: mockNotionResponse.workspace_id,
+      });
+    });
+
+    it('should handle API errors', async () => {
+      (global.fetch as jest.Mock).mockResolvedValueOnce({
+        ok: false,
+        status: 401,
+      });
+
+      await expect(strategy.validate('invalid-token', 'refresh-token', {}))
+        .rejects
+        .toThrow('Failed to fetch Notion user info');
     });
   });
 });
