@@ -1,6 +1,7 @@
 // src/modules/users/user.entity.ts
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common/base.entity';
+import { Contact } from '../contacts/contact.entity';
 
 export enum UserPlan {
   FREE = 'free',
@@ -30,6 +31,9 @@ export class User extends BaseEntity {
     default: UserPlan.FREE,
   })
   plan: UserPlan;
+
+  @OneToMany(() => Contact, contact => contact.user)
+  contacts: Contact[];
 
   @Column({ default: false })
   isActive: boolean;
