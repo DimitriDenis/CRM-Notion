@@ -20,10 +20,29 @@ export class AuthController {
   @Get('notion/callback')
   @UseGuards(AuthGuard('notion'))
   async notionCallback(@Req() req, @Res() res) {
-    const { access_token, user } = await this.authService.login(req.user);
-    
-    // Redirige vers le frontend avec le token
-    const frontendUrl = this.configService.get('FRONTEND_URL');
-    res.redirect(`${frontendUrl}/auth/callback?token=${access_token}`);
+    try {
+      const { access_token, user } = await this.authService.login(req.user);
+      
+      // Redirige vers le frontend avec le token
+      const frontendUrl = this.configService.get('FRONTEND_URL');
+      const redirectUrl = new URL('/auth/callback', frontendUrl);
+      redirectUrl.searchParams.set('token', access_token);
+      
+      if (user.plan === 'pro') {
+        redirectUrl.searchParams.set('premium', 'true');
+      }
+
+      res.redirect(redirectUrl.toString());
+    } catch (error) {
+      console.error('Auth callback error:', error);
+      const frontendUrl = this.configService.get('FRONTEND_URL');
+      res.redirect(`${frontendUrl}/auth/error?message=Authentication failed`);
+    }
+  }
+
+  @Get('profile')
+  @UseGuards(AuthGuard('jwt'))
+  getProfile(@Req() req) {
+    return req.user;
   }
 }
