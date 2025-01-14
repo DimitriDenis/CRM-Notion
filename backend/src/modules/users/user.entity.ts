@@ -3,6 +3,7 @@ import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common/base.entity';
 import { Contact } from '../contacts/contact.entity';
 import { Tag } from '../tags/tag.entity';
+import { Pipeline } from '../pipelines/pipeline.entity';
 
 export enum UserPlan {
   FREE = 'free',
@@ -38,6 +39,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Tag, tag => tag.user)
   tags: Tag[];
+
+  @OneToMany(() => Pipeline, pipeline => pipeline.user)
+  pipelines: Pipeline[];
 
   @Column({ default: false })
   isActive: boolean;
