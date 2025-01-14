@@ -2,6 +2,7 @@
 import { Entity, Column, OneToMany } from 'typeorm';
 import { BaseEntity } from '../../common/base.entity';
 import { Contact } from '../contacts/contact.entity';
+import { Tag } from '../tags/tag.entity';
 
 export enum UserPlan {
   FREE = 'free',
@@ -34,6 +35,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Contact, contact => contact.user)
   contacts: Contact[];
+
+  @OneToMany(() => Tag, tag => tag.user)
+  tags: Tag[];
 
   @Column({ default: false })
   isActive: boolean;
