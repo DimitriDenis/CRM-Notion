@@ -7,6 +7,8 @@ import { getTypeOrmConfig } from './config/typeorm.config';
 import { validate } from './config/env.validation';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './modules/auth/auth.module';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -19,6 +21,8 @@ import { AppService } from './app.service';
       inject: [ConfigService],
       useFactory: getTypeOrmConfig,
     }),
+    AuthModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
