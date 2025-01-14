@@ -4,6 +4,7 @@ import { BaseEntity } from '../../common/base.entity';
 import { Contact } from '../contacts/contact.entity';
 import { Tag } from '../tags/tag.entity';
 import { Pipeline } from '../pipelines/pipeline.entity';
+import { Deal } from '../deals/deal.entity';
 
 export enum UserPlan {
   FREE = 'free',
@@ -42,6 +43,9 @@ export class User extends BaseEntity {
 
   @OneToMany(() => Pipeline, pipeline => pipeline.user)
   pipelines: Pipeline[];
+
+  @OneToMany(() => Deal, deal => deal.user)
+  deals: Deal[];
 
   @Column({ default: false })
   isActive: boolean;
