@@ -10,6 +10,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { UsersModule } from './modules/users/users.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
+import { PipelinesModule } from './modules/pipelines/pipelines.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { ContactsModule } from './modules/contacts/contacts.module';
     AuthModule,
     UsersModule,
     ContactsModule,
+    PipelinesModule
   ],
   controllers: [AppController],
   providers: [AppService],
