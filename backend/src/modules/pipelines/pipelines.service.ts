@@ -30,6 +30,9 @@ export class PipelinesService {
     skip?: number;
     take?: number;
   } = {}): Promise<{ items: Pipeline[]; total: number }> {
+    const skip = options.skip ? Number(options.skip) : 0;
+    const take = options.take ? Number(options.take) : 10;
+    
     const [items, total] = await this.pipelineRepository.findAndCount({
       where: { userId },
       skip: options.skip,

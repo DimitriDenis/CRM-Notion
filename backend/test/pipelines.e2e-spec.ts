@@ -120,6 +120,12 @@ describe('Pipelines (e2e)', () => {
         userId: testUser.id,
         notionMetadata: null,
       });
+
+      // Vérifions que le pipeline a bien été créé
+    const savedPipeline = await pipelineRepository.findOne({
+        where: { id: testPipeline.id }
+      });
+      console.log('Saved pipeline:', savedPipeline);
     });
 
     afterEach(async () => {
@@ -130,6 +136,7 @@ describe('Pipelines (e2e)', () => {
     it('should return paginated pipelines', () => {
       return request(app.getHttpServer())
         .get('/pipelines')
+        .query({ skip: 0, take: 10 })
         .set('Authorization', `Bearer ${authToken}`)
         .expect(200)
         .expect((res) => {
