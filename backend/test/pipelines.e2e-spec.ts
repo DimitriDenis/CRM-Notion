@@ -97,8 +97,13 @@ describe('Pipelines (e2e)', () => {
         .send(invalidPipeline)
         .expect(400)
         .expect((res) => {
-          expect(res.body.message).toContain('name');
-          expect(res.body.message).toContain('stages');
+            expect(Array.isArray(res.body.message)).toBe(true);
+            expect(res.body.message).toEqual(
+              expect.arrayContaining([
+                expect.stringContaining('name should not be empty'),
+                expect.stringContaining('stages.0.name should not be empty')
+              ])
+            );
         });
     });
   });
@@ -113,8 +118,14 @@ describe('Pipelines (e2e)', () => {
           { id: 'stage-1', name: 'Test Stage', order: 1 },
         ],
         userId: testUser.id,
+        notionMetadata: null,
       });
     });
+
+    afterEach(async () => {
+        // Nettoyer après chaque test
+        await pipelineRepository.delete({});
+      });
 
     it('should return paginated pipelines', () => {
       return request(app.getHttpServer())
@@ -155,8 +166,14 @@ describe('Pipelines (e2e)', () => {
           { id: 'stage-1', name: 'Test Stage', order: 1 },
         ],
         userId: testUser.id,
+        notionMetadata: null,
       });
     });
+    
+    afterEach(async () => {
+        // Nettoyer après chaque test
+        await pipelineRepository.delete({});
+      });
 
     it('should return a pipeline by id', () => {
       return request(app.getHttpServer())
@@ -179,8 +196,11 @@ describe('Pipelines (e2e)', () => {
     });
 
     it('should return 404 for non-existent pipeline', () => {
+
+        const nonExistentId = '00000000-0000-4000-a000-000000000000';
+
       return request(app.getHttpServer())
-        .get('/pipelines/non-existent-id')
+        .get(`/pipelines/${nonExistentId}`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(404);
     });
@@ -196,8 +216,14 @@ describe('Pipelines (e2e)', () => {
           { id: 'stage-1', name: 'Test Stage', order: 1 },
         ],
         userId: testUser.id,
+        notionMetadata: null,
       });
     });
+
+    afterEach(async () => {
+        // Nettoyer après chaque test
+        await pipelineRepository.delete({});
+      });
 
     it('should update a pipeline', () => {
       const updateData = {
