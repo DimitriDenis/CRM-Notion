@@ -90,8 +90,13 @@ describe('Contacts (e2e)', () => {
         .send(invalidContact)
         .expect(400)
         .expect((res) => {
-          expect(res.body.message).toContain('firstName');
-          expect(res.body.message).toContain('email');
+          expect(Array.isArray(res.body.message)).toBe(true);
+          expect(res.body.message).toEqual(
+            expect.arrayContaining([
+              expect.stringContaining('firstName'),
+              expect.stringContaining('email')
+            ])
+          );
         });
     });
   });
@@ -168,8 +173,11 @@ describe('Contacts (e2e)', () => {
     });
 
     it('should return 404 for non-existent contact', () => {
+
+      const nonExistentId = '00000000-0000-4000-a000-000000000000';
+
       return request(app.getHttpServer())
-        .get('/contacts/non-existent-id')
+        .get(`/contacts/${nonExistentId}`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(404);
     });
