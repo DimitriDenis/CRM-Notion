@@ -46,6 +46,16 @@ describe('CRM Flow (Integration)', () => {
   });
 
   afterAll(async () => {
+    const dealRepository = app.get(getRepositoryToken(Deal));
+    const contactRepository = app.get(getRepositoryToken(Contact));
+    const tagRepository = app.get(getRepositoryToken(Tag));
+    const pipelineRepository = app.get(getRepositoryToken(Pipeline));
+  
+    // Supprimer dans l'ordre pour respecter les contraintes de clé étrangère
+    await dealRepository.delete({});
+    await contactRepository.delete({});
+    await tagRepository.delete({});
+    await pipelineRepository.delete({});
     await userRepository.delete({});
     await app.close();
   });
