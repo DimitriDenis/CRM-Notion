@@ -97,14 +97,29 @@ describe('TagsService', () => {
   });
 
   describe('findAll', () => {
+    let queryBuilder: any;
+  
+    beforeEach(() => {
+      queryBuilder = {
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        orderBy: jest.fn().mockReturnThis(),
+        skip: jest.fn().mockReturnThis(),
+        take: jest.fn().mockReturnThis(),
+        getManyAndCount: jest.fn()
+      };
+  
+      jest.spyOn(repository, 'createQueryBuilder').mockReturnValue(queryBuilder);
+    });
+  
     it('should return paginated tags', async () => {
-      const mockTags = [mockTag];
+      const mockTags = [createMockTag()];
       const mockTotal = 1;
-      const queryBuilder = repository.createQueryBuilder();
-      jest.spyOn(queryBuilder, 'getManyAndCount').mockResolvedValue([mockTags, mockTotal]);
-
+  
+      queryBuilder.getManyAndCount.mockResolvedValue([mockTags, mockTotal]);
+  
       const result = await service.findAll(mockUserId, { skip: 0, take: 10 });
-
+  
       expect(result).toMatchObject({
         items: [
           expect.objectContaining({
@@ -120,18 +135,32 @@ describe('TagsService', () => {
         total: mockTotal,
       });
     });
-
+  
     it('should apply search filter', async () => {
-      const mockTags = [mockTag];
+      const mockTags = [createMockTag()];
       const mockTotal = 1;
-      const queryBuilder = repository.createQueryBuilder();
-      jest.spyOn(queryBuilder, 'getManyAndCount').mockResolvedValue([mockTags, mockTotal]);
-
+  
+      queryBuilder.getManyAndCount.mockResolvedValue([mockTags, mockTotal]);
+  
       await service.findAll(mockUserId, {
         search: 'Important',
+        skip: 0,
+        take: 10
       });
-
-      expect(queryBuilder.andWhere).toHaveBeenCalled();
+  
+      expect(queryBuilder.where).toHaveBeenCalledWith(
+        'tag.userId = :userId',
+        { userId: mockUserId }
+      );
+  
+      expect(queryBuilder.andWhere).toHaveBeenCalledWith(
+        'tag.name ILIKE :search',
+        { search: '%Important%' }
+      );
+  
+      expect(queryBuilder.orderBy).toHaveBeenCalledWith('tag.name', 'ASC');
+      expect(queryBuilder.skip).toHaveBeenCalledWith(0);
+      expect(queryBuilder.take).toHaveBeenCalledWith(10);
     });
   });
 
