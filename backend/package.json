@@ -19,6 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json --runInBand",
     "test:integration": "jest --config ./test/integration/jest-integration.json",
+    "test:load": "k6 run test/load/crud-load.test.js",
     "typeorm": "ts-node ./node_modules/typeorm/cli",
     "migration:generate": "yarn typeorm migration:generate -d src/config/typeorm.config.ts",
     "migration:create": "yarn typeorm migration:create",
