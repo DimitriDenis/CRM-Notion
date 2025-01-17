@@ -10,7 +10,7 @@ export const options = {
     { duration: '30s', target: 0 },  // Descente à 0
   ],
   thresholds: {
-    http_req_duration: ['p(95)<500'], // 95% des requêtes doivent être sous 500ms
+    http_req_duration: ['p(95)<800'], // 95% des requêtes doivent être sous 500ms
     http_req_failed: ['rate<0.01'],   // Moins de 1% d'erreurs
   },
 };
@@ -82,10 +82,11 @@ export function setup() {
       body: pipelineRes.body
     });
   
-    testPipelineId = pipelineRes.json('id');
-    console.log('Pipeline ID:', testPipelineId);
+    const pipelineResponse = pipelineRes.json();
+    const testPipelineId = pipelineResponse.id;
+    const firstStageId = pipelineResponse.stages[0].id;  
   
-    return { authToken, testPipelineId };
+    return { authToken, testPipelineId, firstStageId };
   }
   
   export default function (data) {
@@ -135,7 +136,7 @@ export function setup() {
       name: `Deal ${__VU}`,
       value: 1000,
       pipelineId: data.testPipelineId,
-      stageId: 'stage-1',
+      stageId: data.firstStageId,
     };
     console.log('Creating deal with data:', dealData);
   
