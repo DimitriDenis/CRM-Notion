@@ -153,6 +153,24 @@ describe('DealsService', () => {
   });
 
   describe('findAll', () => {
+    let queryBuilder: any;
+
+  beforeEach(() => {
+    // Créer un mock plus détaillé du queryBuilder
+    queryBuilder = {
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      getManyAndCount: jest.fn().mockResolvedValue([[createMockDeal()], 1])
+    };
+
+    // Configurer le repository pour retourner notre queryBuilder
+    jest.spyOn(dealRepository, 'createQueryBuilder').mockReturnValue(queryBuilder);
+  });
+
     it('should return paginated deals', async () => {
       const mockDeals = [createMockDeal()];
       const mockTotal = 1;
@@ -234,6 +252,17 @@ describe('DealsService', () => {
   });
 
   describe('getTotalValue', () => {
+    let queryBuilder: any;
+
+    beforeEach(() => {
+      queryBuilder = {
+        select: jest.fn().mockReturnThis(),
+        where: jest.fn().mockReturnThis(),
+        getRawOne: jest.fn()
+      };
+  
+      jest.spyOn(dealRepository, 'createQueryBuilder').mockReturnValue(queryBuilder);
+    });
     it('should return total value of deals', async () => {
       const mockTotal = 5000;
       const queryBuilder = dealRepository.createQueryBuilder();
