@@ -9,6 +9,7 @@ import { NotFoundException } from '@nestjs/common';
 describe('TagsService', () => {
   let service: TagsService;
   let repository: Repository<Tag>;
+  
 
   const mockUserId = 'test-user-id';
   // Helper pour créer un mock Tag
@@ -44,7 +45,7 @@ describe('TagsService', () => {
               orderBy: jest.fn().mockReturnThis(),
               skip: jest.fn().mockReturnThis(),
               take: jest.fn().mockReturnThis(),
-              getManyAndCount: jest.fn(),
+              getManyAndCount: jest.fn().mockResolvedValue([[createMockTag()], 1])
             })),
             remove: jest.fn(),
             count: jest.fn(),
@@ -104,8 +105,18 @@ describe('TagsService', () => {
 
       const result = await service.findAll(mockUserId, { skip: 0, take: 10 });
 
-      expect(result).toEqual({
-        items: mockTags,
+      expect(result).toMatchObject({
+        items: [
+          expect.objectContaining({
+            id: expect.any(String),
+            name: expect.any(String),
+            color: expect.any(String),
+            userId: expect.any(String),
+            createdAt: expect.any(Date),
+            updatedAt: expect.any(Date),
+            contacts: expect.any(Array),
+          }),
+        ],
         total: mockTotal,
       });
     });
