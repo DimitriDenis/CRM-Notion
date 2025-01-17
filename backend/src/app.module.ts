@@ -12,6 +12,7 @@ import { UsersModule } from './modules/users/users.module';
 import { ContactsModule } from './modules/contacts/contacts.module';
 import { PipelinesModule } from './modules/pipelines/pipelines.module';
 import { DealsModule } from './modules/deals/deals.module';
+import { TagsModule } from './modules/tags/tags.module';
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import { DealsModule } from './modules/deals/deals.module';
     UsersModule,
     ContactsModule,
     PipelinesModule,
-    DealsModule
+    DealsModule,
+    TagsModule
   ],
   controllers: [AppController],
   providers: [AppService],
