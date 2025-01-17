@@ -89,13 +89,15 @@ describe('Deals (e2e)', () => {
         .expect((res) => {
           expect(res.body).toMatchObject({
             name: createDealDto.name,
-            value: createDealDto.value,
             pipelineId: testPipeline.id,
             stageId: 'stage-1',
             id: expect.any(String),
             createdAt: expect.any(String),
             updatedAt: expect.any(String),
           });
+
+          const receivedValue = parseFloat(res.body.value);
+      expect(receivedValue).toBe(createDealDto.value);
         });
     });
 
@@ -112,9 +114,14 @@ describe('Deals (e2e)', () => {
         .send(invalidDeal)
         .expect(400)
         .expect((res) => {
-          expect(res.body.message).toContain('name');
-          expect(res.body.message).toContain('value');
-          expect(res.body.message).toContain('pipelineId');
+            expect(Array.isArray(res.body.message)).toBe(true);
+            expect(res.body.message).toEqual(
+              expect.arrayContaining([
+                expect.stringContaining('name should not be empty'),
+                expect.stringContaining('value must be a number'),
+                expect.stringContaining('pipelineId must be a UUID'),
+              ])
+            );
         });
     });
   });
@@ -201,15 +208,19 @@ describe('Deals (e2e)', () => {
           expect(res.body).toMatchObject({
             id: testDeal.id,
             name: testDeal.name,
-            value: testDeal.value,
             pipelineId: testPipeline.id,
           });
+          const receivedValue = parseFloat(res.body.value);
+        expect(receivedValue).toBe(testDeal.value);
         });
     });
 
     it('should return 404 for non-existent deal', () => {
+
+        const nonExistentId = '00000000-0000-4000-a000-000000000000';
+
       return request(app.getHttpServer())
-        .get('/deals/non-existent-id')
+        .get(`/deals/${nonExistentId}`)
         .set('Authorization', `Bearer ${authToken}`)
         .expect(404);
     });
@@ -241,11 +252,14 @@ describe('Deals (e2e)', () => {
         .send(updateData)
         .expect(200)
         .expect((res) => {
+            const { value, ...otherUpdateData } = updateData;
           expect(res.body).toMatchObject({
             id: testDeal.id,
-            ...updateData,
+            ...otherUpdateData,
             pipelineId: testPipeline.id,
           });
+          const receivedValue = parseFloat(res.body.value);
+        expect(receivedValue).toBe(value);
         });
     });
   });
@@ -278,6 +292,9 @@ describe('Deals (e2e)', () => {
 
   describe('GET /deals/stats/total-value', () => {
     beforeEach(async () => {
+
+        await dealRepository.delete({});
+
       await dealRepository.save([
         {
           name: 'Deal 1',
@@ -303,7 +320,7 @@ describe('Deals (e2e)', () => {
         .expect(200)
         .expect((res) => {
           expect(res.body).toMatchObject({
-            total: 3000,
+            total: "3000.00",
           });
         });
     });
