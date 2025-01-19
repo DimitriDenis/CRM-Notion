@@ -74,9 +74,9 @@ export class ContactSyncService {
       firstName,
       lastName,
       email: properties.Email.email || '',
-      phone: properties.Phone.phone_number || '',
-      company: properties.Company.rich_text[0]?.text.content || '',
-      notes: properties.Notes.rich_text[0]?.text.content || '',
+      phone: properties.Phone?.phone_number || '',
+      company: properties.Company?.rich_text[0]?.text.content || '',
+      notes: properties.Notes?.rich_text[0]?.text.content || '',
       // Tags seront gérés séparément
     };
   }
