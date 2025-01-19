@@ -4,6 +4,13 @@ import { BaseEntity } from '../../common/base.entity';
 import { User } from '../users/user.entity';
 import { Tag } from '../tags/tag.entity';
 
+
+interface NotionContactMetadata {
+  pageId?: string;
+  databaseId?: string;
+  lastSync: Date;
+}
+
 @Entity('contacts')
 export class Contact extends BaseEntity {
   @Column()
@@ -42,8 +49,5 @@ export class Contact extends BaseEntity {
   customFields: Record<string, any>;
 
   @Column({ type: 'jsonb', nullable: true })
-  notionMetadata: {
-    pageId: string;
-    lastSync: Date;
-  };
+  notionMetadata: NotionContactMetadata;  
 }

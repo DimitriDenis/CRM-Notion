@@ -95,4 +95,25 @@ export class NotionService {
       return false;
     }
   }
+
+  async createPage(accessToken: string, databaseId: string, properties: any) {
+    return this.notionRequest('/pages', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
+      body: JSON.stringify({
+        parent: { database_id: databaseId },
+        properties,
+      }),
+    });
+  }
+  
+  async getPage(accessToken: string, pageId: string) {
+    return this.notionRequest(`/pages/${pageId}`, {
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+      },
+    });
+  }
 }
