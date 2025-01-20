@@ -5,6 +5,12 @@ import { User } from '../users/user.entity';
 import { Pipeline } from '../pipelines/pipeline.entity';
 import { Contact } from '../contacts/contact.entity';
 
+interface NotionMetadata {
+  pageId?: string;
+  databaseId?: string;
+  lastSync?: Date;
+}
+
 @Entity('deals')
 export class Deal extends BaseEntity {
   @Column()
@@ -21,6 +27,12 @@ export class Deal extends BaseEntity {
 
   @Column()
   pipelineId: string;
+
+  get stage(): { name: string } | undefined {
+    const pipeline = this.pipeline;
+    if (!pipeline) return undefined;
+    return pipeline.stages.find(s => s.id === this.stageId);
+  }
 
   @ManyToOne(() => Pipeline, pipeline => pipeline.deals)
   pipeline: Pipeline;
@@ -43,8 +55,5 @@ export class Deal extends BaseEntity {
   customFields: Record<string, any>;
 
   @Column({ type: 'jsonb', nullable: true })
-  notionMetadata: {
-    pageId: string;
-    lastSync: Date;
-  };
+  notionMetadata: NotionMetadata;
 }
