@@ -9,12 +9,15 @@ import { ContactSyncService } from './contact-sync.service';
 import { Pipeline } from '../pipelines/pipeline.entity';
 import { PipelinesModule } from '../pipelines/pipelines.module';
 import { PipelineSyncService } from './pipeline-sync.service';
+import { Deal } from '../deals/deal.entity';
+import { DealsModule } from '../deals/deals.module';
+import { DealSyncService } from './deal-sync.service';
 
 @Module({
-  imports: [ConfigModule, TypeOrmModule.forFeature([Contact, Pipeline]),
-  ContactsModule, PipelinesModule, 
+  imports: [ConfigModule, TypeOrmModule.forFeature([Contact, Pipeline, Deal]),
+  ContactsModule, PipelinesModule, DealsModule,
 ],
-  providers: [NotionService, ContactSyncService, PipelineSyncService],
-  exports: [NotionService, ContactSyncService, PipelineSyncService],
+  providers: [NotionService, ContactSyncService, PipelineSyncService, DealSyncService],
+  exports: [NotionService, ContactSyncService, PipelineSyncService, DealSyncService],
 })
 export class NotionModule {}
