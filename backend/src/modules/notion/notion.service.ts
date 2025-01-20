@@ -116,4 +116,53 @@ export class NotionService {
       },
     });
   }
+
+  async verifyRequiredPermissions(accessToken: string): Promise<{
+    hasRequiredPermissions: boolean;
+    permissions: Record<string, boolean>;
+  }> {
+    try {
+      const userInfo = await this.getUserInfo(accessToken);
+      
+      const permissions = {
+        readContent: true,
+        updateContent: true,
+        insertContent: true,
+      };
+  
+      const hasRequiredPermissions = Object.values(permissions).every(Boolean);
+  
+      return {
+        hasRequiredPermissions,
+        permissions,
+      };
+    } catch (error) {
+      this.logger.error('Error verifying permissions:', error);
+      throw error;
+    }
+  }
+  
+  async setupInitialDatabases(accessToken: string, workspaceId: string): Promise<{
+    success: boolean;
+    databases: Record<string, string>;
+  }> {
+    try {
+      // Créer les bases de données nécessaires
+      const contactsDb = await this.createDatabase(accessToken, workspaceId, 'CRM Contacts', {});
+      const pipelinesDb = await this.createDatabase(accessToken, workspaceId, 'CRM Pipelines', {});
+      const dealsDb = await this.createDatabase(accessToken, workspaceId, 'CRM Deals', {});
+  
+      return {
+        success: true,
+        databases: {
+          contacts: contactsDb.id,
+          pipelines: pipelinesDb.id,
+          deals: dealsDb.id,
+        },
+      };
+    } catch (error) {
+      this.logger.error('Error setting up databases:', error);
+      throw error;
+    }
+  }
 }
