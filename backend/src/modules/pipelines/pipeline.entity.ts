@@ -4,6 +4,12 @@ import { BaseEntity } from '../../common/base.entity';
 import { User } from '../users/user.entity';
 import { Deal } from '../deals/deal.entity';
 
+interface NotionMetadata {
+  pageId?: string;
+  databaseId?: string;
+  lastSync?: Date;
+}
+
 @Entity('pipelines')
 export class Pipeline extends BaseEntity {
   @Column()
@@ -26,8 +32,5 @@ export class Pipeline extends BaseEntity {
   deals: Deal[];
 
   @Column({ type: 'jsonb', nullable: true })
-  notionMetadata: {
-    databaseId: string;
-    lastSync: Date;
-  };
+  notionMetadata: NotionMetadata;
 }
