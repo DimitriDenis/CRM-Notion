@@ -91,7 +91,6 @@ export class NotionService {
       await this.getUserInfo(accessToken);
       return true;
     } catch (error) {
-      this.logger.error('Token verification failed:', error);
       return false;
     }
   }

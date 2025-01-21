@@ -14,6 +14,7 @@ import { PipelinesModule } from './modules/pipelines/pipelines.module';
 import { DealsModule } from './modules/deals/deals.module';
 import { TagsModule } from './modules/tags/tags.module';
 import { TestModule } from './modules/test/test.module';
+import { NotionModule } from './modules/notion/notion.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { TestModule } from './modules/test/test.module';
     }),
     AuthModule,
     UsersModule,
+    NotionModule,
     ContactsModule,
     PipelinesModule,
     DealsModule,
