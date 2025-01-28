@@ -3,7 +3,6 @@
 
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { handleNotionCallback } from '@/lib/api/auth';
 
 export default function NotionCallbackPage() {
   const router = useRouter();
@@ -12,26 +11,15 @@ export default function NotionCallbackPage() {
   useEffect(() => {
     const handleCallback = async () => {
       const code = searchParams.get('code');
+      console.log('1. Code reçu de Notion:', code);
       const error = searchParams.get('error');
-
-      if (error) {
-        console.error('Notion auth error:', error);
-        router.push('/auth/login?error=oauth_failed');
-        return;
-      }
-
-      if (!code) {
-        router.push('/auth/login');
-        return;
-      }
-
-      try {
-        const { token } = await handleNotionCallback(code);
-        localStorage.setItem('token', token);
-        router.push('/dashboard');
-      } catch (error) {
-        console.error('Callback error:', error);
-        router.push('/auth/login?error=callback_failed');
+      console.log('2. Paramètre d\'erreur:', error);
+      
+      // Redirection directe vers le backend
+      if (code && !error) {
+        window.location.href = `http://localhost:3001/auth/notion/callback?code=${code}`;
+      } else {
+        router.push('/auth/login?error=no_code');
       }
     };
 
