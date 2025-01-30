@@ -11,15 +11,24 @@ export default function NotionCallbackPage() {
   useEffect(() => {
     const handleCallback = async () => {
       const code = searchParams.get('code');
-      console.log('1. Code reçu de Notion:', code);
+      const token = searchParams.get('token');
       const error = searchParams.get('error');
-      console.log('2. Paramètre d\'erreur:', error);
-      
-      // Redirection directe vers le backend
-      if (code && !error) {
+
+      console.log('Callback params:', {
+        hasCode: !!code,
+        hasToken: !!token,
+        hasError: !!error
+      });
+
+      if (token) {
+        // Nous avons un token - stockons-le et redirigeons
+        localStorage.setItem('token', token);
+        router.push('/dashboard');
+      } else if (code && !error) {
+        // Nous avons un code - redirigeons vers le backend
         window.location.href = `http://localhost:3001/auth/notion/callback?code=${code}`;
       } else {
-        router.push('/auth/login?error=no_code');
+        router.push('/auth/login?error=authentication_failed');
       }
     };
 
