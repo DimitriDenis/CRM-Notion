@@ -3,24 +3,30 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import LoginForm from '../LoginForm';
 import { useSearchParams } from 'next/navigation';
 
+// Mock de next/navigation
 jest.mock('next/navigation', () => ({
-  useSearchParams: jest.fn().mockReturnValue(new URLSearchParams())
+  useSearchParams: jest.fn().mockReturnValue(new URLSearchParams()),
 }));
 
-describe('LoginForm', () => {
-  const originalWindowLocation = window.location;
+// Mock de la navigation
+const mockWindowLocation = {
+  assign: jest.fn(),
+  href: '',
+};
 
-  beforeEach(() => {
-    // Réinitialiser le mock de window.location
-    window.location = {
-      ...originalWindowLocation,
-      href: 'http://localhost:3000',
-      origin: 'http://localhost:3000'
-    };
+describe('LoginForm', () => {
+  beforeAll(() => {
+    // Sauvegarder l'original
+    Object.defineProperty(window, 'location', {
+      value: { ...mockWindowLocation },
+      writable: true,
+    });
   });
 
-  afterAll(() => {
-    window.location = originalWindowLocation; // Restaurer l'original
+  beforeEach(() => {
+    // Réinitialiser les mocks avant chaque test
+    jest.clearAllMocks();
+    mockWindowLocation.href = '';
   });
 
   it('renders login button', () => {
@@ -32,16 +38,22 @@ describe('LoginForm', () => {
     render(<LoginForm />);
     fireEvent.click(screen.getByText(/Se connecter avec Notion/i));
     
-    // Vérifie que href a été modifié
+    // Vérifier l'URL de redirection
     expect(window.location.href).toContain('api.notion.com/v1/oauth/authorize');
     expect(window.location.href).toContain('client_id=');
     expect(window.location.href).toContain('redirect_uri=');
   });
 
   it('displays error message when error param exists', () => {
-    (useSearchParams as jest.Mock).mockReturnValue(new URLSearchParams('?error=oauth_failed'));
+    // Mock du paramètre d'erreur
+    (useSearchParams as jest.Mock).mockReturnValue(
+      new URLSearchParams('?error=oauth_failed')
+    );
+    
     render(<LoginForm />);
     
-    expect(screen.getByText(/L'authentification avec Notion a échoué/i)).toBeInTheDocument();
+    expect(
+      screen.getByText(/L'authentification avec Notion a échoué/i)
+    ).toBeInTheDocument();
   });
 });

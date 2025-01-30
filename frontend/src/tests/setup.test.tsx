@@ -1,11 +1,14 @@
 // src/tests/setup.test.tsx
 import { render, screen } from '@testing-library/react'
-import RootLayout from '../app/layout'
-import '@testing-library/jest-dom';
+import { TestWrapper } from './test-utils'
 
 describe('Initial Setup', () => {
-  it('renders layout correctly', () => {
-    render(<RootLayout>Test Content</RootLayout>)
+  it('renders content correctly', () => {
+    render(
+      <TestWrapper>
+        Test Content
+      </TestWrapper>
+    )
     expect(screen.getByText('Test Content')).toBeInTheDocument()
   })
 })
