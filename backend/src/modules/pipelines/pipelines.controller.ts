@@ -78,4 +78,9 @@ import {
       const count = await this.pipelinesService.countByUser(user.id);
       return { count };
     }
+
+    @Get('overview')
+async getPipelineOverview(@CurrentUser() user: User) {
+  return this.pipelinesService.getPipelineOverview(user.id);
+}
   }

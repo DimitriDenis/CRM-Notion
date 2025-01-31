@@ -85,4 +85,28 @@ export class PipelinesService {
       where: { userId },
     });
   }
+
+  async getPipelineOverview(userId: string) {
+    const pipeline = await this.pipelineRepository.findOne({
+      where: { userId },
+      relations: ['deals'],
+    });
+  
+    if (!pipeline) return null;
+  
+    const stageStats = pipeline.stages.map(stage => {
+      const dealsInStage = pipeline.deals.filter(deal => deal.stageId === stage.id);
+      return {
+        name: stage.name,
+        count: dealsInStage.length,
+        value: dealsInStage.reduce((sum, deal) => sum + deal.value, 0),
+      };
+    });
+  
+    return {
+      id: pipeline.id,
+      name: pipeline.name,
+      stages: stageStats,
+    };
+  }
 }
