@@ -156,4 +156,12 @@ export class DealsService {
 
     return result.total || 0;
   }
+
+  async getRecentDeals(userId: string, limit = 5) {
+    return this.dealRepository.find({
+      where: { userId },
+      order: { updatedAt: 'DESC' },
+      take: limit,
+    });
+  }
 }

@@ -77,4 +77,9 @@ import {
       const total = await this.dealsService.getTotalValue(user.id);
       return { total };
     }
+
+    @Get('recent')
+  async getRecentDeals(@CurrentUser() user: User) {
+  return this.dealsService.getRecentDeals(user.id);
+}
   }
