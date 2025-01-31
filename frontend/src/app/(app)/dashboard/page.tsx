@@ -9,6 +9,7 @@ import { StatCard } from '@/components/dashboard/StatCard';
 import { RecentDeals } from '@/components/dashboard/RecentDeals';
 import { PipelineOverview } from '@/components/dashboard/PipelineOverview';
 import DashboardLoading from './loading';
+import { dashboardApi } from '@/lib/api/dashboard';
 
 async function getStats() {
   // TODO: Remplacer par un appel API réel
@@ -46,9 +47,11 @@ async function getPipeline() {
 }
 
 export default async function DashboardPage() {
-  const stats = await getStats();
-  const recentDeals = await getRecentDeals();
-  const pipeline = await getPipeline();
+    const [stats, recentDeals, pipeline] = await Promise.all([
+        dashboardApi.getStats(),
+        dashboardApi.getRecentDeals(),
+        dashboardApi.getPipeline(),
+      ]);
 
   return (
     <Suspense fallback={<DashboardLoading />}>
