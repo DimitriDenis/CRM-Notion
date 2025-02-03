@@ -33,6 +33,7 @@ export interface Pipeline {
 export const dashboardApi = {
   getStats: async (): Promise<DashboardStats> => {
     const response = await api.get('/stats/dashboard');
+    console.log('Dashboard API Response:', response.data);
     return response.data;
   },
 

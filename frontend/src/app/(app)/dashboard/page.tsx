@@ -16,7 +16,7 @@ import { dashboardApi, DashboardStats, Deal, Pipeline } from '@/lib/api/dashboar
 
 
 
-export default async function DashboardPage() {
+export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentDeals, setRecentDeals] = useState<Deal[] | null>(null);
   const [pipeline, setPipeline] = useState<Pipeline | null>(null);
