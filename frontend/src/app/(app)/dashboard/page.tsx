@@ -1,5 +1,8 @@
 // src/app/(app)/dashboard/page.tsx
+'use client';
+
 import { Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import { 
   UserGroupIcon, 
   CurrencyDollarIcon, 
@@ -9,49 +12,41 @@ import { StatCard } from '@/components/dashboard/StatCard';
 import { RecentDeals } from '@/components/dashboard/RecentDeals';
 import { PipelineOverview } from '@/components/dashboard/PipelineOverview';
 import DashboardLoading from './loading';
-import { dashboardApi } from '@/lib/api/dashboard';
+import { dashboardApi, DashboardStats, Deal, Pipeline } from '@/lib/api/dashboard';
 
-async function getStats() {
-  // TODO: Remplacer par un appel API réel
-  return {
-    totalContacts: 150,
-    totalDeals: 45,
-    totalValue: 125000,
-  };
-}
 
-async function getRecentDeals() {
-  // TODO: Remplacer par un appel API réel
-  return [
-    {
-      id: '1',
-      name: 'Deal Test',
-      value: 5000,
-      stage: 'Négociation',
-      updatedAt: new Date().toISOString(),
-    },
-  ];
-}
-
-async function getPipeline() {
-  // TODO: Remplacer par un appel API réel
-  return {
-    id: '1',
-    name: 'Pipeline Principal',
-    stages: [
-      { name: 'Lead', count: 10, value: 50000 },
-      { name: 'Contact', count: 5, value: 25000 },
-      { name: 'Négociation', count: 3, value: 15000 },
-    ],
-  };
-}
 
 export default async function DashboardPage() {
-    const [stats, recentDeals, pipeline] = await Promise.all([
-        dashboardApi.getStats(),
-        dashboardApi.getRecentDeals(),
-        dashboardApi.getPipeline(),
-      ]);
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [recentDeals, setRecentDeals] = useState<Deal[] | null>(null);
+  const [pipeline, setPipeline] = useState<Pipeline | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const [statsData, dealsData, pipelineData] = await Promise.all([
+          dashboardApi.getStats(),
+          dashboardApi.getRecentDeals(),
+          dashboardApi.getPipeline(),
+        ]);
+
+        setStats(statsData);
+        setRecentDeals(dealsData);
+        setPipeline(pipelineData);
+      } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
+
+  if (loading || !stats || !recentDeals || !pipeline) {
+    return <DashboardLoading />;
+  }
 
   return (
     <Suspense fallback={<DashboardLoading />}>
