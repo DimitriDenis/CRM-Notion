@@ -10,6 +10,7 @@ import {
     Query,
     ParseUUIDPipe,
     ParseIntPipe,
+    UseGuards,
   } from '@nestjs/common';
   import { PipelinesService } from './pipelines.service';
   import { Auth } from '../auth/decorators/auth.decorator';
@@ -18,12 +19,20 @@ import {
   import { CreatePipelineDto } from './dto/create-pipeline.dto';
   import { UpdatePipelineDto } from './dto/update-pipeline.dto';
   import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
   
   @ApiTags('Pipelines')
   @Controller('pipelines')
   @Auth()
+  @UseGuards(JwtAuthGuard)
   export class PipelinesController {
     constructor(private readonly pipelinesService: PipelinesService) {}
+
+
+    @Get('overview')
+async getPipelineOverview(@CurrentUser() user: User) {
+  return this.pipelinesService.getPipelineOverview(user.id);
+}
   
     @Post()
     @ApiOperation({ summary: 'Create a new pipeline' })
@@ -79,8 +88,5 @@ import {
       return { count };
     }
 
-    @Get('overview')
-async getPipelineOverview(@CurrentUser() user: User) {
-  return this.pipelinesService.getPipelineOverview(user.id);
-}
+    
   }

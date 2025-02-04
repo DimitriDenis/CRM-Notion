@@ -9,6 +9,7 @@ import {
     Param,
     Query,
     ParseUUIDPipe,
+    UseGuards,
   } from '@nestjs/common';
   import { DealsService } from './deals.service';
   import { Auth } from '../auth/decorators/auth.decorator';
@@ -18,10 +19,12 @@ import {
   import { UpdateDealDto } from './dto/update-deal.dto';
   import { FindDealsDto } from './dto/find-deals.dto';
   import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
   
   @ApiTags('Deals')
   @Controller('deals')
   @Auth()
+  @UseGuards(JwtAuthGuard)
   export class DealsController {
     constructor(private readonly dealsService: DealsService) {}
   

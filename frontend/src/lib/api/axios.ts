@@ -7,13 +7,29 @@ const api = axios.create({
   },
 });
 
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token');
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// Intercepteur pour les requêtes
+api.interceptors.request.use(
+  (config) => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      console.log('Request Config:', {
+        url: config.url,
+        method: config.method,
+        hasToken: !!token,
+        baseURL: config.baseURL
+      });
+
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
+    console.error('Request Error:', error);
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 
 export default api;

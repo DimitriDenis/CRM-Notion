@@ -38,12 +38,25 @@ export const dashboardApi = {
   },
 
   getRecentDeals: async (): Promise<Deal[]> => {
-    const response = await api.get('/deals/recent');
-    return response.data;
+    try {
+      const response = await api.get('/deals/recent');
+      console.log('Deals response:', response.data);
+      return response.data || [];
+    } catch (error) {
+      console.error('Deals error:', error);
+      return [];
+    }
   },
 
+
   getPipeline: async (): Promise<Pipeline> => {
-    const response = await api.get('/pipelines/overview');
-    return response.data;
+    try {
+      const response = await api.get('/pipelines/overview');
+      console.log('Pipeline response:', response.data);
+      return response.data;
+    } catch (error) {
+      console.error('Pipeline error:', error);
+      throw error;
+    }
   },
 };
