@@ -162,6 +162,9 @@ export class DealsService {
       where: { userId },
       order: { updatedAt: 'DESC' },
       take: limit,
+      relations: {
+        stage: true,  
+      },
     });
   }
 }

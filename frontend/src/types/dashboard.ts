@@ -9,7 +9,10 @@ export interface DashboardStats {
     id: string;
     name: string;
     value: number;
-    stage: string;
+    stage: {
+        id: string;
+        name: string;
+      };
     updatedAt: string;
   }
   
