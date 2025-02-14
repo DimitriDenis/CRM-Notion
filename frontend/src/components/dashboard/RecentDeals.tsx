@@ -1,13 +1,6 @@
 // src/components/dashboard/RecentDeals.tsx
 import Link from 'next/link';
-
-interface Deal {
-  id: string;
-  name: string;
-  value: number;
-  stage: string;
-  updatedAt: string;
-}
+import type { Deal } from '@/types/dashboard';
 
 export function RecentDeals({ deals }: { deals: Deal[] }) {
   return (
@@ -26,14 +19,15 @@ export function RecentDeals({ deals }: { deals: Deal[] }) {
                       {deal.name}
                     </p>
                     <p className="truncate text-sm text-gray-500">
-                      {deal.stage} · {deal.value.toLocaleString('fr-FR', {
+                      {/* Utiliser stage?.name ou stageId */}
+                      {deal.stage?.name || deal.stageId} · {deal.value.toLocaleString('fr-FR', {
                         style: 'currency',
                         currency: 'EUR',
                       })}
                     </p>
                   </div>
                   <time
-                    dateTime={deal.updatedAt}
+                    dateTime={deal.updatedAt.toISOString()}
                     className="flex-shrink-0 text-sm text-gray-500"
                   >
                     {new Date(deal.updatedAt).toLocaleDateString()}

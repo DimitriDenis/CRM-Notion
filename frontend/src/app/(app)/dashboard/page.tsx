@@ -11,8 +11,9 @@ import {
 import { StatCard } from '@/components/dashboard/StatCard';
 import { RecentDeals } from '@/components/dashboard/RecentDeals';
 import { PipelineOverview } from '@/components/dashboard/PipelineOverview';
+import type { Deal, DashboardStats, Pipeline } from '@/types/dashboard';
 import DashboardLoading from './loading';
-import { dashboardApi, DashboardStats, Deal, Pipeline } from '@/lib/api/dashboard';
+import { dashboardApi } from '@/lib/api/dashboard';
 
 
 

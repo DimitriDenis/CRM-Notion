@@ -10,6 +10,7 @@ import {
     Query,
     ParseUUIDPipe,
     UseGuards,
+    BadRequestException,
   } from '@nestjs/common';
   import { DealsService } from './deals.service';
   import { Auth } from '../auth/decorators/auth.decorator';
@@ -82,7 +83,22 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
     }
 
     @Get('recent')
-  async getRecentDeals(@CurrentUser() user: User) {
-  return this.dealsService.getRecentDeals(user.id);
+async getRecentDeals(@CurrentUser() user: User) {
+  try {
+    console.log('Starting getRecentDeals request for user:', user.id);
+    const deals = await this.dealsService.getRecentDeals(user.id);
+    return deals;
+  } catch (error) {
+    console.error('Error in getRecentDeals controller:', {
+      message: error.message,
+      stack: error.stack,
+      userId: user?.id
+    });
+    
+    throw new BadRequestException({
+      message: 'Failed to get recent deals',
+      error: error.message
+    });
+  }
 }
   }

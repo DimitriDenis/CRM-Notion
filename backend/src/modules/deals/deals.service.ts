@@ -158,13 +158,33 @@ export class DealsService {
   }
 
   async getRecentDeals(userId: string, limit = 5) {
-    return this.dealRepository.find({
-      where: { userId },
-      order: { updatedAt: 'DESC' },
-      take: limit,
-      relations: {
-        stage: true,  
-      },
-    });
+    try {
+      console.log('Fetching recent deals for user:', userId);
+      
+      const deals = await this.dealRepository.find({
+        where: { userId },
+        order: { updatedAt: 'DESC' },
+        take: limit,
+        relations: {
+          pipeline: true
+        },
+      });
+  
+      return deals.map(deal => ({
+        id: deal.id,
+        name: deal.name,
+        value: Number(deal.value),
+        stage: deal.stage?.name || deal.stageId,
+        updatedAt: deal.updatedAt.toISOString(),
+        pipeline: deal.pipeline ? {
+          id: deal.pipeline.id,
+          name: deal.pipeline.name,
+          stages: deal.pipeline.stages
+        } : undefined
+      }));
+    } catch (error) {
+      console.error('Error in getRecentDeals service:', error);
+      throw error;
+    }
   }
 }

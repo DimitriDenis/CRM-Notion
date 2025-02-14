@@ -1,17 +1,10 @@
 // src/components/dashboard/PipelineOverview.tsx
-interface Pipeline {
-    id: string;
-    name: string;
-    stages: {
-      name: string;
-      count: number;
-      value: number;
-    }[];
-  }
+import type { Pipeline } from "@/types/dashboard";
   
   export function PipelineOverview({ pipeline }: { pipeline: Pipeline }) {
-    const totalDeals = pipeline.stages.reduce((sum, stage) => sum + stage.count, 0);
-    const totalValue = pipeline.stages.reduce((sum, stage) => sum + stage.value, 0);
+    // Ajouter une vérification pour les valeurs optionnelles
+    const totalDeals = pipeline.stages.reduce((sum, stage) => sum + (stage.count || 0), 0);
+    const totalValue = pipeline.stages.reduce((sum, stage) => sum + (stage.value || 0), 0);
   
     return (
       <div className="bg-white shadow rounded-lg">
@@ -32,7 +25,7 @@ interface Pipeline {
           <div className="mt-6">
             <div className="space-y-4">
               {pipeline.stages.map((stage) => (
-                <div key={stage.name} className="relative">
+                <div key={stage.id} className="relative"> {/* Changé stage.name en stage.id */}
                   <div className="flex items-center justify-between text-sm">
                     <div className="w-1/4">
                       <span className="text-gray-600">{stage.name}</span>
@@ -42,14 +35,14 @@ interface Pipeline {
                         <div
                           className="h-full bg-blue-500"
                           style={{
-                            width: `${(stage.count / totalDeals) * 100}%`,
+                            width: `${((stage.count || 0) / totalDeals) * 100}%`,
                           }}
                         />
                       </div>
                     </div>
                     <div className="w-1/4 text-right">
                       <span className="font-medium text-gray-900">
-                        {stage.count} deals
+                        {stage.count || 0} deals
                       </span>
                     </div>
                   </div>
