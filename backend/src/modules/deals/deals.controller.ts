@@ -21,6 +21,7 @@ import {
   import { FindDealsDto } from './dto/find-deals.dto';
   import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { GetRecentDealsDto } from './dto/get-recent-deals.dto';
   
   @ApiTags('Deals')
   @Controller('deals')
@@ -83,22 +84,10 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
     }
 
     @Get('recent')
-async getRecentDeals(@CurrentUser() user: User) {
-  try {
-    console.log('Starting getRecentDeals request for user:', user.id);
-    const deals = await this.dealsService.getRecentDeals(user.id);
-    return deals;
-  } catch (error) {
-    console.error('Error in getRecentDeals controller:', {
-      message: error.message,
-      stack: error.stack,
-      userId: user?.id
-    });
-    
-    throw new BadRequestException({
-      message: 'Failed to get recent deals',
-      error: error.message
-    });
-  }
+async getRecentDeals(
+  @CurrentUser() user: User,
+  @Query() query: GetRecentDealsDto
+) {
+  return this.dealsService.getRecentDeals(user.id, query.limit);
 }
   }

@@ -12,11 +12,13 @@ api.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('token');
-      console.log('Request Config:', {
+      console.log('=== Request Details ===', {
         url: config.url,
         method: config.method,
         hasToken: !!token,
-        baseURL: config.baseURL
+        baseURL: config.baseURL,
+        headers: config.headers,
+        data: config.data
       });
 
       if (token) {
@@ -31,5 +33,26 @@ api.interceptors.request.use(
   }
 );
 
+// Ajout de l'intercepteur de réponse
+api.interceptors.response.use(
+  (response) => {
+    console.log('=== Response Success ===', {
+      url: response.config.url,
+      status: response.status,
+      data: response.data
+    });
+    return response;
+  },
+  (error) => {
+    console.error('=== Response Error Details ===', {
+      url: error.config?.url,
+      status: error.response?.status,
+      data: error.response?.data,
+      message: error.message,
+      details: error.response?.data?.message || error.response?.data
+    });
+    return Promise.reject(error);
+  }
+);
 
 export default api;
