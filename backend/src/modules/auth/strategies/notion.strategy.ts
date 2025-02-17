@@ -8,7 +8,7 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
   private _oauth2: any;
-  authenticate: (req: any, options?: any) => any;
+  
   constructor(
     private configService: ConfigService,
     private authService: AuthService,
@@ -37,18 +37,10 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
       callbackURL,
       scope: [''],
       state: false,
+      passReqToCallback: true
     });
 
-    // Au début du constructeur après super()
-    this.authenticate = (req: any, options?: any) => {
-      console.log('=== OAuth Authentication Request ===', {
-        clientID: this._oauth2._clientId,
-        redirectUri: this._oauth2._redirectUri,
-        authorizeUrl: this._oauth2._authorizeUrl,
-        options
-      });
-      return super.authenticate(req, options);
-    };
+    
 
     // Override de la méthode d'échange de token
     this._oauth2.getOAuthAccessToken = async (code, params, callback) => {
@@ -104,7 +96,7 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
     };
   }
 
-  async validate(accessToken: string): Promise<any> {
+  async validate(req: any, accessToken: string, refreshToken: string): Promise<any> {
     try {
       console.log('=== Starting Validation ===');
       const response = await fetch('https://api.notion.com/v1/users/me', {
@@ -141,7 +133,7 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
       return validatedUser;
     } catch (error) {
       console.error('Validation Error:', error);
-      throw error;
+      return null;
     }
   }
 
