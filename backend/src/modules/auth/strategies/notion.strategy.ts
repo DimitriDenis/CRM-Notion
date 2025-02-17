@@ -8,6 +8,7 @@ import { AuthService } from '../auth.service';
 @Injectable()
 export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
   private _oauth2: any;
+  authenticate: (req: any, options?: any) => any;
   constructor(
     private configService: ConfigService,
     private authService: AuthService,
@@ -35,8 +36,19 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
       clientSecret,
       callbackURL,
       scope: [''],
-      state: true,
+      state: false,
     });
+
+    // Au début du constructeur après super()
+    this.authenticate = (req: any, options?: any) => {
+      console.log('=== OAuth Authentication Request ===', {
+        clientID: this._oauth2._clientId,
+        redirectUri: this._oauth2._redirectUri,
+        authorizeUrl: this._oauth2._authorizeUrl,
+        options
+      });
+      return super.authenticate(req, options);
+    };
 
     // Override de la méthode d'échange de token
     this._oauth2.getOAuthAccessToken = async (code, params, callback) => {

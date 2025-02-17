@@ -3,14 +3,23 @@
 
 import { useSearchParams } from 'next/navigation';
 import { NotionLogo } from '../ui/icons/NotionLogo';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
 
+  useEffect(() => {
+    // Logging de toutes les variables d'environnement publiques
+    console.log('All env variables:', {
+      clientId: process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID,
+      nodeEnv: process.env.NODE_ENV,
+    });
+  }, []);
+
   const handleNotionLogin = useCallback(() => {
     const clientId = process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID;
+    console.log('Client ID:', clientId);
     const redirectUri = encodeURIComponent('http://localhost:3001/auth/notion/callback');
     window.location.href = `https://api.notion.com/v1/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
   }, []);

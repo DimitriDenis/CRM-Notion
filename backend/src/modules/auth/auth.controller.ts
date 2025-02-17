@@ -13,8 +13,13 @@ export class AuthController {
 
   @Get('notion')
   @UseGuards(AuthGuard('notion'))
-  async notionAuth() {
-    // Redirige vers Notion OAuth
+  async notionAuth(@Req() req) {
+    console.log('=== Starting Notion Auth ===', {
+      session: req.session,
+      headers: req.headers,
+      query: req.query
+    });
+    // La redirection vers Notion se fait automatiquement
   }
 
   @Get('notion/callback')
