@@ -106,37 +106,41 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
 
   async validate(accessToken: string): Promise<any> {
     try {
-      console.log('=== Validating Token ===');
-      console.log('Access Token:', accessToken.substring(0, 10) + '...');
-      
-      const notionUser = await this.getNotionUserInfo(accessToken);
-      console.log('=== Notion User Info ===', {
-        bot_id: notionUser.bot_id,
-        user: notionUser.owner?.user,
-        workspace: notionUser.workspace_id
+      console.log('=== Starting Validation ===');
+      const response = await fetch('https://api.notion.com/v1/users/me', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Notion-Version': '2022-06-28',
+        },
       });
-      
+  
+      const userData = await response.json();
+      console.log('Raw Notion User Data:', JSON.stringify(userData, null, 2));
+  
+      // Si c'est un bot, regardons qui est le propriétaire
+      if (userData.type === 'bot') {
+        console.log('Bot Owner:', userData.bot?.owner);
+      }
+  
+      // Récupérons les informations essentielles
+      const userInfo = {
+        id: userData.bot?.owner?.user?.id || userData.id,
+        email: userData.bot?.owner?.user?.person?.email || userData.email,
+        name: userData.bot?.owner?.user?.name || userData.name,
+      };
+  
+      console.log('Extracted User Info:', userInfo);
+  
+      // Créer ou mettre à jour l'utilisateur
       const validatedUser = await this.authService.validateNotionUser({
-        id: notionUser.owner?.user?.id,
-        email: notionUser.owner?.user?.email,
-        name: notionUser.owner?.user?.name,
+        ...userInfo,
         accessToken,
-        workspaceId: notionUser.workspace_id,
-      });
-      
-      console.log('=== Validated User ===', {
-        id: validatedUser.id,
-        email: validatedUser.email,
-        name: validatedUser.name
+        workspaceId: userData.bot?.workspace_name || userData.workspace_id,
       });
   
       return validatedUser;
     } catch (error) {
-      console.error('=== Validation Error ===', {
-        name: error.name,
-        message: error.message,
-        stack: error.stack
-      });
+      console.error('Validation Error:', error);
       throw error;
     }
   }
