@@ -45,7 +45,7 @@ export class AuthController {
       const frontendUrl = this.configService.get('FRONTEND_URL');
       console.log('4. URL frontend:', frontendUrl);
       
-      const redirectUrl = new URL('/auth/callback/notion', frontendUrl);
+      const redirectUrl = new URL('/dashboard', frontendUrl);
       redirectUrl.searchParams.set('token', access_token);
       
       if (user.plan === 'pro') {

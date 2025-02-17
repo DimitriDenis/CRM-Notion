@@ -2,9 +2,20 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true,
+    whitelist: true,
+    enableDebugMessages: true, // Pour voir plus de détails sur les erreurs
+    exceptionFactory: (errors) => {
+      console.log('Validation Errors:', JSON.stringify(errors, null, 2));
+      return errors;
+    }
+  }));
 
   // Ajouter ce middleware de logging
   app.use((req, res, next) => {

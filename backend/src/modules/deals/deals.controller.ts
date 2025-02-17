@@ -11,6 +11,9 @@ import {
     ParseUUIDPipe,
     UseGuards,
     BadRequestException,
+    UsePipes,
+    ValidationPipe,
+    UnauthorizedException,
   } from '@nestjs/common';
   import { DealsService } from './deals.service';
   import { Auth } from '../auth/decorators/auth.decorator';
@@ -84,10 +87,30 @@ import { GetRecentDealsDto } from './dto/get-recent-deals.dto';
     }
 
     @Get('recent')
-async getRecentDeals(
-  @CurrentUser() user: User,
-  @Query() query: GetRecentDealsDto
-) {
-  return this.dealsService.getRecentDeals(user.id, query.limit);
+async getRecentDeals(@CurrentUser() user: User) {
+  try {
+    console.log('=== Starting getRecentDeals ===');
+    console.log('User in controller:', JSON.stringify(user));
+    
+    if (!user || !user.id) {
+      console.log('No user or user ID found');
+      throw new UnauthorizedException('User not found');
+    }
+
+    console.log('User ID:', user.id);
+    console.log('User ID type:', typeof user.id);
+    
+    const deals = await this.dealsService.getRecentDeals(user.id);
+    console.log('Deals response:', deals);
+    
+    return deals;
+  } catch (error) {
+    console.error('Error in getRecentDeals:', {
+      message: error.message,
+      name: error.name,
+      stack: error.stack
+    });
+    throw error;
+  }
 }
   }

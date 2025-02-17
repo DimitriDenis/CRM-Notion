@@ -3,23 +3,17 @@
 
 import { useSearchParams } from 'next/navigation';
 import { NotionLogo } from '../ui/icons/NotionLogo';
+import { useCallback } from 'react';
 
 export default function LoginForm() {
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
 
-  const handleNotionLogin = () => {
-    const notionAuthUrl = new URL('https://api.notion.com/v1/oauth/authorize');
-    notionAuthUrl.searchParams.append('client_id', process.env.NEXT_PUBLIC_NOTION_CLIENT_ID!);
-    notionAuthUrl.searchParams.append('response_type', 'code');
-    notionAuthUrl.searchParams.append('owner', 'user');
-    notionAuthUrl.searchParams.append(
-      'redirect_uri',
-      `${window.location.origin}/auth/callback/notion`
-    );
-
-    window.location.href = notionAuthUrl.toString();
-  };
+  const handleNotionLogin = useCallback(() => {
+    const clientId = process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID;
+    const redirectUri = encodeURIComponent('http://localhost:3001/auth/notion/callback');
+    window.location.href = `https://api.notion.com/v1/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
+  }, []);
 
   return (
     <div className="space-y-6">
