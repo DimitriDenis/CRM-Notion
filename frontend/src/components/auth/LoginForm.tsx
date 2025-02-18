@@ -20,7 +20,7 @@ export default function LoginForm() {
   const handleNotionLogin = useCallback(() => {
     const clientId = process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID;
     console.log('Client ID:', clientId);
-    const redirectUri = encodeURIComponent('http://localhost:3001/auth/notion/callback');
+    const redirectUri = encodeURIComponent('http://localhost:3000/auth/callback/notion');
     window.location.href = `https://api.notion.com/v1/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
   }, []);
 
