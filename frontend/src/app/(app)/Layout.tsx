@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import MainLayout from '@/components/layout/MainLayout';
 import { jwtDecode } from 'jwt-decode';
+import api from '@/lib/api/axios';
 
 export default function AppLayout({
   children,
@@ -14,34 +15,29 @@ export default function AppLayout({
   const router = useRouter();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
 
-useEffect(() => {
-  const checkAuth = () => {
-    const token = localStorage.getItem('token');
-    console.log('=== Layout Auth Check ===', {
-      hasToken: !!token,
-      tokenValue: token?.substring(0, 20) + '...' // Pour voir le début du token
-    });
-
-    if (!token) {
-      console.log('No token found, redirecting to login');
-      router.replace('/auth/login');
-      return;
-    }
-
-    // Vérifier si le token est valide
-    try {
-      const decoded = jwtDecode(token);
-      console.log('Token decoded:', decoded);
-      
+  useEffect(() => {
+    const checkAuth = () => {
+      const token = localStorage.getItem('token');
+      console.log('=== Layout Auth Check ===');
+      console.log('Token in localStorage:', !!token);
+  
+      if (!token) {
+        console.log('No token found, redirecting to login');
+        router.replace('/auth/login');
+        return;
+      }
+  
+      // Configurer le cookie pour le middleware
+      document.cookie = `token=${token}; path=/`;
+  
+      // Configurer l'en-tête par défaut pour Axios
+      api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  
       setIsAuthChecked(true);
-    } catch (error) {
-      console.error('Token validation error:', error);
-      router.replace('/auth/login');
-    }
-  };
-
-  setTimeout(checkAuth, 100);
-}, [router]);
+    };
+  
+    setTimeout(checkAuth, 100);
+  }, [router]);
 
   if (!isAuthChecked) {
     return (

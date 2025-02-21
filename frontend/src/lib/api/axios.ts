@@ -7,6 +7,14 @@ const api = axios.create({
   },
 });
 
+// Configuration par défaut de l'en-tête d'autorisation
+if (typeof window !== 'undefined') {
+  const token = localStorage.getItem('token');
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  }
+}
+
 // Intercepteur pour les requêtes
 api.interceptors.request.use(
   (config) => {
@@ -17,10 +25,12 @@ api.interceptors.request.use(
         method: config.method,
         hasToken: !!token,
         baseURL: config.baseURL,
+        authHeader: token ? `Bearer ${token.substring(0, 10)}...` : 'none',
         headers: config.headers,
         data: config.data
       });
 
+      // Assurer que le token est toujours présent dans les en-têtes
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
@@ -33,7 +43,7 @@ api.interceptors.request.use(
   }
 );
 
-// Ajout de l'intercepteur de réponse
+// Intercepteur pour les réponses
 api.interceptors.response.use(
   (response) => {
     console.log('=== Response Success ===', {
@@ -44,6 +54,12 @@ api.interceptors.response.use(
     return response;
   },
   (error) => {
+    // Si l'erreur est 401 (non autorisé), rediriger vers login
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = '/auth/login';
+    }
+
     console.error('=== Response Error Details ===', {
       url: error.config?.url,
       status: error.response?.status,
