@@ -10,32 +10,40 @@ export function RecentDeals({ deals }: { deals: Deal[] }) {
           Derniers deals
         </h3>
         <div className="mt-6 flow-root">
-          <ul role="list" className="-my-5 divide-y divide-gray-200">
-            {deals.map((deal) => (
-              <li key={deal.id} className="py-5">
-                <div className="flex items-center space-x-4">
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-gray-900">
-                      {deal.name}
-                    </p>
-                    <p className="truncate text-sm text-gray-500">
-                      {/* Utiliser stage?.name ou stageId */}
-                      {deal.stage?.name || deal.stageId} · {deal.value.toLocaleString('fr-FR', {
-                        style: 'currency',
-                        currency: 'EUR',
-                      })}
-                    </p>
+          {deals.length > 0 ? (
+            <ul role="list" className="-my-5 divide-y divide-gray-200">
+              {deals.map((deal) => (
+                <li key={deal.id} className="py-5">
+                  <div className="flex items-center space-x-4">
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-gray-900">
+                        {deal.name}
+                      </p>
+                      <p className="truncate text-sm text-gray-500">
+                        {deal.stage?.name || deal.stageId} · {deal.value.toLocaleString('fr-FR', {
+                          style: 'currency',
+                          currency: 'EUR',
+                        })}
+                      </p>
+                    </div>
+                    <time
+                      dateTime={new Date(deal.updatedAt).toISOString()}
+                      className="flex-shrink-0 text-sm text-gray-500"
+                    >
+                      {new Date(deal.updatedAt).toLocaleDateString()}
+                    </time>
                   </div>
-                  <time
-                    dateTime={deal.updatedAt.toISOString()}
-                    className="flex-shrink-0 text-sm text-gray-500"
-                  >
-                    {new Date(deal.updatedAt).toLocaleDateString()}
-                  </time>
-                </div>
-              </li>
-            ))}
-          </ul>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div className="py-5 text-center text-sm text-gray-500">
+              Aucun deal récent. 
+              <Link href="/deals/new" className="text-blue-600 hover:text-blue-800 ml-1">
+                Créer un nouveau deal ?
+              </Link>
+            </div>
+          )}
         </div>
         <div className="mt-6">
           <Link

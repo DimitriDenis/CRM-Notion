@@ -50,6 +50,10 @@ export default function DashboardPage() {
           dashboardApi.getPipeline(),
         ]);
 
+        console.log('Stats Data:', statsData);
+        console.log('Deals Data:', dealsData);
+        console.log('Pipeline Data:', pipelineData);
+
         setStats(statsData);
         setRecentDeals(dealsData);
         setPipeline(pipelineData);

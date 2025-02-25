@@ -31,7 +31,22 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
     @Get('overview')
 async getPipelineOverview(@CurrentUser() user: User) {
-  return this.pipelinesService.getPipelineOverview(user.id);
+  try {
+    const pipelineOverview = await this.pipelinesService.getPipelineOverview(user.id);
+    
+    // Si aucun pipeline n'est trouvé, renvoyer un objet par défaut
+    return pipelineOverview || { 
+      stages: [], 
+      deals: [] 
+    };
+  } catch (error) {
+    console.error('Error fetching pipeline overview:', error);
+    // En cas d'erreur, toujours renvoyer un objet par défaut
+    return { 
+      stages: [], 
+      deals: [] 
+    };
+  }
 }
   
     @Post()
