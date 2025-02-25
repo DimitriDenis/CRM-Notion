@@ -157,16 +157,22 @@ export class DealsService {
     return result.total || 0;
   }
 
-  async getRecentDeals(userId: string, limit = 5) {
-    console.log('Finding recent deals with params:', { userId, limit });
-    
+
+async getRecentDeals(userId: string, limit = 5) {
+  try {
     const deals = await this.dealRepository.find({
       where: { userId },
       order: { updatedAt: 'DESC' },
       take: limit,
+      relations: {
+        pipeline: true
+      }
     });
   
-    console.log('Found deals:', deals);
     return deals;
+  } catch (error) {
+    console.error('Error finding deals:', error);
+    throw error;
   }
+}
 }

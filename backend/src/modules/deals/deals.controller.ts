@@ -50,6 +50,22 @@ import { GetRecentDealsDto } from './dto/get-recent-deals.dto';
     ) {
       return this.dealsService.findAll(user.id, query);
     }
+
+    @Get('recent')     
+@UseGuards(JwtAuthGuard) 
+async getRecentDeals(@CurrentUser() user: User) {   
+  console.log('=== getRecentDeals DEBUG ===');   
+  console.log('Entering getRecentDeals endpoint');
+  console.log('Request received');
+  console.log('User object:', JSON.stringify(user, null, 2));   
+  
+  try {
+    return []; 
+  } catch (error) {
+    console.error('Error in getRecentDeals:', error);
+    throw error;
+  }
+}
   
     @Get(':id')
     @ApiOperation({ summary: 'Get a deal by ID' })
@@ -86,31 +102,5 @@ import { GetRecentDealsDto } from './dto/get-recent-deals.dto';
       return { total };
     }
 
-    @Get('recent')
-async getRecentDeals(@CurrentUser() user: User) {
-  try {
-    console.log('=== Starting getRecentDeals ===');
-    console.log('User in controller:', JSON.stringify(user));
     
-    if (!user || !user.id) {
-      console.log('No user or user ID found');
-      throw new UnauthorizedException('User not found');
-    }
-
-    console.log('User ID:', user.id);
-    console.log('User ID type:', typeof user.id);
-    
-    const deals = await this.dealsService.getRecentDeals(user.id);
-    console.log('Deals response:', deals);
-    
-    return deals;
-  } catch (error) {
-    console.error('Error in getRecentDeals:', {
-      message: error.message,
-      name: error.name,
-      stack: error.stack
-    });
-    throw error;
-  }
-}
   }
