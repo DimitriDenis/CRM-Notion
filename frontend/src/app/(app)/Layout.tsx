@@ -1,4 +1,4 @@
-// src/app/(app)/layout.tsx
+// src/app/(app)/Layout.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -6,6 +6,8 @@ import { useRouter } from 'next/navigation';
 import MainLayout from '@/components/layout/MainLayout';
 import { jwtDecode } from 'jwt-decode';
 import api from '@/lib/api/axios';
+import { Sidebar } from '@/components/layout/Sidebar';
+import { Header } from '@/components/layout/Header';
 
 export default function AppLayout({
   children,
@@ -14,6 +16,8 @@ export default function AppLayout({
 }) {
   const router = useRouter();
   const [isAuthChecked, setIsAuthChecked] = useState(false);
+
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
