@@ -9,7 +9,7 @@ interface EditContactPageProps {
   };
 }
 
-export default function EditContactPage({ params }: EditContactPageProps) {
+export default async function EditContactPage({ params }: EditContactPageProps) {
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-semibold text-gray-900">Modifier le Contact</h1>
