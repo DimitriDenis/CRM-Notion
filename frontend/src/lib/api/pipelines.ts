@@ -2,7 +2,7 @@
 import api from './axios';
 
 export interface Stage {
-  id: string;
+  id?: string;
   name: string;
   order: number;
 }
@@ -33,28 +33,72 @@ export interface PipelineStats {
   totalValue: number;
 }
 
+// Interface pour les options de pagination
+export interface PaginationOptions {
+  skip?: number;
+  take?: number;
+}
+
 export const pipelinesApi = {
-  getPipelines: async (): Promise<Pipeline[]> => {
-    const response = await api.get('/pipelines');
-    return response.data.items;
+  getPipelines: async (options: PaginationOptions = {}): Promise<Pipeline[]> => {
+    try {
+      // Construire l'URL avec les paramètres de pagination
+      let url = '/pipelines';
+      
+      // Ajouter les paramètres de pagination s'ils sont définis
+      const params = new URLSearchParams();
+      if (options.skip !== undefined) params.append('skip', options.skip.toString());
+      if (options.take !== undefined) params.append('take', options.take.toString());
+      
+      // Ajouter les paramètres à l'URL si nécessaire
+      const queryString = params.toString();
+      if (queryString) {
+        url += `?${queryString}`;
+      }
+      
+      const response = await api.get(url);
+      return response.data.items || response.data;
+    } catch (error) {
+      console.error('Error fetching pipelines:', error);
+      throw error;
+    }
   },
 
   getPipeline: async (id: string): Promise<Pipeline> => {
-    const response = await api.get(`/pipelines/${id}`);
-    return response.data;
+    try {
+      if (!id) throw new Error('Pipeline ID is required');
+      
+      const response = await api.get(`/pipelines/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching pipeline ${id}:`, error);
+      throw error;
+    }
   },
 
   getPipelineStats: async (id: string): Promise<PipelineStats> => {
-    const response = await api.get(`/pipelines/${id}/stats`);
-    return response.data;
+    try {
+      if (!id) throw new Error('Pipeline ID is required');
+      
+      const response = await api.get(`/pipelines/${id}/stats`);
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching pipeline stats for ${id}:`, error);
+      throw error;
+    }
   },
 
   createPipeline: async (data: {
     name: string;
     stages: Omit<Stage, 'id'>[];
   }): Promise<Pipeline> => {
-    const response = await api.post('/pipelines', data);
-    return response.data;
+    try {
+      const response = await api.post('/pipelines', data);
+      return response.data;
+    } catch (error) {
+      console.error('Error creating pipeline:', error);
+      throw error;
+    }
   },
 
   updatePipeline: async (
@@ -64,11 +108,36 @@ export const pipelinesApi = {
       stages?: Stage[];
     }
   ): Promise<Pipeline> => {
-    const response = await api.put(`/pipelines/${id}`, data);
-    return response.data;
+    try {
+      if (!id) throw new Error('Pipeline ID is required');
+      
+      const response = await api.put(`/pipelines/${id}`, data);
+      return response.data;
+    } catch (error) {
+      console.error(`Error updating pipeline ${id}:`, error);
+      throw error;
+    }
   },
 
   deletePipeline: async (id: string): Promise<void> => {
-    await api.delete(`/pipelines/${id}`);
+    try {
+      if (!id) throw new Error('Pipeline ID is required');
+      
+      await api.delete(`/pipelines/${id}`);
+    } catch (error) {
+      console.error(`Error deleting pipeline ${id}:`, error);
+      throw error;
+    }
+  },
+  
+  // Obtenir un aperçu du pipeline (ajouté pour correspondre à votre endpoint backend)
+  getPipelineOverview: async (): Promise<any> => {
+    try {
+      const response = await api.get('/pipelines/overview');
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching pipeline overview:', error);
+      throw error;
+    }
   },
 };
