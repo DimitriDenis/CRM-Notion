@@ -5,12 +5,13 @@ import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
+import { logout } from '@/lib/api/auth';
 
 export function UserMenu() {
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
+  const handleLogout = async () => {
+    await logout();
     router.push('/auth/login');
   };
 

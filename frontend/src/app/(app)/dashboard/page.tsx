@@ -14,32 +14,12 @@ import { PipelineOverview } from '@/components/dashboard/PipelineOverview';
 import type { Deal, DashboardStats, Pipeline } from '@/types/dashboard';
 import DashboardLoading from './loading';
 import { dashboardApi } from '@/lib/api/dashboard';
-import { useRouter, useSearchParams } from 'next/navigation';
-
-
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentDeals, setRecentDeals] = useState<Deal[] | null>(null);
   const [pipeline, setPipeline] = useState<Pipeline | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const searchParams = useSearchParams();
-  const router = useRouter();
-
-  useEffect(() => {
-    console.log('=== Dashboard Token Check ===');
-    const token = searchParams.get('token');
-    console.log('Token in URL:', !!token);
-    
-    if (token) {
-      console.log('Storing token in localStorage');
-      localStorage.setItem('token', token);
-      console.log('Token stored:', localStorage.getItem('token'));
-      console.log('Redirecting to dashboard');
-      router.replace('/dashboard');
-    }
-  }, [searchParams, router]);
 
   useEffect(() => {
     const fetchDashboardData = async () => {

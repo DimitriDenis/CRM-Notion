@@ -22,7 +22,25 @@ export async function handleNotionCallback(code: string) {
     }
   }
 
-export async function logout() {
-  console.log('Déconnexion: suppression du token');
-  localStorage.removeItem('token');
-}
+  export async function logout() {
+    console.log('Déconnexion: nettoyage complet des données d\'authentification');
+    
+    // 1. Supprimer le cookie
+    document.cookie = "token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+    
+    // 2. Supprimer de localStorage et sessionStorage
+    try {
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
+      sessionStorage.removeItem('notion_token');
+    } catch (e) {
+      console.warn('Erreur lors de la suppression du stockage:', e);
+    }
+    
+    // 3. Supprimer l'en-tête d'autorisation pour les futures requêtes API
+    if (api.defaults.headers.common['Authorization']) {
+      delete api.defaults.headers.common['Authorization'];
+    }
+    
+    console.log('Déconnexion terminée');
+  }

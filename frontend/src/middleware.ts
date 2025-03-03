@@ -3,30 +3,53 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export function middleware(request: NextRequest) {
-  const token = request.cookies.get('token');
-  const urlToken = request.nextUrl.searchParams.get('token');
+  console.log('=== Middleware Executing ===');
   
-  // Si on a un token dans l'URL, créer un nouveau Response avec le cookie
+  // 1. Vérifier si le token est dans l'URL
+  const urlToken = request.nextUrl.searchParams.get('token');
   if (urlToken) {
-    const response = NextResponse.next();
-    response.cookies.set('token', urlToken, {
-      httpOnly: false,
+    console.log('Token trouvé dans l\'URL');
+    
+    // Créer une réponse qui définit un cookie avec le token
+    const response = NextResponse.redirect(
+      // Rediriger vers la même URL mais sans le paramètre token
+      new URL(request.nextUrl.pathname, request.url)
+    );
+    
+    // Définir le cookie pour les futures requêtes
+    response.cookies.set({
+      name: 'token',
+      value: urlToken,
       path: '/',
+      maxAge: 60 * 60 * 24 * 7, // 7 jours
+      httpOnly: false, // Permettre l'accès côté client
       sameSite: 'lax'
     });
+    
+    console.log('Cookie défini et redirection effectuée');
     return response;
   }
-
-  // Si on a un token dans les cookies ou dans l'URL et qu'on est sur une page d'auth
-  if (request.nextUrl.pathname.startsWith('/auth/') && (token || urlToken)) {
+  
+  // 2. Vérifier si le token est dans les cookies
+  const cookieToken = request.cookies.get('token');
+  
+  // 3. Logique de redirection basée sur l'authentification
+  const isAuthPage = request.nextUrl.pathname.startsWith('/auth/');
+  
+  if (isAuthPage && cookieToken) {
+    // Si on est sur une page d'auth et qu'on a un token, rediriger vers dashboard
+    console.log('Redirection de page auth vers dashboard (token trouvé)');
     return NextResponse.redirect(new URL('/dashboard', request.url));
   }
-
-  // Si on n'a pas de token (ni cookie ni URL) et qu'on n'est pas sur une page d'auth
-  if (!request.nextUrl.pathname.startsWith('/auth/') && !token && !urlToken) {
+  
+  if (!isAuthPage && !cookieToken) {
+    // Si on n'est pas sur une page d'auth et qu'on n'a pas de token, rediriger vers login
+    console.log('Redirection vers login (pas de token)');
     return NextResponse.redirect(new URL('/auth/login', request.url));
   }
-
+  
+  // 4. Si tout est en ordre, continuer normalement
+  console.log('Middleware: Autorisation OK');
   return NextResponse.next();
 }
 
