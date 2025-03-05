@@ -87,34 +87,31 @@ export class PipelinesService {
   }
 
   async getPipelineStats(userId: string, pipelineId: string) {
+    // Récupérer le pipeline avec les deals
     const pipeline = await this.pipelineRepository.findOne({
       where: { id: pipelineId, userId },
-      relations: ['stages', 'deals'],
+      relations: ['deals'] // Seulement charger la relation deals
     });
   
     if (!pipeline) {
       throw new NotFoundException(`Pipeline with ID ${pipelineId} not found`);
     }
   
-    // Calculez les statistiques par étape
-    const stageStats = [];
-    let totalDeals = 0;
-    let totalValue = 0;
-  
-    for (const stage of pipeline.stages) {
+    // Calculer les statistiques pour chaque étape
+    const stageStats = pipeline.stages.map(stage => {
       const dealsInStage = pipeline.deals?.filter(deal => deal.stageId === stage.id) || [];
       const stageValue = dealsInStage.reduce((sum, deal) => sum + (deal.value || 0), 0);
       
-      totalDeals += dealsInStage.length;
-      totalValue += stageValue;
-      
-      stageStats.push({
+      return {
         id: stage.id,
         name: stage.name,
         count: dealsInStage.length,
         value: stageValue
-      });
-    }
+      };
+    });
+  
+    const totalDeals = pipeline.deals?.length || 0;
+    const totalValue = pipeline.deals?.reduce((sum, deal) => sum + (deal.value || 0), 0) || 0;
   
     return {
       id: pipeline.id,
