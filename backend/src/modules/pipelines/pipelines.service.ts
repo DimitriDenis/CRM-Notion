@@ -86,6 +86,45 @@ export class PipelinesService {
     });
   }
 
+  async getPipelineStats(userId: string, pipelineId: string) {
+    const pipeline = await this.pipelineRepository.findOne({
+      where: { id: pipelineId, userId },
+      relations: ['stages', 'deals'],
+    });
+  
+    if (!pipeline) {
+      throw new NotFoundException(`Pipeline with ID ${pipelineId} not found`);
+    }
+  
+    // Calculez les statistiques par étape
+    const stageStats = [];
+    let totalDeals = 0;
+    let totalValue = 0;
+  
+    for (const stage of pipeline.stages) {
+      const dealsInStage = pipeline.deals?.filter(deal => deal.stageId === stage.id) || [];
+      const stageValue = dealsInStage.reduce((sum, deal) => sum + (deal.value || 0), 0);
+      
+      totalDeals += dealsInStage.length;
+      totalValue += stageValue;
+      
+      stageStats.push({
+        id: stage.id,
+        name: stage.name,
+        count: dealsInStage.length,
+        value: stageValue
+      });
+    }
+  
+    return {
+      id: pipeline.id,
+      name: pipeline.name,
+      stages: stageStats,
+      totalDeals,
+      totalValue
+    };
+  }
+
   async getPipelineOverview(userId: string) {
     try {
       // Votre code existant pour trouver les pipelines

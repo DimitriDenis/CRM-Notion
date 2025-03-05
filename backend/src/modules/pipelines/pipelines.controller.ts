@@ -95,6 +95,28 @@ async getPipelineOverview(@CurrentUser() user: User) {
     ) {
       await this.pipelinesService.remove(user.id, id);
     }
+
+    @Get(':id/stats')
+@ApiOperation({ summary: 'Get pipeline statistics' })
+async getPipelineStats(
+  @CurrentUser() user: User,
+  @Param('id', ParseUUIDPipe) id: string,
+) {
+  const pipeline = await this.pipelinesService.findOne(user.id, id);
+  
+  if (!pipeline) {
+    return { 
+      id,
+      name: '',
+      stages: [],
+      totalDeals: 0,
+      totalValue: 0
+    };
+  }
+  
+  // Vous devrez implémenter cette méthode dans votre service
+  return this.pipelinesService.getPipelineStats(user.id, id);
+}
   
     @Get('count/total')
     @ApiOperation({ summary: 'Get total number of pipelines' })
