@@ -6,6 +6,10 @@ export interface Deal {
   name: string;
   value: number;
   pipelineId: string;
+  pipeline?: {
+    id: string;
+    name: string;
+  };
   stageId: string;
   stage?: {
     id: string;
@@ -27,11 +31,18 @@ export interface DealFilters {
   status?: string;
   skip?: number;
   take?: number;
+  sort?: 'name' | 'value' | 'updatedAt';
+  direction?: 'asc' | 'desc';
 }
 
 export const dealsApi = {
   getDeals: async (filters: DealFilters = {}): Promise<{ items: Deal[]; total: number }> => {
-    const response = await api.get('/deals', { params: filters });
+    const response = await api.get('/deals', { 
+        params: { 
+          ...filters, 
+          include: 'stage,pipeline'  // Demande au backend d'inclure ces relations
+        } 
+      });
     return response.data;
   },
 
@@ -44,6 +55,7 @@ export const dealsApi = {
     const response = await api.get(`/deals/${id}?include=stage`);
     return response.data;
   },
+  
 
   createDeal: async (data: Omit<Deal, 'id' | 'createdAt' | 'updatedAt'>): Promise<Deal> => {
     const response = await api.post('/deals', data);
