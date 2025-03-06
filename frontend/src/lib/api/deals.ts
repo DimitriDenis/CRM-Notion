@@ -7,6 +7,10 @@ export interface Deal {
   value: number;
   pipelineId: string;
   stageId: string;
+  stage?: {
+    id: string;
+    name: string;
+  };
   status?: 'active' | 'won' | 'lost';
   expectedCloseDate?: string;
   contacts?: { id: string; firstName: string; lastName: string }[];
@@ -37,7 +41,7 @@ export const dealsApi = {
   },
 
   getDeal: async (id: string): Promise<Deal> => {
-    const response = await api.get(`/deals/${id}`);
+    const response = await api.get(`/deals/${id}?include=stage`);
     return response.data;
   },
 
