@@ -26,13 +26,16 @@ export default function DealsPage() {
   // Load pipelines for filtering
   useEffect(() => {
     const fetchPipelines = async () => {
-      try {
-        const data = await pipelinesApi.getPipelines();
-        setPipelines(data);
-      } catch (err) {
-        console.error('Error fetching pipelines:', err);
-      }
-    };
+        try {
+          // Spécifiez explicitement skip et take comme des nombres
+          const data = await pipelinesApi.getPipelines({ skip: 0, take: 100 });
+          setPipelines(data);
+        } catch (err) {
+          console.error('Error fetching pipelines:', err);
+          // Gérer l'erreur sans bloquer l'affichage des deals
+          setPipelines([]);
+        }
+      };
 
     fetchPipelines();
   }, []);

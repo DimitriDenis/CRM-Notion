@@ -42,25 +42,23 @@ export interface PaginationOptions {
 export const pipelinesApi = {
   getPipelines: async (options: PaginationOptions = {}): Promise<Pipeline[]> => {
     try {
-      // Construire l'URL avec les paramètres de pagination
-      let url = '/pipelines';
+      // Si aucun paramètre n'est spécifié, utiliser l'URL simple
+      if (options.skip === undefined && options.take === undefined) {
+        const response = await api.get('/pipelines');
+        return response.data.items || response.data;
+      }
       
-      // Ajouter les paramètres de pagination s'ils sont définis
+      // Sinon, construire l'URL avec les paramètres de pagination
       const params = new URLSearchParams();
       if (options.skip !== undefined) params.append('skip', options.skip.toString());
       if (options.take !== undefined) params.append('take', options.take.toString());
       
-      // Ajouter les paramètres à l'URL si nécessaire
-      const queryString = params.toString();
-      if (queryString) {
-        url += `?${queryString}`;
-      }
-      
-      const response = await api.get(url);
+      const response = await api.get(`/pipelines?${params.toString()}`);
       return response.data.items || response.data;
     } catch (error) {
       console.error('Error fetching pipelines:', error);
-      throw error;
+      // Retourner un tableau vide au lieu de propager l'erreur
+      return [];
     }
   },
 
