@@ -44,7 +44,7 @@ export function DealForm({ dealId }: DealFormProps) {
   useEffect(() => {
     const fetchPipelines = async () => {
       try {
-        const data = await pipelinesApi.getPipelines();
+        const data = await pipelinesApi.getPipelinesNoParams();
         setPipelines(data);
         
         // Select initial pipeline
@@ -56,10 +56,10 @@ export function DealForm({ dealId }: DealFormProps) {
         }
       } catch (err) {
         console.error('Error fetching pipelines:', err);
-        setError('Erreur lors du chargement des pipelines');
+        setPipelines([]);
       }
     };
-
+  
     fetchPipelines();
   }, [initialPipelineId]);
 

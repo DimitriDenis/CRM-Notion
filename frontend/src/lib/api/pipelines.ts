@@ -62,6 +62,17 @@ export const pipelinesApi = {
     }
   },
 
+  getPipelinesNoParams: async (): Promise<Pipeline[]> => {
+    try {
+      // Fournir des paramètres numériques valides
+      const response = await api.get('/pipelines?skip=0&take=100');
+      return response.data.items || response.data;
+    } catch (error) {
+      console.error('Error fetching pipelines without params:', error);
+      return [];
+    }
+  },
+
   getPipeline: async (id: string): Promise<Pipeline> => {
     try {
       if (!id) throw new Error('Pipeline ID is required');
