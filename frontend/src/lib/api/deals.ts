@@ -9,6 +9,11 @@ export interface Deal {
   pipeline?: {
     id: string;
     name: string;
+    stages?: Array<{  // Ajoute cette propriété
+      id: string;
+      name: string;
+      order: number;
+    }>;
   };
   stageId: string;
   stage?: {
@@ -52,7 +57,11 @@ export const dealsApi = {
   },
 
   getDeal: async (id: string): Promise<Deal> => {
-    const response = await api.get(`/deals/${id}?include=stage`);
+    const response = await api.get(`/deals/${id}`, {
+      params: {
+        include: 'pipeline' // N'incluez PAS 'stage' car ce n'est pas une relation
+      }
+    });
     return response.data;
   },
   

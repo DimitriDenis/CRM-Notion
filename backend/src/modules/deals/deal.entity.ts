@@ -29,9 +29,25 @@ export class Deal extends BaseEntity {
   pipelineId: string;
 
   get stage(): { name: string } | undefined {
-    const pipeline = this.pipeline;
-    if (!pipeline) return undefined;
-    return pipeline.stages.find(s => s.id === this.stageId);
+    console.log('StageId du deal:', this.stageId);
+    console.log('Pipeline:', this.pipeline);
+    
+    if (!this.pipeline) {
+      console.log('Pipeline est undefined');
+      return { name: 'N/A (pas de pipeline)' };
+    }
+    
+    console.log('Stages dans pipeline:', this.pipeline.stages);
+    
+    if (!this.pipeline.stages || !Array.isArray(this.pipeline.stages)) {
+      console.log('Stages n\'existe pas ou n\'est pas un tableau');
+      return { name: 'N/A (pas de stages)' };
+    }
+    
+    const foundStage = this.pipeline.stages.find(s => s.id === this.stageId);
+    console.log('Stage trouvé:', foundStage);
+    
+    return foundStage || { name: 'N/A (stage non trouvé)' };
   }
 
   @ManyToOne(() => Pipeline, pipeline => pipeline.deals)

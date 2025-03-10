@@ -118,7 +118,7 @@ export default function DealDetailsPage({ params }: DealDetailsPageProps) {
                     Étape
                   </dt>
                   <dd className="ml-4 text-sm text-gray-900">
-                    {deal.stage?.name || 'N/A'}
+                  {deal.pipeline?.stages?.find(s => s.id === deal.stageId)?.name || 'N/A'}
                   </dd>
                 </div>
                 {deal.expectedCloseDate && (

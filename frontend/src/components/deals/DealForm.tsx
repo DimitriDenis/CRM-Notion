@@ -140,6 +140,7 @@ export function DealForm({ dealId }: DealFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Submitting form data:', formData);
     setIsSaving(true);
     setError(null);
 
