@@ -67,6 +67,9 @@ export class Deal extends BaseEntity {
   })
   contacts: Contact[];
 
+  @Column({ type: 'varchar', length: 10, default: 'active' })
+  status: 'active' | 'won' | 'lost';
+
   @Column({ type: 'jsonb', nullable: true })
   customFields: Record<string, any>;
 

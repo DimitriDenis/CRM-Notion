@@ -1,7 +1,7 @@
 // src/app/(app)/deals/[id]/page.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
@@ -22,6 +22,7 @@ interface DealDetailsPageProps {
 
 export default function DealDetailsPage({ params }: DealDetailsPageProps) {
   const router = useRouter();
+  
   const [deal, setDeal] = useState<Deal | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
