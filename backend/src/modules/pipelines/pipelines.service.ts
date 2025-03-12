@@ -3,6 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Pipeline } from './pipeline.entity';
+import { Deal } from '../deals/deal.entity';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
 
@@ -11,6 +12,8 @@ export class PipelinesService {
   constructor(
     @InjectRepository(Pipeline)
     private pipelineRepository: Repository<Pipeline>,
+    @InjectRepository(Deal) // Ajoutez cette injection
+    private dealRepository: Repository<Deal>,
   ) {}
 
   async create(userId: string, createPipelineDto: CreatePipelineDto): Promise<Pipeline> {
@@ -156,5 +159,20 @@ export class PipelinesService {
         deals: []
       };
     }
+  }
+
+  async getDealsForPipeline(userId: string, pipelineId: string) {
+    const deals = await this.dealRepository.find({
+      where: {
+        pipelineId,
+        userId
+      },
+      relations: ['contacts']
+    });
+    
+    return {
+      items: deals,
+      total: deals.length
+    };
   }
 }

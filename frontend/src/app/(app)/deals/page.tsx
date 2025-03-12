@@ -45,11 +45,18 @@ export default function DealsPage() {
     const fetchDeals = async () => {
       try {
         setIsLoading(true);
+        
+        // Filtrer les paramètres vides avant de les envoyer à l'API
+        const cleanFilters = Object.fromEntries(
+          Object.entries(filters).filter(([_, value]) => value !== '')
+        );
+        
         const { items, total } = await dealsApi.getDeals({
-          ...filters,
+          ...cleanFilters,
           sort: sortField,
           direction: sortDirection,
         });
+        
         setDeals(items);
         setTotalDeals(total);
         setError(null);
@@ -60,7 +67,7 @@ export default function DealsPage() {
         setIsLoading(false);
       }
     };
-
+  
     fetchDeals();
   }, [filters, sortField, sortDirection]);
 

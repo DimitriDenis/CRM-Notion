@@ -117,6 +117,24 @@ async getPipelineStats(
   // Vous devrez implémenter cette méthode dans votre service
   return this.pipelinesService.getPipelineStats(user.id, id);
 }
+
+@Get(':id/deals')
+@ApiOperation({ summary: 'Get deals for a specific pipeline' })
+async getPipelineDeals(
+  @CurrentUser() user: User,
+  @Param('id', ParseUUIDPipe) id: string,
+) {
+  // Vérifiez d'abord si le pipeline existe et appartient à l'utilisateur
+  const pipeline = await this.pipelinesService.findOne(user.id, id);
+  
+  if (!pipeline) {
+    return { items: [], total: 0 };
+  }
+  
+  // Récupérez les deals pour ce pipeline
+  // Vous devrez implémenter cette méthode dans votre service
+  return this.pipelinesService.getDealsForPipeline(user.id, id);
+}
   
     @Get('count/total')
     @ApiOperation({ summary: 'Get total number of pipelines' })
