@@ -58,7 +58,7 @@ export class DealsService {
   }
 
   async findAll(userId: string, options: FindDealsDto = {}): Promise<{ items: Deal[]; total: number }> {
-    const { skip = 0, take = 10, pipelineId, stageId, search } = options;
+    const { skip = 0, take = 10, pipelineId, stageId, search, status } = options;
 
     const queryBuilder = this.dealRepository
       .createQueryBuilder('deal')
@@ -72,6 +72,10 @@ export class DealsService {
 
     if (stageId) {
       queryBuilder.andWhere('deal.stageId = :stageId', { stageId });
+    }
+
+    if (status) { // Ajoutez cette condition
+      queryBuilder.andWhere('deal.status = :status', { status });
     }
 
     if (search) {

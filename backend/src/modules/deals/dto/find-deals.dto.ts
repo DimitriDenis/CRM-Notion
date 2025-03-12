@@ -1,5 +1,5 @@
 // src/modules/deals/dto/find-deals.dto.ts
-import { IsOptional, IsUUID, IsString, IsInt, Min } from 'class-validator';
+import { IsOptional, IsUUID, IsString, IsInt, Min, IsEnum } from 'class-validator';
 import { Transform } from 'class-transformer';
 
 export class FindDealsDto {
@@ -22,6 +22,10 @@ export class FindDealsDto {
   @IsOptional()
   @IsString()
   stageId?: string;
+
+  @IsOptional()
+  @IsEnum(['active', 'won', 'lost', '']) // Ajoutez une valeur vide pour permettre de réinitialiser le filtre
+  status?: 'active' | 'won' | 'lost' | '';
 
   @IsOptional()
   @IsString()
