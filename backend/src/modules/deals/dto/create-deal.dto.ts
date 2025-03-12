@@ -1,5 +1,5 @@
 // src/modules/deals/dto/create-deal.dto.ts
-import { IsString, IsNotEmpty, IsNumber, IsUUID, IsOptional, IsDate } from 'class-validator';
+import { IsString, IsNotEmpty, IsNumber, IsUUID, IsOptional, IsDate, IsEnum } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class CreateDealDto {
@@ -18,6 +18,10 @@ export class CreateDealDto {
   @IsString()
   @IsNotEmpty()
   stageId: string;
+
+  @IsOptional()
+  @IsEnum(['active', 'won', 'lost'])
+  status?: 'active' | 'won' | 'lost';
 
   @IsOptional()
   @IsDate()
