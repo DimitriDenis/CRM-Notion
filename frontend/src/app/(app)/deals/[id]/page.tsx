@@ -21,8 +21,10 @@ interface DealDetailsPageProps {
 }
 
 export default function DealDetailsPage({ params }: DealDetailsPageProps) {
-  const router = useRouter();
+  // Extraire l'ID en utilisant use()
+  const { id } = use(params as any) as { id: string };
   
+  const router = useRouter();
   const [deal, setDeal] = useState<Deal | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +33,8 @@ export default function DealDetailsPage({ params }: DealDetailsPageProps) {
     const fetchDeal = async () => {
       try {
         setIsLoading(true);
-        const data = await dealsApi.getDeal(params.id);
+        // Utiliser 'id' au lieu de 'params.id'
+        const data = await dealsApi.getDeal(id);
         setDeal(data);
       } catch (err) {
         console.error('Error fetching deal:', err);
@@ -42,7 +45,7 @@ export default function DealDetailsPage({ params }: DealDetailsPageProps) {
     };
 
     fetchDeal();
-  }, [params.id]);
+  }, [id]); // Utiliser 'id' comme dépendance
 
   const handleDelete = async () => {
     if (!confirm('Êtes-vous sûr de vouloir supprimer ce deal ?')) {
@@ -50,7 +53,8 @@ export default function DealDetailsPage({ params }: DealDetailsPageProps) {
     }
 
     try {
-      await dealsApi.deleteDeal(params.id);
+      // Utiliser 'id' au lieu de 'params.id'
+      await dealsApi.deleteDeal(id);
       router.push(`/pipelines/${deal?.pipelineId}/board`);
     } catch (err) {
       console.error('Error deleting deal:', err);
@@ -58,6 +62,7 @@ export default function DealDetailsPage({ params }: DealDetailsPageProps) {
     }
   };
 
+  // Le reste du code reste inchangé
   if (isLoading) {
     return <div className="animate-pulse p-4 h-96 bg-gray-100 rounded-lg"></div>;
   }
