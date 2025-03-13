@@ -34,7 +34,6 @@
     "jwt-decode": "^4.0.0",
     "next": "^15.1.7",
     "react": "^19.0.0",
-    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.1",
     "string-width": "^7.2.0",

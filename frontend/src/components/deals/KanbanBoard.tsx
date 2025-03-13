@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { DragDropContext, Droppable, Draggable, DropResult, DroppableProvided, DroppableStateSnapshot, DraggableStateSnapshot, DraggableProvided } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable, DropResult, DroppableProvided, DroppableStateSnapshot, DraggableStateSnapshot, DraggableProvided } from '@hello-pangea/dnd';
 import { dealsApi, Deal } from '@/lib/api/deals';
 import { Pipeline, Stage } from '@/lib/api/pipelines';
 import { DealCard } from './DealCard';
@@ -113,7 +113,8 @@ export function KanbanBoard({ pipeline }: KanbanBoardProps) {
                   {getDealsForStage(stageId).length} deals
                 </span>
               </h3>
-              <Droppable droppableId={stageId}>
+              <Droppable droppableId={stageId}
+              isDropDisabled={false}>
                 {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
                   <div
                     ref={provided.innerRef}
