@@ -158,7 +158,7 @@ export class DealsService {
       .select('SUM(deal.value)', 'total')
       .getRawOne();
 
-    return result.total || 0;
+      return result.total ? Number(result.total) : 0;
   }
 
 

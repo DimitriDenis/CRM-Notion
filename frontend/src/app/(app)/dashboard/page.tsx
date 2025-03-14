@@ -68,15 +68,29 @@ export default function DashboardPage() {
             value={stats.totalDeals}
             icon={FunnelIcon}
           />
-          <StatCard
-            title="Valeur Totale"
-            value={stats.totalValue.toLocaleString('fr-FR', {
-              style: 'currency',
-              currency: 'EUR',
-            })}
-            icon={CurrencyDollarIcon}
-            trend={{ value: 8.2, label: 'vs dernier mois', positive: true }}
-          />
+         <StatCard
+  title="Valeur Totale"
+  value={(() => {
+    console.log("Type of totalValue:", typeof stats.totalValue);
+    console.log("Value of totalValue:", stats.totalValue);
+    
+    // Tentative de conversion en nombre
+    const numValue = Number(stats.totalValue);
+    console.log("Converted value:", numValue);
+    
+    // Vérifier si la conversion a fonctionné
+    if (!isNaN(numValue)) {
+      return numValue.toLocaleString('fr-FR', {
+        style: 'currency',
+        currency: 'EUR',
+      });
+    } else {
+      return '0 €';
+    }
+  })()}
+  icon={CurrencyDollarIcon}
+  trend={{ value: 8.2, label: 'vs dernier mois', positive: true }}
+/>
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">

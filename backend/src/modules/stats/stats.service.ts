@@ -32,7 +32,10 @@ export class StatsService {
       this.getLastMonthValue(userId),
     ]);
 
-    const totalValue = dealsWithValue.reduce((sum, deal) => sum + deal.value, 0);
+    const wonDeals = dealsWithValue.filter(deal => deal.status === 'won');
+
+    const totalValue = wonDeals.reduce((sum, deal) => sum + Number(deal.value), 0);
+    
 
     return {
       totalContacts,
