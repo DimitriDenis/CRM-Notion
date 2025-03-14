@@ -18,25 +18,29 @@ import { dashboardApi } from '@/lib/api/dashboard';
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [recentDeals, setRecentDeals] = useState<Deal[] | null>(null);
-  const [pipeline, setPipeline] = useState<Pipeline | null>(null);
+  const [pipelines, setPipelines] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [statsData, dealsData, pipelineData] = await Promise.all([
+        const [statsData, dealsData] = await Promise.all([
           dashboardApi.getStats(),
           dashboardApi.getRecentDeals(),
-          dashboardApi.getPipeline(),
         ]);
 
         console.log('Stats Data:', statsData);
-        console.log('Deals Data:', dealsData);
-        console.log('Pipeline Data:', pipelineData);
-
+        
         setStats(statsData);
         setRecentDeals(dealsData);
-        setPipeline(pipelineData);
+        
+        // Les statistiques des pipelines sont dans stats.pipeline
+        if (statsData && statsData.pipeline && Array.isArray(statsData.pipeline)) {
+          setPipelines(statsData.pipeline);
+          console.log('Pipelines Data:', statsData.pipeline);
+        } else {
+          console.warn('Pipeline data not found or not in expected format:', statsData.pipeline);
+        }
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {
@@ -47,7 +51,7 @@ export default function DashboardPage() {
     fetchDashboardData();
   }, []);
 
-  if (loading || !stats || !recentDeals || !pipeline) {
+  if (loading || !stats || !recentDeals) {
     return <DashboardLoading />;
   }
 
@@ -99,9 +103,16 @@ export default function DashboardPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <PipelineOverview pipeline={pipeline} />
-          <RecentDeals deals={recentDeals} />
-        </div>
+        {/* Passer le tableau de pipelines au composant */}
+        {pipelines.length > 0 ? (
+          <PipelineOverview pipelines={pipelines} />
+        ) : (
+          <div className="bg-white shadow rounded-lg p-6">
+            <p className="text-gray-500">Aucun pipeline disponible</p>
+          </div>
+        )}
+        <RecentDeals deals={recentDeals} />
+      </div>
 
         {/* Nouvelle section pour les tendances mensuelles si vous le souhaitez */}
         {stats.monthlyTrends && stats.monthlyTrends.length > 0 && (
