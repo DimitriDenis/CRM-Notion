@@ -51,6 +51,15 @@ export default function DashboardPage() {
     return <DashboardLoading />;
   }
 
+  // Formater la valeur totale en euros
+  const formatCurrency = (value: number): string => {
+    return value.toLocaleString('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 2
+    });
+  };
+
   return (
     <Suspense fallback={<DashboardLoading />}>
       <div className="space-y-8">
@@ -61,42 +70,59 @@ export default function DashboardPage() {
             title="Total Contacts"
             value={stats.totalContacts}
             icon={UserGroupIcon}
-            trend={{ value: 12, label: 'vs dernier mois', positive: true }}
+            trend={{ 
+              value: stats.trends?.contacts || 0, 
+              label: 'vs dernier mois', 
+              positive: (stats.trends?.contacts || 0) >= 0 
+            }}
           />
           <StatCard
             title="Deals en cours"
             value={stats.totalDeals}
             icon={FunnelIcon}
+            trend={{ 
+              value: stats.trends?.deals || 0, 
+              label: 'vs dernier mois', 
+              positive: (stats.trends?.deals || 0) >= 0 
+            }}
           />
-         <StatCard
-  title="Valeur Totale"
-  value={(() => {
-    console.log("Type of totalValue:", typeof stats.totalValue);
-    console.log("Value of totalValue:", stats.totalValue);
-    
-    // Tentative de conversion en nombre
-    const numValue = Number(stats.totalValue);
-    console.log("Converted value:", numValue);
-    
-    // Vérifier si la conversion a fonctionné
-    if (!isNaN(numValue)) {
-      return numValue.toLocaleString('fr-FR', {
-        style: 'currency',
-        currency: 'EUR',
-      });
-    } else {
-      return '0 €';
-    }
-  })()}
-  icon={CurrencyDollarIcon}
-  trend={{ value: 8.2, label: 'vs dernier mois', positive: true }}
-/>
+          <StatCard
+            title="Valeur Totale"
+            value={formatCurrency(Number(stats.totalValue) || 0)}
+            icon={CurrencyDollarIcon}
+            trend={{
+              value: stats.trends?.value || 0,
+              label: 'vs dernier mois',
+              positive: (stats.trends?.value || 0) >= 0
+            }}
+          />
         </div>
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <PipelineOverview pipeline={pipeline} />
           <RecentDeals deals={recentDeals} />
         </div>
+
+        {/* Nouvelle section pour les tendances mensuelles si vous le souhaitez */}
+        {stats.monthlyTrends && stats.monthlyTrends.length > 0 && (
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">Tendances mensuelles</h2>
+            <div className="bg-white shadow rounded-lg p-6">
+              <div className="grid grid-cols-6 gap-4">
+                {stats.monthlyTrends.map((monthData, index) => (
+                  <div key={index} className="text-center border-r last:border-r-0 border-gray-200">
+                    <div className="font-medium text-gray-500">{monthData.month} {monthData.year}</div>
+                    <div className="mt-2 text-sm">
+                      <div>Contacts: {monthData.contacts}</div>
+                      <div>Deals: {monthData.deals}</div>
+                      <div>Valeur: {formatCurrency(Number(monthData.value) || 0)}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Suspense>
   );

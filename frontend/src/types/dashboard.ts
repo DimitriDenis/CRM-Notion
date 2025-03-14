@@ -9,6 +9,7 @@ export interface NotionMetadata {
     id: string;
     name: string;
     value: number;
+    status: 'active' | 'won' | 'lost';
     stageId: string;
     expectedCloseDate?: Date;
     pipelineId: string;
@@ -32,13 +33,33 @@ export interface NotionMetadata {
     }[];
   }
   
+  export interface MonthlyTrend {
+    month: string;
+    year: number;
+    contacts: number;
+    deals: number;
+    value: number;
+  }
+  
+  export interface Trends {
+    contacts: number;
+    deals: number;
+    value: number;
+  }
+  
+  export interface PeriodStats {
+    contacts: number;
+    deals: number;
+    value: number;
+  }
+  
   export interface DashboardStats {
     totalContacts: number;
     totalDeals: number;
     totalValue: number;
-    trends: {
-      contacts: number;
-      deals: number;
-      value: number;
-    };
+    currentMonth: PeriodStats;
+    previousMonth: PeriodStats;
+    trends: Trends;
+    monthlyTrends: MonthlyTrend[];
+    pipeline?: Pipeline[];
   }
