@@ -1,8 +1,9 @@
 // src/components/dashboard/PipelineOverview.tsx
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import type { Pipeline } from "@/types/dashboard";
 
-// Interface pour représenter le type de données que vous recevez réellement du backend
+// Interface pour représenter le type de données que vous recevez du backend
 interface BackendPipeline {
   id: string;
   name: string;
@@ -28,6 +29,7 @@ export function PipelineOverview({ pipelines, initialPipelineId }: PipelineOverv
   const [selectedPipelineId, setSelectedPipelineId] = useState<string | null>(
     initialPipelineId || (pipelines.length > 0 ? pipelines[0].id : null)
   );
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   // Trouver le pipeline sélectionné
   const selectedPipeline = pipelines.find(p => p.id === selectedPipelineId) || pipelines[0];
@@ -71,29 +73,50 @@ export function PipelineOverview({ pipelines, initialPipelineId }: PipelineOverv
       <div className="p-6">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="sm:flex-auto">
-            <h3 className="text-base font-semibold leading-6 text-gray-900">
-              {selectedPipeline.name}
-            </h3>
+            {pipelines.length > 1 ? (
+              <div className="relative inline-block text-left">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-x-1 text-base font-semibold leading-6 text-gray-900 hover:text-blue-600"
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                >
+                  {selectedPipeline.name}
+                  <ChevronDownIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+                
+                {isDropdownOpen && (
+                  <div 
+                    className="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    onBlur={() => setIsDropdownOpen(false)}
+                  >
+                    <div className="py-1">
+                      {pipelines.map((pipeline) => (
+                        <button
+                          key={pipeline.id}
+                          className={`block w-full px-4 py-2 text-left text-sm ${
+                            pipeline.id === selectedPipelineId ? 'bg-gray-100 text-blue-600 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                          }`}
+                          onClick={() => {
+                            setSelectedPipelineId(pipeline.id);
+                            setIsDropdownOpen(false);
+                          }}
+                        >
+                          {pipeline.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <h3 className="text-base font-semibold leading-6 text-gray-900">
+                {selectedPipeline.name}
+              </h3>
+            )}
             <p className="mt-2 text-sm text-gray-700">
               {totalDeals} deals · {formatCurrency(totalValue)}
             </p>
           </div>
-          
-          {pipelines.length > 1 && (
-            <div className="mt-4 sm:mt-0">
-              <select
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                value={selectedPipelineId || ''}
-                onChange={(e) => setSelectedPipelineId(e.target.value)}
-              >
-                {pipelines.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
         </div>
         
         <div className="mt-6">
