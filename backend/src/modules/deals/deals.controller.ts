@@ -60,7 +60,7 @@ async getRecentDeals(@CurrentUser() user: User) {
   console.log('User object:', JSON.stringify(user, null, 2));   
   
   try {
-    return []; 
+    return this.dealsService.getRecentDeals(user.id); 
   } catch (error) {
     console.error('Error in getRecentDeals:', error);
     throw error;
