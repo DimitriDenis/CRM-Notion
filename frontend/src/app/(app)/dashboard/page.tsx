@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react';
 import { 
   UserGroupIcon, 
   CurrencyDollarIcon, 
-  FunnelIcon 
+  FunnelIcon,
+  ArrowTrendingUpIcon
 } from '@heroicons/react/24/outline';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { RecentDeals } from '@/components/dashboard/RecentDeals';
 import { PipelineOverview } from '@/components/dashboard/PipelineOverview';
-import type { Deal, DashboardStats, Pipeline } from '@/types/dashboard';
+import type { Deal, DashboardStats } from '@/types/dashboard';
 import DashboardLoading from './loading';
 import { dashboardApi } from '@/lib/api/dashboard';
 
@@ -28,18 +29,12 @@ export default function DashboardPage() {
           dashboardApi.getStats(),
           dashboardApi.getRecentDeals(),
         ]);
-
-        console.log('Stats Data:', statsData);
         
         setStats(statsData);
         setRecentDeals(dealsData);
         
-        // Les statistiques des pipelines sont dans stats.pipeline
         if (statsData && statsData.pipeline && Array.isArray(statsData.pipeline)) {
           setPipelines(statsData.pipeline);
-          console.log('Pipelines Data:', statsData.pipeline);
-        } else {
-          console.warn('Pipeline data not found or not in expected format:', statsData.pipeline);
         }
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -55,7 +50,7 @@ export default function DashboardPage() {
     return <DashboardLoading />;
   }
 
-  // Formater la valeur totale en euros
+  // Formatage de la devise
   const formatCurrency = (value: number): string => {
     return value.toLocaleString('fr-FR', {
       style: 'currency',
@@ -65,11 +60,16 @@ export default function DashboardPage() {
   };
 
   return (
-    <Suspense fallback={<DashboardLoading />}>
-      <div className="space-y-8">
-        <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
+    <div className="min-h-screen bg-gray-50">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+        <div className="mb-8">
+          <h1 className="text-2xl font-bold text-gray-900">Tableau de bord</h1>
+          <p className="mt-1 text-sm text-gray-500">
+            Vue d'ensemble de vos performances commerciales
+          </p>
+        </div>
         
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
           <StatCard
             title="Total Contacts"
             value={stats.totalContacts}
@@ -79,6 +79,7 @@ export default function DashboardPage() {
               label: 'vs dernier mois', 
               positive: (stats.trends?.contacts || 0) >= 0 
             }}
+            className="bg-white shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
           />
           <StatCard
             title="Deals en cours"
@@ -89,6 +90,7 @@ export default function DashboardPage() {
               label: 'vs dernier mois', 
               positive: (stats.trends?.deals || 0) >= 0 
             }}
+            className="bg-white shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
           />
           <StatCard
             title="Valeur Totale"
@@ -99,42 +101,55 @@ export default function DashboardPage() {
               label: 'vs dernier mois',
               positive: (stats.trends?.value || 0) >= 0
             }}
+            className="bg-white shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
           />
         </div>
 
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Passer le tableau de pipelines au composant */}
-        {pipelines.length > 0 ? (
-          <PipelineOverview pipelines={pipelines} />
-        ) : (
-          <div className="bg-white shadow rounded-lg p-6">
-            <p className="text-gray-500">Aucun pipeline disponible</p>
-          </div>
-        )}
-        <RecentDeals deals={recentDeals} />
-      </div>
-
-        {/* Nouvelle section pour les tendances mensuelles si vous le souhaitez */}
-        {stats.monthlyTrends && stats.monthlyTrends.length > 0 && (
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Tendances mensuelles</h2>
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2 mb-8">
+          {pipelines.length > 0 ? (
+            <div className="bg-white rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition-shadow">
+              <PipelineOverview pipelines={pipelines} />
+            </div>
+          ) : (
             <div className="bg-white shadow rounded-lg p-6">
-              <div className="grid grid-cols-6 gap-4">
-                {stats.monthlyTrends.map((monthData, index) => (
-                  <div key={index} className="text-center border-r last:border-r-0 border-gray-200">
-                    <div className="font-medium text-gray-500">{monthData.month} {monthData.year}</div>
-                    <div className="mt-2 text-sm">
-                      <div>Contacts: {monthData.contacts}</div>
-                      <div>Deals: {monthData.deals}</div>
-                      <div>Valeur: {formatCurrency(Number(monthData.value) || 0)}</div>
+              <p className="text-gray-500">Aucun pipeline disponible</p>
+            </div>
+          )}
+          <div className="bg-white rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition-shadow">
+            <RecentDeals deals={recentDeals} />
+          </div>
+        </div>
+
+        {stats.monthlyTrends && stats.monthlyTrends.length > 0 && (
+          <div className="bg-white rounded-lg shadow-md border border-gray-100 hover:shadow-lg transition-shadow p-6 mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold text-gray-900">Tendances mensuelles</h2>
+              <ArrowTrendingUpIcon className="h-5 w-5 text-blue-500" />
+            </div>
+            <div className="grid grid-cols-6 gap-4">
+              {stats.monthlyTrends.map((monthData, index) => (
+                <div key={index} className="text-center border-r last:border-r-0 border-gray-200 p-2">
+                  <div className="font-medium text-gray-500">{monthData.month} {monthData.year}</div>
+                  <div className="mt-2 text-sm">
+                    <div className="flex items-center justify-between">
+                      <span>Contacts:</span>
+                      <span className="font-medium">{monthData.contacts}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Deals:</span>
+                      <span className="font-medium">{monthData.deals}</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span>Valeur:</span>
+                      <span className="font-medium text-blue-600">{formatCurrency(Number(monthData.value) || 0)}</span>
                     </div>
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         )}
       </div>
-    </Suspense>
+    </div>
   );
 }

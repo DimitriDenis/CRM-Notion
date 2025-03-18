@@ -1,3 +1,5 @@
+import { ArrowDownIcon, ArrowUpIcon } from "@heroicons/react/24/outline";
+
 // src/components/dashboard/StatCard.tsx
 interface StatCardProps {
     title: string;
@@ -9,33 +11,36 @@ interface StatCardProps {
       label: string;
       positive?: boolean;
     };
+    className?: string;
   }
   
-  export function StatCard({ title, value, description, icon: Icon, trend }: StatCardProps) {
+  export function StatCard({ title, value, icon: Icon, trend, className = '' }: StatCardProps) {
     return (
-      <div className="relative overflow-hidden rounded-lg bg-white px-4 pb-12 pt-5 shadow sm:px-6 sm:pt-6">
-        <dt>
-          <div className="absolute rounded-md bg-blue-500 p-3">
-            <Icon className="h-6 w-6 text-white" aria-hidden="true" />
+      <div className={`rounded-lg p-6 ${className}`}>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-gray-500 text-sm font-medium">{title}</h2>
+          <div className="bg-blue-50 rounded-full p-2">
+            <Icon className="h-6 w-6 text-blue-600" />
           </div>
-          <p className="ml-16 truncate text-sm font-medium text-gray-500">{title}</p>
-        </dt>
-        <dd className="ml-16 flex items-baseline">
-          <p className="text-2xl font-semibold text-gray-900">{value}</p>
+        </div>
+        
+        <div>
+          <p className="text-3xl font-bold text-gray-900">{value}</p>
+          
           {trend && (
-            <p className={`ml-2 flex items-baseline text-sm ${trend.positive ? 'text-green-600' : 'text-red-600'}`}>
-              {trend.positive ? '↑' : '↓'} {trend.value}%
-              <span className="text-gray-500"> {trend.label}</span>
+            <p className={`flex items-center text-sm mt-2 ${trend.positive ? 'text-green-600' : 'text-red-600'}`}>
+              {trend.positive ? (
+                <ArrowUpIcon className="h-4 w-4 mr-1" />
+              ) : (
+                <ArrowDownIcon className="h-4 w-4 mr-1" />
+              )}
+              <span className="font-medium">
+                {trend.positive ? '+' : ''}{trend.value}% 
+              </span>
+              <span className="text-gray-500 ml-1">{trend.label}</span>
             </p>
           )}
-          {description && (
-            <div className="absolute inset-x-0 bottom-0 bg-gray-50 px-4 py-4 sm:px-6">
-              <div className="text-sm">
-                <p className="text-gray-500">{description}</p>
-              </div>
-            </div>
-          )}
-        </dd>
+        </div>
       </div>
     );
   }

@@ -1,59 +1,108 @@
 // src/components/dashboard/RecentDeals.tsx
+import { CalendarIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import type { Deal } from '@/types/dashboard';
 
-export function RecentDeals({ deals }: { deals: Deal[] }) {
+interface RecentDealsProps {
+  deals: Deal[];
+}
+
+export function RecentDeals({ deals }: RecentDealsProps) {
+  // Formatage de la devise
+  const formatCurrency = (value: number): string => {
+    return value.toLocaleString('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+      maximumFractionDigits: 2
+    });
+  };
+
+  // Formatage de la date
+  const formatDate = (date: Date | string): string => {
+    if (!date) return '';
+    const d = new Date(date);
+    return d.toLocaleDateString('fr-FR');
+  };
+
+  // Obtenir un badge de statut avec la bonne couleur
+  const getStatusBadge = (status: string) => {
+    let color = '';
+    let text = '';
+
+    switch (status) {
+      case 'won':
+        color = 'bg-green-50 text-green-700';
+        text = 'Gagné';
+        break;
+      case 'lost':
+        color = 'bg-red-50 text-red-700';
+        text = 'Perdu';
+        break;
+      default:
+        color = 'bg-blue-50 text-blue-700';
+        text = 'En cours';
+    }
+
+    return (
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${color}`}>
+        {text}
+      </span>
+    );
+  };
+
   return (
-    <div className="bg-white shadow rounded-lg">
-      <div className="p-6">
-        <h3 className="text-base font-semibold leading-6 text-gray-900">
-          Derniers deals
-        </h3>
-        <div className="mt-6 flow-root">
-          {deals.length > 0 ? (
-            <ul role="list" className="-my-5 divide-y divide-gray-200">
-              {deals.map((deal) => (
-                <li key={deal.id} className="py-5">
-                  <div className="flex items-center space-x-4">
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900">
-                        {deal.name}
-                      </p>
-                      <p className="truncate text-sm text-gray-500">
-                        {deal.stage?.name || deal.stageId} · {deal.value.toLocaleString('fr-FR', {
-                          style: 'currency',
-                          currency: 'EUR',
-                        })}
-                      </p>
-                    </div>
-                    <time
-                      dateTime={new Date(deal.updatedAt).toISOString()}
-                      className="flex-shrink-0 text-sm text-gray-500"
-                    >
-                      {new Date(deal.updatedAt).toLocaleDateString()}
-                    </time>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="py-5 text-center text-sm text-gray-500">
-              Aucun deal récent. 
-              <Link href="/deals/new" className="text-blue-600 hover:text-blue-800 ml-1">
-                Créer un nouveau deal ?
-              </Link>
-            </div>
-          )}
-        </div>
-        <div className="mt-6">
-          <Link
-            href="/deals"
-            className="flex w-full items-center justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-blue-600 shadow-sm ring-1 ring-inset ring-blue-300 hover:bg-blue-50"
+    <div className="p-6">
+      <div className="flex items-center justify-between mb-6">
+        <h3 className="text-lg font-semibold text-gray-900">Derniers deals</h3>
+        {deals.length > 0 && (
+          <Link 
+            href="/deals" 
+            className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
           >
             Voir tous les deals
           </Link>
-        </div>
+        )}
       </div>
+
+      {deals.length > 0 ? (
+        <div className="space-y-4">
+          {deals.map((deal) => (
+            <div 
+              key={deal.id} 
+              className="flex flex-col p-4 border border-gray-100 rounded-lg hover:shadow-md transition-shadow"
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <h4 className="text-base font-medium text-gray-900 truncate max-w-xs">{deal.name}</h4>
+                  <div className="mt-1 flex items-center space-x-3 text-sm text-gray-500">
+                    <div className="flex items-center">
+                      <CurrencyDollarIcon className="h-4 w-4 mr-1 text-gray-400" />
+                      <span className="font-medium text-gray-700">{formatCurrency(deal.value)}</span>
+                    </div>
+                    <div className="flex items-center">
+                      <CalendarIcon className="h-4 w-4 mr-1 text-gray-400" />
+                      <span>{formatDate(deal.expectedCloseDate || deal.updatedAt)}</span>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  {getStatusBadge(deal.status)}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8">
+          <p className="text-gray-500 mb-4">Aucun deal récent</p>
+          <Link 
+            href="/deals/new" 
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Créer un nouveau deal
+          </Link>
+        </div>
+      )}
     </div>
   );
 }
