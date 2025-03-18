@@ -16,6 +16,8 @@ export function useContacts() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // En utilisant useCallback avec une dépendance stringifiée de filters
+  // pour éviter les références d'objets qui changent à chaque rendu
   const fetchContacts = useCallback(async () => {
     try {
       setIsLoading(true);
@@ -29,7 +31,7 @@ export function useContacts() {
     } finally {
       setIsLoading(false);
     }
-  }, [filters]);
+  }, [JSON.stringify(filters)]); // Utiliser JSON.stringify pour stabiliser la dépendance
 
   const fetchTags = useCallback(async () => {
     try {
@@ -59,13 +61,13 @@ export function useContacts() {
     }
   };
 
-  const applyFilters = (newFilters: Partial<ContactFilters>) => {
+  const applyFilters = useCallback((newFilters: Partial<ContactFilters>) => {
     setFilters(prev => ({
       ...prev,
       ...newFilters,
       skip: 0, // Reset pagination when applying new filters
     }));
-  };
+  }, []);
 
   return {
     contacts,
