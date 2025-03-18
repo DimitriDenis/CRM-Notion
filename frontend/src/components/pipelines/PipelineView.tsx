@@ -3,7 +3,15 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { PencilIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
+import { 
+  PencilIcon, 
+  CurrencyDollarIcon, 
+  FunnelIcon, 
+  ChartBarIcon,
+  ArrowRightIcon,
+  TagIcon,
+  ShoppingBagIcon
+} from '@heroicons/react/24/outline';
 import { pipelinesApi, PipelineStats } from '@/lib/api/pipelines';
 import { ErrorAlert } from '@/components/ui/ErrorAlert';
 
@@ -33,8 +41,39 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
     fetchPipeline();
   }, [pipelineId]);
 
+  // Fonction pour formater la devise de manière sécurisée
+  const formatCurrency = (value: number | string) => {
+    // Convertir en nombre si c'est une chaîne
+    const numValue = typeof value === 'string' ? parseFloat(value) : value;
+    
+    // Vérifier si c'est un nombre valide
+    if (isNaN(numValue)) return '0,00 €';
+    
+    return numValue.toLocaleString('fr-FR', {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
+  // Calculer le pourcentage pour la barre de progression
+  const calculatePercentage = (stageValue: number | string, totalValue: number | string) => {
+    const stageNum = typeof stageValue === 'string' ? parseFloat(stageValue) : stageValue;
+    const totalNum = typeof totalValue === 'string' ? parseFloat(totalValue) : totalValue;
+    
+    if (isNaN(stageNum) || isNaN(totalNum) || totalNum === 0) return 0;
+    return (stageNum / totalNum) * 100;
+  };
+
   if (isLoading) {
-    return <div className="animate-pulse p-4 h-96 bg-gray-100 rounded-lg"></div>;
+    return (
+      <div className="space-y-4">
+        <div className="animate-pulse h-12 bg-gray-200 rounded-lg w-1/3"></div>
+        <div className="animate-pulse h-6 bg-gray-200 rounded-lg w-1/4 mt-2"></div>
+        <div className="animate-pulse h-72 bg-gray-200 rounded-lg mt-6"></div>
+      </div>
+    );
   }
 
   if (error) {
@@ -42,68 +81,207 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
   }
 
   if (!pipeline) {
-    return <div>Pipeline introuvable</div>;
-  }
-
-  return (
-    <div className="space-y-8">
-      <div className="sm:flex sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">{pipeline.name}</h1>
-          <p className="mt-2 text-sm text-gray-700">
-            {pipeline.totalDeals} deals · {pipeline.totalValue.toLocaleString('fr-FR', {
-              style: 'currency',
-              currency: 'EUR',
-            })}
-          </p>
-        </div>
-        <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+    return (
+      <div className="text-center py-16 bg-white rounded-lg shadow-sm">
+        <FunnelIcon className="mx-auto h-12 w-12 text-gray-400" />
+        <h3 className="mt-2 text-sm font-semibold text-gray-900">Pipeline introuvable</h3>
+        <p className="mt-1 text-sm text-gray-500">Le pipeline demandé n'existe pas ou a été supprimé.</p>
+        <div className="mt-6">
           <Link
-            href={`/pipelines/${pipelineId}/edit`}
-            className="block rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            href="/pipelines"
+            className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500"
           >
-            <PencilIcon className="-ml-0.5 mr-1.5 inline-block h-5 w-5" aria-hidden="true" />
-            Modifier
+            Retour aux pipelines
           </Link>
         </div>
       </div>
+    );
+  }
 
-      <div className="overflow-hidden bg-white shadow sm:rounded-lg">
-        <div className="border-b border-gray-200">
-          <div className="px-4 py-5 sm:px-6">
-            <h3 className="text-base font-semibold leading-6 text-gray-900">
-              Stages
-            </h3>
+  // Convertir totalValue en nombre pour les calculs
+  const totalValueNum = typeof pipeline.totalValue === 'string' 
+    ? parseFloat(pipeline.totalValue) 
+    : pipeline.totalValue;
+
+  return (
+    <div className="space-y-6">
+      {/* En-tête avec dégradé */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm p-6">
+        <div className="sm:flex sm:items-center sm:justify-between">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 p-3 bg-white/60 rounded-lg">
+              <FunnelIcon className="h-8 w-8 text-blue-600" />
+            </div>
+            <div className="ml-4">
+              <h1 className="text-2xl font-bold text-gray-900">{pipeline.name}</h1>
+              <p className="mt-1 text-sm text-gray-600 flex items-center">
+                <ShoppingBagIcon className="mr-1 h-4 w-4 text-gray-500" />
+                <span className="mr-2 font-medium">{pipeline.totalDeals} deals</span>
+                <span className="mx-2 text-gray-400">•</span>
+                <CurrencyDollarIcon className="mr-1 h-4 w-4 text-gray-500" />
+                <span className="font-medium">{formatCurrency(pipeline.totalValue)}</span>
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="border-t border-gray-100">
-          <dl className="divide-y divide-gray-100">
-            {pipeline.stages.map((stage) => (
-              <div key={stage.id} className="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                <dt className="text-sm font-medium text-gray-900">{stage.name}</dt>
-                <dd className="mt-1 text-sm text-gray-700 sm:col-span-1 sm:mt-0">
-                  {stage.count} deals
-                </dd>
-                <dd className="mt-1 text-sm text-gray-700 sm:col-span-1 sm:mt-0">
-                  <CurrencyDollarIcon className="-ml-0.5 mr-1 inline-block h-5 w-5 text-gray-400" />
-                  {stage.value.toLocaleString('fr-FR', {
-                    style: 'currency',
-                    currency: 'EUR',
-                  })}
-                </dd>
-              </div>
-            ))}
-          </dl>
+          <div className="mt-4 sm:mt-0 flex space-x-3">
+            <Link
+              href={`/pipelines/${pipelineId}/board`}
+              className="inline-flex items-center rounded-md bg-white px-3.5 py-2.5 text-sm font-medium text-blue-600 shadow-sm hover:bg-blue-50 border border-blue-200"
+            >
+              <ChartBarIcon className="mr-2 h-5 w-5" />
+              Tableau Kanban
+            </Link>
+            <Link
+              href={`/pipelines/${pipelineId}/edit`}
+              className="inline-flex items-center rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors"
+            >
+              <PencilIcon className="mr-2 h-5 w-5" />
+              Modifier
+            </Link>
+          </div>
         </div>
       </div>
 
-      <div className="mt-6">
-        <Link
-          href={`/pipelines/${pipelineId}/board`}
-          className="text-sm font-semibold leading-6 text-blue-600 hover:text-blue-500"
-        >
-          Voir le tableau kanban →
-        </Link>
+      {/* Statistiques sommaires */}
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="bg-white overflow-hidden rounded-lg shadow-sm border border-gray-100">
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 p-3 rounded-md bg-blue-50">
+                <FunnelIcon className="h-6 w-6 text-blue-600" />
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Étapes</dt>
+                  <dd>
+                    <div className="text-lg font-semibold text-gray-900">{pipeline.stages.length}</div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white overflow-hidden rounded-lg shadow-sm border border-gray-100">
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 p-3 rounded-md bg-green-50">
+                <ShoppingBagIcon className="h-6 w-6 text-green-600" />
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Deals</dt>
+                  <dd>
+                    <div className="text-lg font-semibold text-gray-900">{pipeline.totalDeals}</div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white overflow-hidden rounded-lg shadow-sm border border-gray-100">
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 p-3 rounded-md bg-purple-50">
+                <CurrencyDollarIcon className="h-6 w-6 text-purple-600" />
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Valeur totale</dt>
+                  <dd>
+                    <div className="text-lg font-semibold text-gray-900">{formatCurrency(pipeline.totalValue)}</div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white overflow-hidden rounded-lg shadow-sm border border-gray-100">
+          <div className="p-5">
+            <div className="flex items-center">
+              <div className="flex-shrink-0 p-3 rounded-md bg-amber-50">
+                <TagIcon className="h-6 w-6 text-amber-600" />
+              </div>
+              <div className="ml-5 w-0 flex-1">
+                <dl>
+                  <dt className="text-sm font-medium text-gray-500 truncate">Valeur moyenne</dt>
+                  <dd>
+                    <div className="text-lg font-semibold text-gray-900">
+                      {formatCurrency(pipeline.totalDeals > 0 ? totalValueNum / pipeline.totalDeals : 0)}
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Liste des étapes */}
+      <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
+        <div className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+          <h3 className="text-base font-semibold text-gray-900 flex items-center">
+            <ChartBarIcon className="mr-2 h-5 w-5 text-gray-500" />
+            Progression par étape
+          </h3>
+        </div>
+        
+        <ul className="divide-y divide-gray-200">
+          {pipeline.stages.map((stage) => {
+            // Convertir la valeur en nombre
+            const stageValueNum = typeof stage.value === 'string' ? parseFloat(stage.value) : stage.value;
+            const percentage = calculatePercentage(stageValueNum, totalValueNum);
+            
+            return (
+              <li key={stage.id} className="hover:bg-gray-50 transition-colors">
+                <div className="px-6 py-5">
+                  <div className="flex items-center justify-between mb-2">
+                    <h4 className="text-base font-medium text-gray-900">{stage.name}</h4>
+                    <div className="flex items-center">
+                      <span className="mr-4 text-sm text-gray-500">{stage.count} deals</span>
+                      <span className="font-medium text-gray-900">{formatCurrency(stage.value)}</span>
+                    </div>
+                  </div>
+                  
+                  <div className="mt-2">
+                    <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
+                      <span>{Math.round(percentage)}% de la valeur totale</span>
+                      <span>{formatCurrency(stage.value)}</span>
+                    </div>
+                    <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
+                      <div 
+                        className={`h-full rounded-full ${
+                          percentage > 66 ? 'bg-green-500' : 
+                          percentage > 33 ? 'bg-blue-500' : 'bg-purple-500'
+                        }`}
+                        style={{ width: `${percentage}%` }}
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+
+      {/* Actions */}
+      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-100 flex justify-between items-center">
+        <div className="text-sm text-gray-500">
+          Dernière mise à jour: <span className="text-gray-700 font-medium">{new Date().toLocaleDateString('fr-FR')}</span>
+        </div>
+        
+        <div className="flex space-x-4">
+          <Link
+            href={`/pipelines/${pipelineId}/board`}
+            className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+          >
+            Voir le tableau kanban
+            <ArrowRightIcon className="ml-1 h-5 w-5" />
+          </Link>
+        </div>
       </div>
     </div>
   );
