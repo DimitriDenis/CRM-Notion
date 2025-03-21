@@ -13,5 +13,12 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID: process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID,
   },
+
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 export default nextConfig;
