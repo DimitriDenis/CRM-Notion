@@ -1,15 +1,21 @@
 // src/components/auth/LoginForm.tsx
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { NotionLogo } from '../ui/icons/NotionLogo';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 
 export default function LoginForm() {
-  const searchParams = useSearchParams();
-  const error = searchParams.get('error');
+  // État pour vérifier si nous sommes côté client
+  const [isClient, setIsClient] = useState(false);
+  // État pour stocker l'erreur
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
+  // Marquer que nous sommes côté client
   useEffect(() => {
+    setIsClient(true);
+    
     // Logging de toutes les variables d'environnement publiques
     console.log('All env variables:', {
       clientId: process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID,
@@ -17,22 +23,38 @@ export default function LoginForm() {
     });
   }, []);
 
+  // Extraire l'erreur des paramètres URL (uniquement côté client)
+  useEffect(() => {
+    if (isClient) {
+      const searchParams = useSearchParams();
+      const error = searchParams.get('error');
+      
+      if (error) {
+        setErrorMessage(
+          error === 'oauth_failed'
+            ? "L'authentification avec Notion a échoué. Veuillez réessayer."
+            : 'Une erreur est survenue. Veuillez réessayer.'
+        );
+      }
+    }
+  }, [isClient]);
+
   const handleNotionLogin = useCallback(() => {
     const clientId = process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID;
     console.log('Client ID:', clientId);
-    const redirectUri = encodeURIComponent('http://localhost:3001/auth/notion/callback');
+    
+    // Utiliser l'URL de callback de production en production
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const redirectUri = encodeURIComponent(`${baseUrl}/auth/notion/callback`);
+    
     window.location.href = `https://api.notion.com/v1/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
   }, []);
 
   return (
     <div className="space-y-6">
-      {error && (
+      {errorMessage && (
         <div className="rounded-md bg-red-50 p-4">
-          <div className="text-sm text-red-700">
-            {error === 'oauth_failed'
-              ? "L'authentification avec Notion a échoué. Veuillez réessayer."
-              : 'Une erreur est survenue. Veuillez réessayer.'}
-          </div>
+          <div className="text-sm text-red-700">{errorMessage}</div>
         </div>
       )}
 
