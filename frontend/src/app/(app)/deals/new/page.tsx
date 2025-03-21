@@ -1,22 +1,13 @@
 // src/app/(app)/deals/new/page.tsx
+// Pas de directive 'use client' ici - c'est un server component
 
-'use client';
-
-import { DealForm } from '@/components/deals/DealForm';
-import { useSearchParams } from 'next/navigation';
+import { DealFormWrapper } from '@/components/client-wrapper/DealFormWrapper';
 
 export default function NewDealPage() {
-
-  const searchParams = useSearchParams();
-  const initialPipelineId = searchParams.get('pipelineId');
-  const initialStageId = searchParams.get('stageId');
-  
   return (
     <div className="space-y-8">
       <h1 className="text-2xl font-semibold text-gray-900">Nouveau Deal</h1>
-      <DealForm 
-      initialPipelineId={initialPipelineId} 
-      initialStageId={initialStageId} />
+      <DealFormWrapper />
     </div>
   );
 }
