@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { dealsApi, Deal } from '@/lib/api/deals';
 import { pipelinesApi, Pipeline } from '@/lib/api/pipelines';
 import { contactsApi, Contact } from '@/lib/api/contacts';
@@ -11,16 +11,16 @@ import { CalendarIcon, UserPlusIcon } from '@heroicons/react/24/outline';
 
 interface DealFormProps {
   dealId?: string;
+  initialPipelineId?: string | null; // Ajoutez ces props
+  initialStageId?: string | null;
 }
 
 // Définir un type pour le statut du deal
 type DealStatus = 'active' | 'won' | 'lost';
 
-export function DealForm({ dealId }: DealFormProps) {
+export function DealForm({ dealId, initialPipelineId, initialStageId }: DealFormProps) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const initialPipelineId = searchParams.get('pipelineId');
-  const initialStageId = searchParams.get('stageId');
+  
 
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
