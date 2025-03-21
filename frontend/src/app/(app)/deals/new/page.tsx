@@ -1,4 +1,7 @@
 // src/app/(app)/deals/new/page.tsx
+
+'use client';
+
 import { DealForm } from '@/components/deals/DealForm';
 
 export default function NewDealPage() {
