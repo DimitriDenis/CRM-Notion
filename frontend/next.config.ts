@@ -5,7 +5,7 @@ const nextConfig = {
     return [
       {
         source: '/auth/callback/notion',
-        destination: 'http://localhost:3001/auth/notion/callback',
+        destination: process.env.NEXT_PUBLIC_API_URL + '/auth/notion/callback' || 'http://localhost:3001/auth/notion/callback',
       }
     ];
   },
