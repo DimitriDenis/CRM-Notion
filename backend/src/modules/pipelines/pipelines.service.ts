@@ -6,6 +6,7 @@ import { Pipeline } from './pipeline.entity';
 import { Deal } from '../deals/deal.entity';
 import { CreatePipelineDto } from './dto/create-pipeline.dto';
 import { UpdatePipelineDto } from './dto/update-pipeline.dto';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class PipelinesService {
@@ -70,7 +71,7 @@ export class PipelinesService {
     if (updatePipelineDto.stages) {
       updatePipelineDto.stages = updatePipelineDto.stages.map(stage => ({
         ...stage,
-        id: stage.id || crypto.randomUUID(),
+        id: stage.id || randomUUID(),
       }));
     }
 
