@@ -10,7 +10,7 @@ function LoadingForm() {
   return <div className="animate-pulse p-4 h-96 bg-gray-100 rounded-lg">Chargement du formulaire...</div>;
 }
 
-export function DealFormWrapper() {
+export default function DealFormWrapper() {
   // État pour suivre si le composant est monté côté client
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
