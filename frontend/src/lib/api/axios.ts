@@ -5,32 +5,49 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true,
 });
 
-// Configuration par défaut de l'en-tête d'autorisation
-if (typeof window !== 'undefined') {
-  const token = localStorage.getItem('token');
-  if (token) {
-    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+// Fonction pour récupérer le token de toutes les sources possibles
+const getAuthToken = () => {
+  if (typeof window === 'undefined') return null;
+  
+  // Essayer d'abord localStorage
+  let token = localStorage.getItem('token');
+  
+  // Si pas trouvé, essayer les cookies
+  if (!token) {
+    const cookies = document.cookie.split(';');
+    for (const cookie of cookies) {
+      const [name, value] = cookie.trim().split('=');
+      if (name === 'token') {
+        token = value;
+        // Optionnel: synchroniser avec localStorage
+        localStorage.setItem('token', value);
+        break;
+      }
+    }
   }
-}
+  
+  return token;
+};
 
-// Intercepteur pour les requêtes
+// Intercepteur pour les requêtes - mise à jour pour vérifier le token à chaque requête
 api.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
+      // Récupérer le token à chaque requête
+      const token = getAuthToken();
+      
       console.log('=== Request Details ===', {
         url: config.url,
         method: config.method,
         hasToken: !!token,
         baseURL: config.baseURL,
         authHeader: token ? `Bearer ${token.substring(0, 10)}...` : 'none',
-        headers: config.headers,
-        data: config.data
       });
 
-      // Assurer que le token est toujours présent dans les en-têtes
+      // Définir l'en-tête d'autorisation
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }
