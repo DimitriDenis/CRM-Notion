@@ -47,7 +47,7 @@ export default function ClientLayoutWrapper({ children }: ClientLayoutWrapperPro
   // Important : ne rien rendre tant que le composant n'est pas monté côté client
   if (!isMounted) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
         <div className="animate-pulse">Chargement de l'interface...</div>
       </div>
     );
@@ -55,7 +55,7 @@ export default function ClientLayoutWrapper({ children }: ClientLayoutWrapperPro
 
   if (!isAuthChecked) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center justify-center h-[calc(100vh-4rem)]">
         <div className="animate-pulse">Vérification de l'authentification...</div>
       </div>
     );
