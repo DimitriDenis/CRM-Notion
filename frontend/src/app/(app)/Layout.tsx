@@ -51,6 +51,6 @@ export default function AppLayout({ children }: AppLayoutProps) {
       </div>
     );
   }
-
+  console.log("AppLayout rendering");
   return <MainLayout>{children}</MainLayout>;
 }
