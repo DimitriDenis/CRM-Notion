@@ -1,41 +1,45 @@
-// src/components/client-wrappers/DealFormWrapper.tsx
+// src/components/client-wrapper/DealFormWrapper.tsx
 'use client';
 
-import { Suspense, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { DealForm } from '@/components/deals/DealForm';
 
-// Composant de chargement à afficher pendant le chargement
 function LoadingForm() {
   return <div className="animate-pulse p-4 h-96 bg-gray-100 rounded-lg">Chargement du formulaire...</div>;
 }
 
 export default function DealFormWrapper() {
-  // État pour suivre si le composant est monté côté client
+  // Appelez TOUS les hooks au début de la fonction, sans condition
   const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   
-  // Effet pour marquer le montage côté client
+  // Variable pour stocker les valeurs
+  let initialPipelineId = null;
+  let initialStageId = null;
+  
+  // Utilisez useEffect pour la logique qui dépend du montage
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  
+  // Une fois monté, nous pouvons accéder aux searchParams en toute sécurité
+  if (isMounted && searchParams) {
+    initialPipelineId = searchParams.get('pipelineId');
+    initialStageId = searchParams.get('stageId');
+  }
 
-  // Seulement accéder à useSearchParams une fois que le composant est monté côté client
+  // Rendu conditionnel basé sur l'état de montage
   if (!isMounted) {
     return <LoadingForm />;
   }
 
-  // Maintenant on peut utiliser useSearchParams en toute sécurité
-  const searchParams = useSearchParams();
-  const initialPipelineId = searchParams.get('pipelineId');
-  const initialStageId = searchParams.get('stageId');
-
+  // Retirer le Suspense et passer directement les propriétés au composant
   return (
-    <Suspense fallback={<LoadingForm />}>
-      <DealForm 
-        initialPipelineId={initialPipelineId}
-        initialStageId={initialStageId}
-      />
-    </Suspense>
+    <DealForm 
+      initialPipelineId={initialPipelineId}
+      initialStageId={initialStageId}
+    />
   );
 }
