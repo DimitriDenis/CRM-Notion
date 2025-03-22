@@ -23,7 +23,7 @@ export class PipelinesService {
       userId,
       stages: createPipelineDto.stages.map(stage => ({
         ...stage,
-        id: crypto.randomUUID(),
+        id:  uuidv4(),
       })),
     });
 
@@ -71,7 +71,7 @@ export class PipelinesService {
     if (updatePipelineDto.stages) {
       updatePipelineDto.stages = updatePipelineDto.stages.map(stage => ({
         ...stage,
-        id: stage.id || uuidv4(),
+        id: stage.id ||  uuidv4(),
       }));
     }
 
