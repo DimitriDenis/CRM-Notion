@@ -4,29 +4,29 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { NotionLogo } from '../ui/icons/NotionLogo';
-import { useCallback } from 'react';
 
 export default function LoginForm() {
-  // État pour vérifier si nous sommes côté client
-  const [isClient, setIsClient] = useState(false);
-  // État pour stocker l'erreur
+  // Appeler useSearchParams au niveau racine du composant (correct)
+  const searchParams = useSearchParams();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isClient, setIsClient] = useState(false);
 
-  // Marquer que nous sommes côté client
+  // Effet pour marquer que nous sommes côté client
   useEffect(() => {
     setIsClient(true);
     
-    // Logging de toutes les variables d'environnement publiques
+    // Logging des variables d'environnement
     console.log('All env variables:', {
       clientId: process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID,
       nodeEnv: process.env.NODE_ENV,
+      apiUrl: process.env.NEXT_PUBLIC_API_URL,
     });
   }, []);
 
-  // Extraire l'erreur des paramètres URL (uniquement côté client)
+  // Effet pour traiter l'erreur des paramètres d'URL
   useEffect(() => {
-    if (isClient) {
-      const searchParams = useSearchParams();
+    // Attendre que le composant soit monté côté client
+    if (isClient && searchParams) {
       const error = searchParams.get('error');
       
       if (error) {
@@ -37,18 +37,18 @@ export default function LoginForm() {
         );
       }
     }
-  }, [isClient]);
+  }, [isClient, searchParams]);
 
-  const handleNotionLogin = useCallback(() => {
+  const handleNotionLogin = () => {
     const clientId = process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID;
     console.log('Client ID:', clientId);
     
-    // Utiliser l'URL de callback de production en production
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
-    const redirectUri = encodeURIComponent(`${baseUrl}/auth/notion/callback`);
+    // Utiliser l'URL de l'API configurée ou localhost par défaut
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    const redirectUri = encodeURIComponent('https://crm-notion-production.up.railway.app/auth/notion/callback');
     
     window.location.href = `https://api.notion.com/v1/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
-  }, []);
+  };
 
   return (
     <div className="space-y-6">

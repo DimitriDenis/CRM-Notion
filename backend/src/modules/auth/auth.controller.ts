@@ -31,11 +31,7 @@ export class AuthController {
         ...req.headers,
         authorization: req.headers.authorization ? 'present' : 'absent'
       });
-      console.log('Query:', req.query);
-      console.log('Session:', req.session);
-
-      console.log('1. Début du callback Notion');
-      console.log('2. Données utilisateur reçues:', req.user);
+      
       
       const { access_token, user } = await this.authService.login(req.user);
       console.log('3. Token et utilisateur générés:', { 
