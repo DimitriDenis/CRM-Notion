@@ -1,7 +1,7 @@
 // src/app/(app)/deals/new/page.tsx
 // Pas de directive 'use client' ici - c'est un server component
 
-import { DealFormWrapper } from '@/components/client-wrapper/DealFormWrapper';
+import DealFormWrapper from '@/components/client-wrapper/DealFormWrapper';
 
 export default function NewDealPage() {
   return (
