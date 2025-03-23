@@ -3,11 +3,13 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { PlusIcon, ViewColumnsIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import { PlusIcon, ViewColumnsIcon, Bars3Icon, DocumentArrowUpIcon } from '@heroicons/react/24/outline';
 import { ContactsList } from '@/components/contacts/ContactsList';
 import { ContactsFilter } from '@/components/contacts/ContactsFilter';
 import { useContacts } from '@/hooks/api/useContacts';
 import { ErrorAlert } from '@/components/ui/ErrorAlert';
+import { Button } from '@headlessui/react';
+import ExportModal from '@/components/notion/ExportModal';
 
 export default function ContactsPage() {
   const {
@@ -22,6 +24,8 @@ export default function ContactsPage() {
   } = useContacts();
 
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [selectedContacts, setSelectedContacts] = useState<string[]>([]);
 
   if (error) {
     return <ErrorAlert message={error} onRetry={refetch} />;
@@ -73,6 +77,15 @@ export default function ContactsPage() {
             <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
             Nouveau contact
           </Link>
+
+          <Button
+            
+            onClick={() => setShowExportModal(true)}
+            className="flex items-center"
+          >
+            <DocumentArrowUpIcon className="h-5 w-5 mr-2" />
+            Export to Notion
+          </Button>
         </div>
       </div>
 
