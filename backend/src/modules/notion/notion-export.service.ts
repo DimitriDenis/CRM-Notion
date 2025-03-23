@@ -33,11 +33,59 @@ export class NotionExportService {
     }
 
     const notion = this.getNotionClient(user.notionAccessToken);
-    const workspaceId = options.workspaceId || user.notionWorkspaceId;
+    let workspaceId = options.workspaceId || user.notionWorkspaceId;
     
-    if (!workspaceId) {
-      throw new NotFoundException('No Notion workspace found');
-    }
+    const isValidUUID = (id) => {
+        return id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
+      };
+      
+      if (!isValidUUID(workspaceId)) {
+        console.log('Invalid workspace ID detected:', workspaceId);
+        
+        try {
+          // Rechercher un espace de travail valide
+          console.log('Searching for valid workspaces...');
+          const response = await notion.search({
+            query: '',
+            filter: {
+              value: 'page',
+              property: 'object'
+            },
+            page_size: 10
+          });
+          
+          console.log('Search results:', response);
+          
+          // Trouver la première page valide pour l'utiliser comme parent
+          if (response.results && response.results.length > 0) {
+            // Rechercher la première page
+            const pagesResponse = await notion.search({
+              filter: {
+                value: 'page',
+                property: 'object'
+              },
+              page_size: 1
+            });
+            
+            if (pagesResponse.results && pagesResponse.results.length > 0) {
+              workspaceId = pagesResponse.results[0].id;
+              console.log('Found valid page ID:', workspaceId);
+            } else {
+              throw new Error('No valid pages found in the workspace');
+            }
+          } else {
+            throw new Error('No valid workspaces found');
+          }
+        } catch (error) {
+          console.error('Error finding valid workspace/page:', error);
+          throw new NotFoundException('Could not find a valid Notion page to use as parent. Please create a page in Notion first.');
+        }
+      }
+      
+      if (!workspaceId) {
+        throw new NotFoundException('No valid Notion workspace or page found');
+      }
+    
 
     // 2. Créer une page principale pour l'export
     const mainPage = await notion.pages.create({
