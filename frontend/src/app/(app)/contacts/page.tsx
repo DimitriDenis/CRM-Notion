@@ -78,14 +78,14 @@ export default function ContactsPage() {
             Nouveau contact
           </Link>
 
-          <Button
-            
-            onClick={() => setShowExportModal(true)}
-            className="flex items-center"
-          >
-            <DocumentArrowUpIcon className="h-5 w-5 mr-2" />
-            Export to Notion
-          </Button>
+          <button
+  type="button"
+  onClick={() => setShowExportModal(true)}
+  className="inline-flex items-center rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-500"
+>
+  <DocumentArrowUpIcon className="-ml-0.5 mr-1.5 h-5 w-5" />
+  Export to Notion
+</button>
         </div>
       </div>
 
@@ -133,9 +133,19 @@ export default function ContactsPage() {
             </div>
           </div>
         ) : (
-          <ContactsList contacts={contacts} onDelete={deleteContact} viewMode={viewMode} />
+          <ContactsList contacts={contacts} onDelete={deleteContact} viewMode={viewMode}  />
         )}
       </div>
+      {showExportModal && (
+  <ExportModal
+    isOpen={showExportModal}
+    onClose={() => setShowExportModal(false)}
+    entityType="contacts"
+    selectedIds={selectedContacts}
+    entityName="Contacts"
+  />
+)}
     </div>
+    
   );
 }
