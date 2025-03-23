@@ -13,13 +13,17 @@ import { Deal } from '../deals/deal.entity';
 import { DealsModule } from '../deals/deals.module';
 import { DealSyncService } from './deal-sync.service';
 import { NotionSetupController } from './notion-setup.controller';
+import { NotionExportController } from './notion-export.controller';
+import { NotionExportService } from './notion-export.service';
+import { TagsModule } from '../tags/tags.module';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   imports: [ConfigModule, TypeOrmModule.forFeature([Contact, Pipeline, Deal]),
-  ContactsModule, PipelinesModule, DealsModule,
+  ContactsModule, PipelinesModule, DealsModule, TagsModule, UsersModule,
 ],
-controllers: [NotionSetupController],
-  providers: [NotionService, ContactSyncService, PipelineSyncService, DealSyncService],
-  exports: [NotionService, ContactSyncService, PipelineSyncService, DealSyncService],
+controllers: [NotionSetupController, NotionExportController],
+  providers: [NotionService, ContactSyncService, PipelineSyncService, DealSyncService, NotionExportService],
+  exports: [NotionService, ContactSyncService, PipelineSyncService, DealSyncService, NotionExportService],
 })
 export class NotionModule {}
