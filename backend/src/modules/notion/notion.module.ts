@@ -13,13 +13,10 @@ import { Deal } from '../deals/deal.entity';
 import { DealsModule } from '../deals/deals.module';
 import { DealSyncService } from './deal-sync.service';
 import { NotionSetupController } from './notion-setup.controller';
-import { UsersModule } from '../users/users.module';
-import { TagsModule } from '../tags/tags.module';
-
 
 @Module({
   imports: [ConfigModule, TypeOrmModule.forFeature([Contact, Pipeline, Deal]),
-  ContactsModule, PipelinesModule, DealsModule, UsersModule, TagsModule
+  ContactsModule, PipelinesModule, DealsModule,
 ],
 controllers: [NotionSetupController],
   providers: [NotionService, ContactSyncService, PipelineSyncService, DealSyncService],
