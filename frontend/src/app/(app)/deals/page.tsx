@@ -13,12 +13,14 @@ import {
   ClockIcon,
   ChartBarIcon,
   AdjustmentsHorizontalIcon,
-  ShoppingBagIcon
+  ShoppingBagIcon,
+  DocumentArrowUpIcon
 } from '@heroicons/react/24/outline';
 import { dealsApi, Deal, DealFilters } from '@/lib/api/deals';
 import { pipelinesApi, Pipeline } from '@/lib/api/pipelines';
 import { ErrorAlert } from '@/components/ui/ErrorAlert';
 import { formatCurrency } from '@/utils/formatters';
+import ExportModal from '@/components/notion/ExportModal';
 
 export default function DealsPage() {
   const [deals, setDeals] = useState<Deal[]>([]);
@@ -36,6 +38,8 @@ export default function DealsPage() {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [viewMode, setViewMode] = useState<'list' | 'cards'>('list');
   const [showFilters, setShowFilters] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
+const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
 
   // Load pipelines for filtering
   useEffect(() => {
@@ -220,6 +224,14 @@ export default function DealsPage() {
             </div>
           </div>
           <div className="mt-4 sm:mt-0 flex space-x-3">
+            <button
+            type="button"
+            onClick={() => setShowExportModal(true)}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            <DocumentArrowUpIcon className="-ml-1 mr-2 h-5 w-5 text-gray-500" aria-hidden="true" />
+            Exporter vers Notion
+            </button>
             <Link
               href="/deals/new"
               className="inline-flex items-center rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
@@ -567,6 +579,15 @@ export default function DealsPage() {
       })
     )}
   </div>
+)}
+{showExportModal && (
+  <ExportModal
+    isOpen={showExportModal}
+    onClose={() => setShowExportModal(false)}
+    entityType="deals"
+    selectedIds={selectedDeals}
+    entityName="Deals"
+  />
 )}
     </div>
   );
