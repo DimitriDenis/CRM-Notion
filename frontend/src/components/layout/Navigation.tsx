@@ -34,16 +34,16 @@ export function Navigation() {
                   href={item.href}
                   className={clsx(
                     pathname === item.href
-                      ? 'bg-gray-50 text-blue-600'
-                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50',
+                      ? 'bg-gray-50 dark:bg-gray-800 text-blue-600 dark:text-blue-400'
+                      : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-gray-50 dark:hover:bg-gray-800',
                     'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
                   )}
                 >
                   <item.icon
                     className={clsx(
                       pathname === item.href
-                        ? 'text-blue-600'
-                        : 'text-gray-400 group-hover:text-blue-600',
+                        ? 'text-blue-600 dark:text-blue-400'
+                        : 'text-gray-400 dark:text-gray-500 group-hover:text-blue-600 dark:group-hover:text-blue-400',
                       'h-6 w-6 shrink-0'
                     )}
                     aria-hidden="true"
