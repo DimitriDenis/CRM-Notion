@@ -81,7 +81,7 @@ export default function ExportModal({
         <Dialog.Panel className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-xl">
           <div className="flex items-center justify-between">
             <Dialog.Title className="text-lg font-medium text-gray-900">
-              Export {entityName} to Notion
+              Exporter {entityName} vers Notion
             </Dialog.Title>
             <button 
               type="button"
@@ -96,7 +96,7 @@ export default function ExportModal({
           {!isExporting && !result && !error && (
             <div className="mt-4">
               <p className="text-sm text-gray-500">
-                This will export your {entityName.toLowerCase()} to a Notion database.
+                Cela exportera votre {entityName.toLowerCase()} vers une base de données Notion.
               </p>
               
               <div className="mt-4">
@@ -147,7 +147,7 @@ export default function ExportModal({
           {isExporting && (
             <div className="mt-4">
               <p className="text-sm text-gray-500">
-                Exporting {entityName.toLowerCase()} to Notion...
+              Exportation {entityName.toLowerCase()} vers Notion...
               </p>
               
               <div className="mt-4">
@@ -170,7 +170,7 @@ export default function ExportModal({
                 <div className="flex">
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-red-800">
-                      Export failed
+                      Échec de l'exportation
                     </h3>
                     <div className="mt-2 text-sm text-red-700">
                       <p>{error}</p>
@@ -200,10 +200,10 @@ export default function ExportModal({
                   </div>
                   <div className="ml-3">
                     <h3 className="text-sm font-medium text-green-800">
-                      Export successful
+                      Exportation réussie
                     </h3>
                     <div className="mt-2 text-sm text-green-700">
-                      <p>Your {entityName.toLowerCase()} have been exported to Notion.</p>
+                      <p>Ton {entityName.toLowerCase()} ont été exportés vers Notion.</p>
                     </div>
                   </div>
                 </div>

@@ -26,14 +26,14 @@ export class NotionExportController {
       
       return {
         success: true,
-        message: 'Export successful',
+        message: 'Exportation réussie',
         data: result
       };
     } catch (error) {
       console.error('Export error:', error);
       return {
         success: false,
-        message: error.message || 'Export failed',
+        message: error.message || 'Échec de l exportation',
         error: error.response || error.toString()
       };
     }

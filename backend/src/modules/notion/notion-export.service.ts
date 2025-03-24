@@ -29,7 +29,7 @@ export class NotionExportService {
     // 1. Récupérer les infos de l'utilisateur et le token Notion
     const user = await this.usersService.findOne(userId);
     if (!user || !user.notionAccessToken) {
-      throw new NotFoundException('User not found or Notion not connected');
+      throw new NotFoundException('Utilisateur non trouve ou Notion non connectee');
     }
 
     const notion = this.getNotionClient(user.notionAccessToken);
@@ -71,14 +71,14 @@ export class NotionExportService {
               workspaceId = pagesResponse.results[0].id;
               console.log('Found valid page ID:', workspaceId);
             } else {
-              throw new Error('No valid pages found in the workspace');
+              throw new Error('Aucune page valide trouvée dans l espace de travail');
             }
           } else {
-            throw new Error('No valid workspaces found');
+            throw new Error('Aucun espace de travail valide trouvé');
           }
         } catch (error) {
           console.error('Error finding valid workspace/page:', error);
-          throw new NotFoundException('Could not find a valid Notion page to use as parent. Please create a page in Notion first.');
+          throw new NotFoundException('Impossible de trouver une page Notion valide à utiliser comme page parent. Veuillez d abord créer une page dans Notion.');
         }
       }
       
@@ -93,7 +93,7 @@ export class NotionExportService {
       properties: {
         title: [{
           type: 'text',
-          text: { content: `CRM Export - ${new Date().toLocaleString()}` }
+          text: { content: `Export CRM - ${new Date().toLocaleString()}` }
         }]
       },
       children: [
@@ -110,7 +110,7 @@ export class NotionExportService {
           paragraph: {
             rich_text: [{ 
               type: 'text', 
-              text: { content: 'This page contains exported data from your CRM.' } 
+              text: { content: 'Cette page contient les données exportées depuis votre CRM.' } 
             }]
           }
         }
