@@ -46,11 +46,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   }, [sidebarOpen, isMobile]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Overlay sombre lorsque la sidebar est ouverte sur mobile */}
       {isMobile && sidebarOpen && (
         <div 
-          className="fixed inset-0 bg-gray-800 bg-opacity-50 z-20 transition-opacity duration-300"
+          className="fixed inset-0 bg-gray-800 bg-opacity-50 dark:bg-black dark:bg-opacity-70 z-20 transition-opacity duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -66,11 +66,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       {/* Bouton pour fermer la sidebar sur mobile */}
       {isMobile && sidebarOpen && (
         <button
-          className="fixed top-4 left-72 z-50 p-2 rounded-full bg-white shadow-md hover:bg-gray-100 transition-colors"
+          className="fixed top-4 left-72 z-50 p-2 rounded-full bg-white dark:bg-gray-800 shadow-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           onClick={() => setSidebarOpen(false)}
           aria-label="Fermer le menu"
         >
-          <XMarkIcon className="h-5 w-5 text-gray-500" />
+          <XMarkIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
         </button>
       )}
       
@@ -82,7 +82,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           toggleSidebar={() => setSidebarOpen(!sidebarOpen)}
         />
         
-        <main className="py-6">
+        <main className="py-6 dark:text-gray-200">
           <div className="px-4 sm:px-6 lg:px-8">
             {children}
           </div>
