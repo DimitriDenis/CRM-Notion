@@ -102,7 +102,7 @@ export default function DashboardPage() {
               label: 'vs dernier mois',
               positive: (stats.trends?.value || 0) >= 0
             }}
-            className="bg-white shadow-md border border-gray-100 hover:shadow-lg transition-shadow"
+            className="bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-shadow"
           />
         </div>
 
