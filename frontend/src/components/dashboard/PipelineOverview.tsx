@@ -52,7 +52,7 @@ export function PipelineOverview({ pipelines, initialPipelineId }: PipelineOverv
   if (!selectedPipeline) {
     return (
       <div className="p-6">
-        <p className="text-gray-500">Aucun pipeline disponible</p>
+        <p className="text-gray-500 dark:text-gray-400">Aucun pipeline disponible</p>
       </div>
     );
   }
@@ -91,21 +91,23 @@ export function PipelineOverview({ pipelines, initialPipelineId }: PipelineOverv
             <div className="relative inline-block text-left" ref={dropdownRef}>
               <button
                 type="button"
-                className="inline-flex items-center gap-x-1.5 text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors"
+                className="inline-flex items-center gap-x-1.5 text-lg font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
                 {selectedPipeline.name}
-                <ChevronDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                <ChevronDownIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
               </button>
               
               {isDropdownOpen && (
-                <div className="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-gray-200 focus:outline-none">
+                <div className="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-gray-200 dark:ring-gray-700 focus:outline-none">
                   <div className="py-1">
                     {pipelines.map((pipeline) => (
                       <button
                         key={pipeline.id}
                         className={`block w-full px-4 py-2 text-left text-sm ${
-                          pipeline.id === selectedPipelineId ? 'bg-blue-50 text-blue-600 font-medium' : 'text-gray-700 hover:bg-gray-50'
+                          pipeline.id === selectedPipelineId 
+                            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 font-medium' 
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                         }`}
                         onClick={() => {
                           setSelectedPipelineId(pipeline.id);
@@ -120,11 +122,11 @@ export function PipelineOverview({ pipelines, initialPipelineId }: PipelineOverv
               )}
             </div>
           ) : (
-            <h3 className="text-lg font-semibold text-gray-900">
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               {selectedPipeline.name}
             </h3>
           )}
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             {totalDeals} deals · {formatCurrency(totalValue)}
           </p>
         </div>
@@ -136,17 +138,17 @@ export function PipelineOverview({ pipelines, initialPipelineId }: PipelineOverv
             <div key={stage.id} className="relative">
               <div className="flex items-center justify-between text-sm mb-1.5">
                 <div className="w-1/4">
-                  <span className="text-gray-700 font-medium">{stage.name}</span>
+                  <span className="text-gray-700 dark:text-gray-300 font-medium">{stage.name}</span>
                 </div>
                 <div className="w-1/4 text-right">
-                  <span className="text-gray-900 font-medium">
+                  <span className="text-gray-900 dark:text-white font-medium">
                     {stage.count || 0} deals
                   </span>
                 </div>
               </div>
-              <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+              <div className="h-2.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-blue-500 rounded-full"
+                  className="h-full bg-blue-500 dark:bg-blue-600 rounded-full"
                   style={{
                     width: totalDeals > 0 
                       ? `${((stage.count || 0) / totalDeals) * 100}%` 
@@ -155,12 +157,12 @@ export function PipelineOverview({ pipelines, initialPipelineId }: PipelineOverv
                 />
               </div>
               <div className="flex justify-end mt-1">
-                <span className="text-xs text-gray-500">{formatCurrency(stage.value || 0)}</span>
+                <span className="text-xs text-gray-500 dark:text-gray-400">{formatCurrency(stage.value || 0)}</span>
               </div>
             </div>
           ))
         ) : (
-          <div className="text-center text-gray-500 py-4">
+          <div className="text-center text-gray-500 dark:text-gray-400 py-4">
             Aucune étape dans ce pipeline
           </div>
         )}
