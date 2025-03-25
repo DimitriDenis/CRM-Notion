@@ -31,15 +31,15 @@ export function RecentDeals({ deals }: RecentDealsProps) {
 
     switch (status) {
       case 'won':
-        color = 'bg-green-50 text-green-700';
+        color = 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400';
         text = 'Gagné';
         break;
       case 'lost':
-        color = 'bg-red-50 text-red-700';
+        color = 'bg-red-50 dark:bg-red-900/30 text-red-700 dark:text-red-400';
         text = 'Perdu';
         break;
       default:
-        color = 'bg-blue-50 text-blue-700';
+        color = 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400';
         text = 'En cours';
     }
 
@@ -53,11 +53,11 @@ export function RecentDeals({ deals }: RecentDealsProps) {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Derniers deals</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Derniers deals</h3>
         {deals.length > 0 && (
           <Link 
             href="/deals" 
-            className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors"
+            className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 transition-colors"
           >
             Voir tous les deals
           </Link>
@@ -69,18 +69,18 @@ export function RecentDeals({ deals }: RecentDealsProps) {
           {deals.map((deal) => (
             <div 
               key={deal.id} 
-              className="flex flex-col p-4 border border-gray-100 rounded-lg hover:shadow-md transition-shadow"
+              className="flex flex-col p-4 border border-gray-100 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow bg-white/40 dark:bg-gray-800/40"
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="text-base font-medium text-gray-900 truncate max-w-xs">{deal.name}</h4>
-                  <div className="mt-1 flex items-center space-x-3 text-sm text-gray-500">
+                  <h4 className="text-base font-medium text-gray-900 dark:text-white truncate max-w-xs">{deal.name}</h4>
+                  <div className="mt-1 flex items-center space-x-3 text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
-                      <CurrencyDollarIcon className="h-4 w-4 mr-1 text-gray-400" />
-                      <span className="font-medium text-gray-700">{formatCurrency(deal.value)}</span>
+                      <CurrencyDollarIcon className="h-4 w-4 mr-1 text-gray-400 dark:text-gray-500" />
+                      <span className="font-medium text-gray-700 dark:text-gray-300">{formatCurrency(deal.value)}</span>
                     </div>
                     <div className="flex items-center">
-                      <CalendarIcon className="h-4 w-4 mr-1 text-gray-400" />
+                      <CalendarIcon className="h-4 w-4 mr-1 text-gray-400 dark:text-gray-500" />
                       <span>{formatDate(deal.expectedCloseDate || deal.updatedAt)}</span>
                     </div>
                   </div>
@@ -94,10 +94,10 @@ export function RecentDeals({ deals }: RecentDealsProps) {
         </div>
       ) : (
         <div className="text-center py-8">
-          <p className="text-gray-500 mb-4">Aucun deal récent</p>
+          <p className="text-gray-500 dark:text-gray-400 mb-4">Aucun deal récent</p>
           <Link 
             href="/deals/new" 
-            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
           >
             Créer un nouveau deal
           </Link>
