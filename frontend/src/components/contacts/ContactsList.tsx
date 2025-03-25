@@ -1,7 +1,7 @@
 // src/components/contacts/ContactsList.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { EnvelopeIcon, PhoneIcon, EllipsisVerticalIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
 import { Menu, Transition } from '@headlessui/react';
@@ -12,6 +12,106 @@ interface ContactsListProps {
   onDelete: (id: string) => void;
   viewMode?: 'grid' | 'list';
 }
+
+// Composant de menu adaptatif qui s'ajuste en fonction de sa position
+const AdaptiveMenu = ({ contact, onDelete, index, totalContacts }: { 
+  contact: Contact, 
+  onDelete: (id: string) => void,
+  index: number,
+  totalContacts: number
+}) => {
+  const [menuPosition, setMenuPosition] = useState<'top' | 'bottom'>('bottom');
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Détermine si le menu doit s'ouvrir vers le haut ou vers le bas
+  useEffect(() => {
+    const updateMenuPosition = () => {
+      if (!menuButtonRef.current) return;
+      
+      // Si c'est dans les deux premiers éléments, positionner vers le bas
+      // sinon, positionner vers le haut
+      if (index < 2) {
+        setMenuPosition('bottom');
+      } else {
+        setMenuPosition('top');
+      }
+    };
+
+    updateMenuPosition();
+    window.addEventListener('resize', updateMenuPosition);
+    return () => window.removeEventListener('resize', updateMenuPosition);
+  }, [index, totalContacts]);
+
+  return (
+    <Menu as="div" className="relative inline-block text-left">
+      <div>
+        <Menu.Button 
+          ref={menuButtonRef}
+          className="flex items-center rounded-full p-1 bg-white dark:bg-gray-700 text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none"
+        >
+          <span className="sr-only">Options</span>
+          <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
+        </Menu.Button>
+      </div>
+
+      <Transition
+        enter="transition ease-out duration-100"
+        enterFrom="transform opacity-0 scale-95"
+        enterTo="transform opacity-100 scale-100"
+        leave="transition ease-in duration-75"
+        leaveFrom="transform opacity-100 scale-100"
+        leaveTo="transform opacity-0 scale-95"
+      >
+        <Menu.Items 
+          className={`absolute ${
+            menuPosition === 'top' 
+              ? 'bottom-full right-0 mb-1 origin-bottom-right' 
+              : 'top-full right-0 mt-1 origin-top-right'
+          } z-50 w-56 rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none`}
+        >
+          <div className="py-1">
+            <Menu.Item>
+              {({ active }) => (
+                <Link
+                  href={`/contacts/${contact.id}`}
+                  className={`${
+                    active ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'
+                  } block px-4 py-2 text-sm`}
+                >
+                  Voir
+                </Link>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <Link
+                  href={`/contacts/${contact.id}/edit`}
+                  className={`${
+                    active ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'
+                  } block px-4 py-2 text-sm`}
+                >
+                  Modifier
+                </Link>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <button
+                  onClick={() => onDelete(contact.id)}
+                  className={`${
+                    active ? 'bg-gray-100 dark:bg-gray-700 text-red-600 dark:text-red-400' : 'text-red-500 dark:text-red-400'
+                  } block w-full text-left px-4 py-2 text-sm`}
+                >
+                  Supprimer
+                </button>
+              )}
+            </Menu.Item>
+          </div>
+        </Menu.Items>
+      </Transition>
+    </Menu>
+  );
+};
 
 export function ContactsList({ contacts, onDelete, viewMode = 'grid' }: ContactsListProps) {
   // Générer une couleur de fond basée sur le nom
@@ -44,7 +144,7 @@ export function ContactsList({ contacts, onDelete, viewMode = 'grid' }: Contacts
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-            {contacts.map((contact) => (
+            {contacts.map((contact, index) => (
               <tr key={contact.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
                 <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
                   <div className="flex items-center">
@@ -91,66 +191,12 @@ export function ContactsList({ contacts, onDelete, viewMode = 'grid' }: Contacts
                   ) : '—'}
                 </td>
                 <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <Menu as="div" className="relative inline-block text-left">
-                    {/* Modification importante ici : position statique */}
-                    <div>
-                      <Menu.Button className="flex items-center rounded-full p-1 bg-white dark:bg-gray-700 text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
-                        <span className="sr-only">Options</span>
-                        <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
-                      </Menu.Button>
-                    </div>
-
-                    <Transition
-                      enter="transition ease-out duration-100"
-                      enterFrom="transform opacity-0 scale-95"
-                      enterTo="transform opacity-100 scale-100"
-                      leave="transition ease-in duration-75"
-                      leaveFrom="transform opacity-100 scale-100"
-                      leaveTo="transform opacity-0 scale-95"
-                    >
-                      {/* Correction ici : position absolute bottom-full right-0 pour faire apparaître le menu vers le haut */}
-                      <Menu.Items className="absolute bottom-full right-0 z-10 mt-2 mb-1 w-56 origin-bottom-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none">
-                        <div className="py-1">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                href={`/contacts/${contact.id}`}
-                                className={`${
-                                  active ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'
-                                } block px-4 py-2 text-sm`}
-                              >
-                                Voir
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                href={`/contacts/${contact.id}/edit`}
-                                className={`${
-                                  active ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'
-                                } block px-4 py-2 text-sm`}
-                              >
-                                Modifier
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                onClick={() => onDelete(contact.id)}
-                                className={`${
-                                  active ? 'bg-gray-100 dark:bg-gray-700 text-red-600 dark:text-red-400' : 'text-red-500 dark:text-red-400'
-                                } block w-full text-left px-4 py-2 text-sm`}
-                              >
-                                Supprimer
-                              </button>
-                            )}
-                          </Menu.Item>
-                        </div>
-                      </Menu.Items>
-                    </Transition>
-                  </Menu>
+                  <AdaptiveMenu 
+                    contact={contact} 
+                    onDelete={onDelete} 
+                    index={index} 
+                    totalContacts={contacts.length}
+                  />
                 </td>
               </tr>
             ))}
@@ -163,7 +209,7 @@ export function ContactsList({ contacts, onDelete, viewMode = 'grid' }: Contacts
   // Mode grille par défaut
   return (
     <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {contacts.map((contact) => (
+      {contacts.map((contact, index) => (
         <li key={contact.id} className="col-span-1 divide-y divide-gray-200 dark:divide-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow transition-shadow hover:shadow-md relative">
           <div className="flex w-full items-center justify-between space-x-6 p-6">
             <div className="flex-1 truncate">
@@ -217,81 +263,29 @@ export function ContactsList({ contacts, onDelete, viewMode = 'grid' }: Contacts
                   <Link
                     href={`tel:${contact.phone}`}
                     className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 group"
-                  >
-                    <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
-                    Appeler
-                  </Link>
-                ) : (
-                  <span className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm text-gray-400 dark:text-gray-500">
-                    <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
-                    Pas de téléphone
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="absolute top-2 right-2">
-            <Menu as="div" className="relative inline-block text-left">
-              <div>
-                <Menu.Button className="flex items-center rounded-full p-1 bg-white dark:bg-gray-700 text-gray-400 dark:text-gray-300 hover:text-gray-600 dark:hover:text-gray-100 hover:bg-gray-100 dark:hover:bg-gray-600 focus:outline-none">
-                  <span className="sr-only">Options</span>
-                  <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />
-                </Menu.Button>
-                </div>
+                  ><PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
+                  Appeler
+                </Link>
 
-                <Transition
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black dark:ring-gray-700 ring-opacity-5 focus:outline-none">
-                    <div className="py-1">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            href={`/contacts/${contact.id}`}
-                            className={`${
-                              active ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'
-                            } block px-4 py-2 text-sm`}
-                          >
-                            Voir
-                          </Link>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            href={`/contacts/${contact.id}/edit`}
-                            className={`${
-                              active ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white' : 'text-gray-700 dark:text-gray-300'
-                            } block px-4 py-2 text-sm`}
-                          >
-                            Modifier
-                          </Link>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <button
-                            onClick={() => onDelete(contact.id)}
-                            className={`${
-                              active ? 'bg-gray-100 dark:bg-gray-700 text-red-600 dark:text-red-400' : 'text-red-500 dark:text-red-400'
-                            } block w-full text-left px-4 py-2 text-sm`}
-                          >
-                            Supprimer
-                          </button>
-                        )}
-                      </Menu.Item>
-                    </div>
-                  </Menu.Items>
-                </Transition>
-                </Menu>
-                </div>
-                </li>
-                ))}
-                </ul>
-                );
-                }
+) : (
+  <span className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm text-gray-400 dark:text-gray-500">
+    <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
+    Pas de téléphone
+  </span>
+)}
+</div>
+</div>
+</div>
+<div className="absolute top-2 right-2">
+<AdaptiveMenu 
+contact={contact} 
+onDelete={onDelete} 
+index={index} 
+totalContacts={contacts.length}
+/>
+</div>
+</li>
+))}
+</ul>
+);
+}
