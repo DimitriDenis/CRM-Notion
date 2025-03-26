@@ -66,15 +66,15 @@ export default function TagsPage() {
   return (
     <div className="space-y-6">
       {/* En-tête avec dégradé */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm p-6">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl shadow-sm p-6">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="flex items-center">
-            <div className="p-3 bg-white/60 rounded-lg">
-              <TagIcon className="h-8 w-8 text-blue-600" />
+            <div className="p-3 bg-white/60 dark:bg-gray-800/60 rounded-lg">
+              <TagIcon className="h-8 w-8 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="ml-4">
-              <h1 className="text-2xl font-bold text-gray-900">Tags</h1>
-              <p className="mt-1 text-sm text-gray-600">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Tags</h1>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
                 {isLoading
                   ? 'Chargement des tags...'
                   : `${tags.length} tag${tags.length !== 1 ? 's' : ''} pour organiser vos contacts`}
@@ -82,13 +82,13 @@ export default function TagsPage() {
             </div>
           </div>
           <div className="mt-4 sm:mt-0 flex space-x-3">
-            <div className="border border-gray-200 rounded-md p-1 flex items-center">
+            <div className="border border-gray-200 dark:border-gray-600 rounded-md p-1 flex items-center">
               <button
                 onClick={() => setViewMode('grid')}
                 className={`p-1.5 rounded ${
                   viewMode === 'grid' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300' 
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700'
                 }`}
                 title="Vue en grille"
               >
@@ -100,8 +100,8 @@ export default function TagsPage() {
                 onClick={() => setViewMode('list')}
                 className={`p-1.5 rounded ${
                   viewMode === 'list' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300' 
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700'
                 }`}
                 title="Vue en liste"
               >
@@ -114,7 +114,7 @@ export default function TagsPage() {
             <button
               type="button"
               onClick={handleOpenCreateModal}
-              className="inline-flex items-center rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="inline-flex items-center rounded-md bg-blue-600 dark:bg-blue-500 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
             >
               <PlusIcon className="mr-2 h-5 w-5" />
               Nouveau tag
@@ -125,13 +125,13 @@ export default function TagsPage() {
 
       {/* Section d'information */}
       {showInfo && (
-        <div className="bg-white border border-blue-100 rounded-lg p-4 flex items-start space-x-4">
+        <div className="bg-white dark:bg-gray-800 border border-blue-100 dark:border-blue-900/50 rounded-lg p-4 flex items-start space-x-4">
           <div className="flex-shrink-0">
-            <InformationCircleIcon className="h-6 w-6 text-blue-500" aria-hidden="true" />
+            <InformationCircleIcon className="h-6 w-6 text-blue-500 dark:text-blue-400" aria-hidden="true" />
           </div>
           <div className="flex-1">
-            <h3 className="text-sm font-medium text-gray-900">Utilisation des tags</h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <h3 className="text-sm font-medium text-gray-900 dark:text-white">Utilisation des tags</h3>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               Les tags vous permettent de catégoriser et filtrer vos contacts selon différents critères. 
               Utilisez-les pour identifier rapidement des segments comme les clients VIP, les prospects 
               chauds, ou les partenaires stratégiques.
@@ -139,7 +139,7 @@ export default function TagsPage() {
           </div>
           <button 
             onClick={() => setShowInfo(false)} 
-            className="flex-shrink-0 text-gray-400 hover:text-gray-500"
+            className="flex-shrink-0 text-gray-400 hover:text-gray-500 dark:text-gray-500 dark:hover:text-gray-400"
           >
             <span className="sr-only">Fermer</span>
             <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
@@ -153,23 +153,23 @@ export default function TagsPage() {
       {isLoading ? (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="h-20 rounded-lg bg-gray-200 animate-pulse" />
+            <div key={i} className="h-20 rounded-lg bg-gray-200 dark:bg-gray-700 animate-pulse" />
           ))}
         </div>
       ) : tags.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm p-8 text-center">
-          <div className="mx-auto h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
-            <TagIcon className="h-6 w-6 text-blue-600" />
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center border border-gray-100 dark:border-gray-700">
+          <div className="mx-auto h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+            <TagIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
           </div>
-          <h3 className="mt-2 text-sm font-medium text-gray-900">Aucun tag trouvé</h3>
-          <p className="mt-1 text-sm text-gray-500">
+          <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">Aucun tag trouvé</h3>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
             Commencez par créer des tags pour catégoriser vos contacts et faciliter leur gestion.
           </p>
           <div className="mt-6">
             <button
               type="button"
               onClick={handleOpenCreateModal}
-              className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-500"
+              className="inline-flex items-center rounded-md bg-blue-600 dark:bg-blue-500 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-500 dark:hover:bg-blue-600 transition-colors"
             >
               <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
               Créer mon premier tag
