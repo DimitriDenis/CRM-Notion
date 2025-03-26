@@ -221,7 +221,7 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
 
       {/* Liste des étapes */}
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
-        <div className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-850 px-6 py-4">
+        <div className="border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-6 py-4">
           <h3 className="text-base font-semibold text-gray-900 dark:text-white flex items-center">
             <ChartBarIcon className="mr-2 h-5 w-5 text-gray-500 dark:text-gray-400" />
             Progression par étape
@@ -235,7 +235,7 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
             const percentage = calculatePercentage(stageValueNum, totalValueNum);
             
             return (
-              <li key={stage.id} className="hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors">
+              <li key={stage.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="px-6 py-5">
                   <div className="flex items-center justify-between mb-2">
                     <h4 className="text-base font-medium text-gray-900 dark:text-white">{stage.name}</h4>

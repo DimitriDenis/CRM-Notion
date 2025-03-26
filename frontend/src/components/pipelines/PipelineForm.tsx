@@ -106,7 +106,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
   };
 
   if (isLoading) {
-    return <div className="animate-pulse p-4 h-96 bg-gray-100 rounded-lg"></div>;
+    return <div className="animate-pulse p-4 h-96 bg-gray-100 dark:bg-gray-800 rounded-lg"></div>;
   }
 
   return (
@@ -114,18 +114,18 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
       {error && <ErrorAlert message={error} />}
 
       <div className="space-y-6">
-        <div className="border-b border-gray-900/10 pb-6">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
+        <div className="border-b border-gray-900/10 dark:border-gray-700 pb-6">
+          <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">
             {pipelineId ? 'Modifier le pipeline' : 'Nouveau pipeline'}
           </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
+          <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
             {pipelineId
               ? 'Modifiez les informations du pipeline'
               : 'Créez un nouveau pipeline de vente'}
           </p>
 
           <div className="mt-6">
-            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+            <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900 dark:text-white">
               Nom du pipeline
             </label>
             <div className="mt-2">
@@ -136,15 +136,15 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6"
               />
             </div>
           </div>
         </div>
 
-        <div className="border-b border-gray-900/10 pb-6">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Étapes</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
+        <div className="border-b border-gray-900/10 dark:border-gray-700 pb-6">
+          <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">Étapes</h2>
+          <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
             Définissez les étapes de votre pipeline de vente
           </p>
 
@@ -154,7 +154,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
                 <div className="flex-1">
                   <label
                     htmlFor={`stage-${index}`}
-                    className="block text-sm font-medium leading-6 text-gray-900"
+                    className="block text-sm font-medium leading-6 text-gray-900 dark:text-white"
                   >
                     Étape {index + 1}
                   </label>
@@ -165,14 +165,14 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
                       required
                       value={stage.name}
                       onChange={(e) => handleStageChange(index, 'name', e.target.value)}
-                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6"
                     />
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => removeStage(index)}
-                  className="mt-6 rounded-full p-1 text-gray-400 hover:text-gray-500"
+                  className="mt-6 rounded-full p-1 text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400"
                 >
                   <XMarkIcon className="h-5 w-5" />
                 </button>
@@ -181,7 +181,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
             <button
               type="button"
               onClick={addStage}
-              className="flex items-center text-sm text-blue-600 hover:text-blue-500"
+              className="flex items-center text-sm text-blue-600 dark:text-blue-400 hover:text-blue-500 dark:hover:text-blue-300"
             >
               <PlusIcon className="h-5 w-5 mr-1" />
               Ajouter une étape
@@ -194,14 +194,14 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
         <button
           type="button"
           onClick={() => router.push('/pipelines')}
-          className="text-sm font-semibold leading-6 text-gray-900"
+          className="text-sm font-semibold leading-6 text-gray-900 dark:text-gray-300 hover:text-gray-700 dark:hover:text-white"
         >
           Annuler
         </button>
         <button
           type="submit"
           disabled={isSaving}
-          className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+          className="rounded-md bg-blue-600 dark:bg-blue-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 dark:hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-500"
         >
           {isSaving ? 'Enregistrement...' : 'Enregistrer'}
         </button>
