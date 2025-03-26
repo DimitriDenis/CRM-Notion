@@ -115,9 +115,9 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
 
   const getStatusBadgeClass = (status?: string) => {
     switch (status) {
-      case 'won': return 'bg-green-100 text-green-800 border border-green-200';
-      case 'lost': return 'bg-red-100 text-red-800 border border-red-200';
-      default: return 'bg-blue-100 text-blue-800 border border-blue-200';
+      case 'won': return 'bg-green-100 text-green-800 border border-green-200 dark:bg-green-900/30 dark:text-green-300 dark:border-green-900';
+      case 'lost': return 'bg-red-100 text-red-800 border border-red-200 dark:bg-red-900/30 dark:text-red-300 dark:border-red-900';
+      default: return 'bg-blue-100 text-blue-800 border border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-900';
     }
   };
   
@@ -152,11 +152,11 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
   // Générer une couleur basée sur le nom du deal
   const getDealColor = (name: string) => {
     const gradients = [
-      'from-blue-50 to-indigo-50 border-blue-200',
-      'from-emerald-50 to-teal-50 border-emerald-200',
-      'from-purple-50 to-pink-50 border-purple-200',
-      'from-orange-50 to-amber-50 border-orange-200',
-      'from-rose-50 to-red-50 border-rose-200',
+      'from-blue-50 to-indigo-50 border-blue-200 dark:from-blue-900/20 dark:to-indigo-900/20 dark:border-blue-800',
+      'from-emerald-50 to-teal-50 border-emerald-200 dark:from-emerald-900/20 dark:to-teal-900/20 dark:border-emerald-800',
+      'from-purple-50 to-pink-50 border-purple-200 dark:from-purple-900/20 dark:to-pink-900/20 dark:border-purple-800',
+      'from-orange-50 to-amber-50 border-orange-200 dark:from-orange-900/20 dark:to-amber-900/20 dark:border-orange-800',
+      'from-rose-50 to-red-50 border-rose-200 dark:from-rose-900/20 dark:to-red-900/20 dark:border-rose-800',
     ];
     
     const sum = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
@@ -176,27 +176,27 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
         label: 'Deals totaux',
         value: totalDeals,
         icon: <ShoppingBagIcon className="h-5 w-5" />,
-        color: 'bg-blue-50 text-blue-600'
+        color: 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300'
       },
       {
         label: 'Valeur totale',
         value: formatCurrency(totalValue),
         icon: <CurrencyDollarIcon className="h-5 w-5" />,
-        color: 'bg-green-50 text-green-600'
+        color: 'bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-300'
       }
     ];
 
     return (
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-6">
         {stats.map((stat, index) => (
-          <div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
+          <div key={index} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
             <div className="flex items-center">
               <div className={`${stat.color} p-2 rounded-md`}>
                 {stat.icon}
               </div>
               <div className="ml-3">
-                <p className="text-sm font-medium text-gray-500">{stat.label}</p>
-                <p className="text-lg font-semibold text-gray-900">{stat.value}</p>
+                <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{stat.label}</p>
+                <p className="text-lg font-semibold text-gray-900 dark:text-white">{stat.value}</p>
               </div>
             </div>
           </div>
@@ -208,15 +208,15 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
   return (
     <div className="space-y-6">
       {/* En-tête avec dégradé */}
-      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl shadow-sm p-6">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl shadow-sm p-6">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div className="flex items-center">
-            <div className="p-3 bg-white/60 rounded-lg">
-              <ShoppingBagIcon className="h-8 w-8 text-blue-600" />
+            <div className="p-3 bg-white/60 dark:bg-gray-800/60 rounded-lg">
+              <ShoppingBagIcon className="h-8 w-8 text-blue-600 dark:text-blue-400" />
             </div>
             <div className="ml-4">
-              <h1 className="text-2xl font-bold text-gray-900">Deals</h1>
-              <p className="mt-1 text-sm text-gray-600">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Deals</h1>
+              <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
                 {isLoading
                   ? 'Chargement des deals...'
                   : `${totalDeals} deal${totalDeals !== 1 ? 's' : ''} - ${formatCurrency(totalValue)}`}
@@ -227,14 +227,14 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
             <button
             type="button"
             onClick={() => setShowExportModal(true)}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
           >
-            <DocumentArrowUpIcon className="-ml-1 mr-2 h-5 w-5 text-gray-500" aria-hidden="true" />
+            <DocumentArrowUpIcon className="-ml-1 mr-2 h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
             Exporter vers Notion
             </button>
             <Link
               href="/deals/new"
-              className="inline-flex items-center rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+              className="inline-flex items-center rounded-md bg-blue-600 dark:bg-blue-500 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
             >
               <PlusIcon className="mr-2 h-5 w-5" />
               Nouveau deal
@@ -247,28 +247,28 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
       {!isLoading && renderSummaryStats()}
 
       {/* Options de filtrage et d'affichage */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 p-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center space-x-3">
             <button
               onClick={() => setShowFilters(!showFilters)}
               className={`inline-flex items-center px-3 py-2 border rounded-md text-sm font-medium ${
                 showFilters
-                  ? 'bg-blue-50 text-blue-700 border-blue-200'
-                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'
+                  ? 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-800'
+                  : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600 dark:hover:bg-gray-600'
               }`}
             >
               <FunnelIcon className="h-5 w-5 mr-2" />
               Filtres
             </button>
             
-            <div className="border border-gray-200 rounded-md p-1 flex items-center">
+            <div className="border border-gray-200 dark:border-gray-600 rounded-md p-1 flex items-center">
               <button
                 onClick={() => setViewMode('list')}
                 className={`p-1.5 rounded ${
                   viewMode === 'list' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300' 
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700'
                 }`}
                 title="Vue liste"
               >
@@ -280,8 +280,8 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
                 onClick={() => setViewMode('cards')}
                 className={`p-1.5 rounded ${
                   viewMode === 'cards' 
-                    ? 'bg-blue-50 text-blue-600' 
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                    ? 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-300' 
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-700'
                 }`}
                 title="Vue cartes"
               >
