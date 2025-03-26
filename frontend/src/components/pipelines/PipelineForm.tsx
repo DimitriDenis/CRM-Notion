@@ -156,9 +156,9 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
           </div>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="p-6 space-y-6 bg-white dark:bg-gray-800">
           {/* Nom du pipeline */}
-          <div className="bg-gray-50 dark:bg-gray-750/50 p-5 rounded-lg">
+          <div className="bg-gray-50 dark:bg-gray-700 p-5 rounded-lg">
             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900 dark:text-white">
               Nom du pipeline
             </label>
@@ -177,7 +177,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
           </div>
 
           {/* Étapes */}
-          <div className="bg-gray-50 dark:bg-gray-750/50 p-5 rounded-lg">
+          <div className="bg-gray-50 dark:bg-gray-700 p-5 rounded-lg">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">Étapes du pipeline</h2>
               <span className="text-xs text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 px-2.5 py-1 rounded-full">

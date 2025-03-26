@@ -57,6 +57,7 @@ export function Sidebar({ isOpen, setIsOpen, isMobile = false, id = 'sidebar' }:
         <Link href="/" className="flex items-center space-x-3">
           <div className="h-8 w-8 rounded-md bg-blue-600 dark:bg-blue-500 flex items-center justify-center">
             <span className="text-white font-bold">N</span>
+            
           </div>
           {(isOpen || isMobile) && (
             <span className="text-xl font-semibold text-gray-900 dark:text-white">NotionCRM</span>
