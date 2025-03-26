@@ -37,7 +37,7 @@ export default function KanbanPage({ params }: KanbanPageProps) {
   }, [params.id]);
 
   if (isLoading) {
-    return <div className="animate-pulse p-4 h-96 bg-gray-100 rounded-lg"></div>;
+    return <div className="animate-pulse p-4 h-96 bg-gray-100 dark:bg-gray-800 rounded-lg"></div>;
   }
 
   if (error) {
@@ -45,7 +45,7 @@ export default function KanbanPage({ params }: KanbanPageProps) {
   }
 
   if (!pipeline) {
-    return <div>Pipeline introuvable</div>;
+    return <div className="text-gray-900 dark:text-white">Pipeline introuvable</div>;
   }
 
   return (
@@ -55,13 +55,13 @@ export default function KanbanPage({ params }: KanbanPageProps) {
           <div className="flex items-center">
             <Link
               href={`/pipelines/${params.id}`}
-              className="mr-2 text-gray-500 hover:text-gray-700"
+              className="mr-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
             >
               <ArrowLeftIcon className="h-5 w-5" />
             </Link>
-            <h1 className="text-2xl font-semibold text-gray-900">{pipeline.name}</h1>
+            <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">{pipeline.name}</h1>
           </div>
-          <p className="mt-2 text-sm text-gray-700">
+          <p className="mt-2 text-sm text-gray-700 dark:text-gray-400">
             Faites glisser les deals pour les déplacer entre les étapes
           </p>
         </div>

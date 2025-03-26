@@ -192,7 +192,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
               {formData.stages.map((stage, index) => (
                 <div 
                   key={index} 
-                  className="flex items-center gap-4 bg-white dark:bg-gray-800/90 p-4 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm group relative"
+                  className="flex items-center gap-4 bg-white dark:bg-gray-750 p-4 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm group relative"
                 >
                   <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm">
                     {index + 1}
@@ -220,7 +220,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
               <button
                 type="button"
                 onClick={addStage}
-                className="flex items-center w-full justify-center py-3 px-4 text-sm text-blue-600 dark:text-blue-400 border border-dashed border-blue-300 dark:border-blue-700 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors bg-white dark:bg-gray-800"
+                className="flex items-center w-full justify-center py-3 px-4 text-sm text-blue-600 dark:text-blue-400 border border-dashed border-blue-300 dark:border-blue-700 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors  dark:bg-gray-750"
               >
                 <PlusIcon className="h-5 w-5 mr-1.5" />
                 Ajouter une étape
