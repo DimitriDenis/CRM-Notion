@@ -158,7 +158,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
 
         <div className="p-6 space-y-6">
           {/* Nom du pipeline */}
-          <div className="bg-gray-50 dark:bg-gray-750 p-5 rounded-lg">
+          <div className="bg-gray-50 dark:bg-gray-750/50 p-5 rounded-lg">
             <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900 dark:text-white">
               Nom du pipeline
             </label>
@@ -177,7 +177,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
           </div>
 
           {/* Étapes */}
-          <div className="bg-gray-50 dark:bg-gray-750 p-5 rounded-lg">
+          <div className="bg-gray-50 dark:bg-gray-750/50 p-5 rounded-lg">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white">Étapes du pipeline</h2>
               <span className="text-xs text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 px-2.5 py-1 rounded-full">
@@ -192,9 +192,9 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
               {formData.stages.map((stage, index) => (
                 <div 
                   key={index} 
-                  className="flex items-center gap-4 bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm group"
+                  className="flex items-center gap-4 bg-white dark:bg-gray-800/90 p-4 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm group relative"
                 >
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-medium text-sm">
                     {index + 1}
                   </div>
                   <div className="flex-1">
@@ -205,7 +205,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
                       value={stage.name}
                       onChange={(e) => handleStageChange(index, 'name', e.target.value)}
                       placeholder={`Étape ${index + 1}`}
-                      className="block w-full border-0 p-0 text-gray-900 dark:text-white bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-0 sm:text-sm sm:leading-6"
+                      className="block w-full border-0 p-0 text-gray-900 dark:text-white bg-transparent placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-0 focus:outline-none sm:text-sm sm:leading-6"
                     />
                   </div>
                   <button
@@ -220,7 +220,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
               <button
                 type="button"
                 onClick={addStage}
-                className="flex items-center w-full justify-center py-3 px-4 text-sm text-blue-600 dark:text-blue-400 border border-dashed border-blue-300 dark:border-blue-700 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+                className="flex items-center w-full justify-center py-3 px-4 text-sm text-blue-600 dark:text-blue-400 border border-dashed border-blue-300 dark:border-blue-700 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors bg-white dark:bg-gray-800"
               >
                 <PlusIcon className="h-5 w-5 mr-1.5" />
                 Ajouter une étape
