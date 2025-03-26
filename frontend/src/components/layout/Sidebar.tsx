@@ -3,6 +3,7 @@
 
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   HomeIcon, 
   UserGroupIcon, 
@@ -56,7 +57,13 @@ export function Sidebar({ isOpen, setIsOpen, isMobile = false, id = 'sidebar' }:
       <div className="flex h-16 items-center justify-center border-b border-gray-200 dark:border-gray-700 px-6">
         <Link href="/" className="flex items-center space-x-3">
           <div className="h-8 w-8 rounded-md bg-blue-600 dark:bg-blue-500 flex items-center justify-center">
-            <span className="text-white font-bold">N</span>
+          <Image 
+              src="/Notion_CRM-.png" 
+              alt="Notionity" 
+              width={24} 
+              height={24} 
+              className="object-contain"
+            />
             
           </div>
           {(isOpen || isMobile) && (
