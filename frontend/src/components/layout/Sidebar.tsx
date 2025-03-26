@@ -56,7 +56,7 @@ export function Sidebar({ isOpen, setIsOpen, isMobile = false, id = 'sidebar' }:
       {/* Logo et titre */}
       <div className="flex h-16 items-center justify-center border-b border-gray-200 dark:border-gray-700 px-6">
         <Link href="/" className="flex items-center space-x-3">
-          <div className="h-8 w-8 rounded-md bg-blue-600 dark:bg-blue-500 flex items-center justify-center">
+          <div className="h-8 w-8 rounded-md bg-blue-300 dark:bg-blue-400 flex items-center justify-center">
           <Image 
               src="/Notion_CRM-.png" 
               alt="Notionity" 
