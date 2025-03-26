@@ -298,7 +298,7 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
               id="pipelineId"
               value={filters.pipelineId || ''}
               onChange={handleFilterChange}
-              className="rounded-md border-gray-300 py-2 pl-3 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              className="rounded-md border-gray-300 dark:border-gray-600 py-2 pl-3 pr-10 text-sm text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:focus:ring-blue-400"
             >
               <option value="">Tous les pipelines</option>
               {pipelines.map(pipeline => (
@@ -313,7 +313,7 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
               id="status"
               value={filters.status || ''}
               onChange={handleFilterChange}
-              className="rounded-md border-gray-300 py-2 pl-3 pr-10 text-sm text-gray-700 focus:border-blue-500 focus:outline-none focus:ring-blue-500"
+              className="rounded-md border-gray-300 dark:border-gray-600 py-2 pl-3 pr-10 text-sm text-gray-700 dark:text-gray-200 dark:bg-gray-700 focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:focus:ring-blue-400"
             >
               <option value="">Tous les statuts</option>
               <option value="active">En cours</option>
@@ -325,9 +325,9 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
         
         {/* Filtres avancés */}
         {showFilters && (
-          <div className="mt-4 pt-4 border-t border-gray-200 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
-              <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="search" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Recherche
               </label>
               <input
@@ -335,13 +335,13 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
                 name="search"
                 id="search"
                 placeholder="Rechercher par nom..."
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 sm:text-sm"
                 onChange={(e) => setFilters(prev => ({ ...prev, search: e.target.value }))}
               />
             </div>
             
             <div>
-              <label htmlFor="minValue" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="minValue" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Valeur minimale
               </label>
               <input
@@ -349,13 +349,13 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
                 name="minValue"
                 id="minValue"
                 placeholder="Valeur min..."
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 sm:text-sm"
                 onChange={(e) => setFilters(prev => ({ ...prev, minValue: e.target.value ? parseFloat(e.target.value) : undefined }))}
               />
             </div>
             
             <div>
-              <label htmlFor="maxValue" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="maxValue" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Valeur maximale
               </label>
               <input
@@ -363,7 +363,7 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
                 name="maxValue"
                 id="maxValue"
                 placeholder="Valeur max..."
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 sm:text-sm"
                 onChange={(e) => setFilters(prev => ({ ...prev, maxValue: e.target.value ? parseFloat(e.target.value) : undefined }))}
               />
             </div>
@@ -373,14 +373,14 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
 
       {/* Vue liste */}
       {viewMode === 'list' && (
-        <div className="bg-white shadow rounded-lg overflow-hidden border border-gray-100">
+        <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-300">
+            <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
               <thead>
-                <tr className="bg-gray-50">
+                <tr className="bg-gray-50 dark:bg-gray-700">
                   <th 
                     scope="col" 
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-medium text-gray-900 sm:pl-6 cursor-pointer"
+                    className="py-3.5 pl-4 pr-3 text-left text-sm font-medium text-gray-900 dark:text-gray-200 sm:pl-6 cursor-pointer"
                     onClick={() => handleSort('name')}
                   >
                     <span className="group inline-flex items-center">
@@ -388,12 +388,12 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
                       {getSortIcon('name')}
                     </span>
                   </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-medium text-gray-900">
+                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200">
                     Pipeline / Étape
                   </th>
                   <th 
                     scope="col" 
-                    className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 cursor-pointer"
+                    className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200 cursor-pointer"
                     onClick={() => handleSort('value')}
                   >
                     <span className="group inline-flex items-center">
@@ -401,12 +401,12 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
                       {getSortIcon('value')}
                     </span>
                   </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-medium text-gray-900">
+                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200">
                     Statut
                   </th>
                   <th 
                     scope="col" 
-                    className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 cursor-pointer"
+                    className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200 cursor-pointer"
                     onClick={() => handleSort('updatedAt')}
                   >
                     <span className="group inline-flex items-center">
@@ -419,52 +419,52 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {isLoading ? (
                   Array.from({ length: 5 }).map((_, i) => (
                     <tr key={i} className="animate-pulse">
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6">
-                        <div className="h-4 bg-gray-200 rounded w-24"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-24"></div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4">
-                        <div className="h-4 bg-gray-200 rounded w-32"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-32"></div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4">
-                        <div className="h-4 bg-gray-200 rounded w-16"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-16"></div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4">
-                        <div className="h-4 bg-gray-200 rounded w-20"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-20"></div>
                       </td>
                       <td className="whitespace-nowrap px-3 py-4">
-                        <div className="h-4 bg-gray-200 rounded w-24"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-24"></div>
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <div className="h-4 bg-gray-200 rounded w-8"></div>
+                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-8"></div>
                       </td>
                     </tr>
                   ))
                 ) : deals.length === 0 ? (
                   <tr>
-                    <td colSpan={6} className="py-8 text-center text-sm text-gray-500">
+                    <td colSpan={6} className="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
                       <div className="flex flex-col items-center justify-center">
-                        <ShoppingBagIcon className="h-10 w-10 text-gray-400 mb-2" />
+                        <ShoppingBagIcon className="h-10 w-10 text-gray-400 dark:text-gray-500 mb-2" />
                         <p>Aucun deal trouvé</p>
-                        <p className="text-xs text-gray-400 mt-1">Modifiez vos filtres ou créez un nouveau deal</p>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Modifiez vos filtres ou créez un nouveau deal</p>
                       </div>
                     </td>
                   </tr>
                 ) : (
                   deals.map(deal => (
-                    <tr key={deal.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                        <Link href={`/deals/${deal.id}`} className="hover:text-blue-600 hover:underline">
+                    <tr key={deal.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100 sm:pl-6">
+                        <Link href={`/deals/${deal.id}`} className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
                           {deal.name}
                         </Link>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                         {deal.pipeline?.name || 'N/A'} / {deal.stage?.name || 'N/A'}
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
                         {formatCurrency(deal.value)}
                       </td>
                       <td className="whitespace-nowrap px-3 py-4 text-sm">
@@ -473,13 +473,13 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
                           {getStatusLabel(deal.status)}
                         </span>
                       </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
                         {new Date(deal.updatedAt).toLocaleDateString()}
                       </td>
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <Link 
                           href={`/deals/${deal.id}/edit`} 
-                          className="text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded transition-colors"
+                          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-800/40 px-2.5 py-1 rounded transition-colors"
                         >
                           Modifier
                         </Link>
@@ -498,17 +498,17 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {isLoading ? (
       Array.from({ length: 6 }).map((_, i) => (
-        <div key={i} className="animate-pulse bg-white rounded-lg shadow-sm h-40"></div>
+        <div key={i} className="animate-pulse bg-white dark:bg-gray-800 rounded-lg shadow-sm h-40"></div>
       ))
     ) : deals.length === 0 ? (
-      <div className="col-span-full bg-white rounded-lg shadow-sm p-8 text-center">
-        <ShoppingBagIcon className="h-12 w-12 text-gray-400 mx-auto mb-3" />
-        <h3 className="text-base font-medium text-gray-900">Aucun deal trouvé</h3>
-        <p className="mt-1 text-sm text-gray-500">Modifiez vos filtres ou créez un nouveau deal</p>
+      <div className="col-span-full bg-white dark:bg-gray-800 rounded-lg shadow-sm p-8 text-center">
+        <ShoppingBagIcon className="h-12 w-12 text-gray-400 dark:text-gray-500 mx-auto mb-3" />
+        <h3 className="text-base font-medium text-gray-900 dark:text-white">Aucun deal trouvé</h3>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Modifiez vos filtres ou créez un nouveau deal</p>
         <div className="mt-6">
           <Link
             href="/deals/new"
-            className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700"
+            className="inline-flex items-center rounded-md bg-blue-600 dark:bg-blue-500 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors"
           >
             <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" />
             Nouveau deal
@@ -519,18 +519,18 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
       deals.map(deal => {
         // Appliquer une couleur de bordure basée sur le statut plutôt que sur le nom
         const statusBorderClass = 
-          deal.status === 'won' ? 'border-green-200 bg-green-50/30' : 
-          deal.status === 'lost' ? 'border-red-200 bg-red-50/30' : 
-          'border-blue-200 bg-blue-50/30';
+          deal.status === 'won' ? 'border-green-200 bg-green-50/30 dark:border-green-800 dark:bg-green-900/20' : 
+          deal.status === 'lost' ? 'border-red-200 bg-red-50/30 dark:border-red-800 dark:bg-red-900/20' : 
+          'border-blue-200 bg-blue-50/30 dark:border-blue-800 dark:bg-blue-900/20';
           
         return (
           <div
             key={deal.id}
-            className={`bg-white rounded-lg shadow-sm overflow-hidden border ${statusBorderClass} hover:shadow-md transition-all`}
+            className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden border ${statusBorderClass} hover:shadow-md transition-all`}
           >
             <div className="p-5">
               <div className="flex justify-between items-start">
-                <Link href={`/deals/${deal.id}`} className="text-lg font-medium text-gray-900 hover:text-blue-700 transition-colors">
+                <Link href={`/deals/${deal.id}`} className="text-lg font-medium text-gray-900 dark:text-white hover:text-blue-700 dark:hover:text-blue-400 transition-colors">
                   {deal.name}
                 </Link>
                 <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusBadgeClass(deal.status)}`}>
@@ -541,32 +541,32 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
               
               <div className="mt-4 space-y-3">
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500">Pipeline / Étape</span>
-                  <span className="text-sm font-medium text-gray-900">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Pipeline / Étape</span>
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
                     {deal.pipeline?.name || 'N/A'} / {deal.stage?.name || 'N/A'}
                   </span>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500">Valeur</span>
-                  <span className="text-sm font-bold text-blue-700">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Valeur</span>
+                  <span className="text-sm font-bold text-blue-700 dark:text-blue-400">
                     {formatCurrency(deal.value)}
                   </span>
                 </div>
                 
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500">Dernière mise à jour</span>
-                  <span className="text-sm text-gray-700">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Dernière mise à jour</span>
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
                     {new Date(deal.updatedAt).toLocaleDateString()}
                   </span>
                 </div>
               </div>
             </div>
             
-            <div className="bg-white px-5 py-3 border-t border-gray-200">
+            <div className="bg-white dark:bg-gray-800 px-5 py-3 border-t border-gray-200 dark:border-gray-700">
               <Link 
                 href={`/deals/${deal.id}/edit`} 
-                className="text-blue-600 hover:text-blue-800 text-sm font-medium flex items-center justify-center"
+                className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 text-sm font-medium flex items-center justify-center"
               >
                 <svg className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
