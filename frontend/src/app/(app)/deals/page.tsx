@@ -340,33 +340,6 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
               />
             </div>
             
-            <div>
-              <label htmlFor="minValue" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Valeur minimale
-              </label>
-              <input
-                type="number"
-                name="minValue"
-                id="minValue"
-                placeholder="Valeur min..."
-                className="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 sm:text-sm"
-                onChange={(e) => setFilters(prev => ({ ...prev, minValue: e.target.value ? parseFloat(e.target.value) : undefined }))}
-              />
-            </div>
-            
-            <div>
-              <label htmlFor="maxValue" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Valeur maximale
-              </label>
-              <input
-                type="number"
-                name="maxValue"
-                id="maxValue"
-                placeholder="Valeur max..."
-                className="block w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-200 shadow-sm focus:border-blue-500 focus:ring-blue-500 dark:focus:ring-blue-400 sm:text-sm"
-                onChange={(e) => setFilters(prev => ({ ...prev, maxValue: e.target.value ? parseFloat(e.target.value) : undefined }))}
-              />
-            </div>
           </div>
         )}
       </div>
