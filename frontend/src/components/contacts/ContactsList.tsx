@@ -207,85 +207,88 @@ export function ContactsList({ contacts, onDelete, viewMode = 'grid' }: Contacts
   }
 
   // Mode grille par défaut
-  return (
-    <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {contacts.map((contact, index) => (
-        <li key={contact.id} className="col-span-1 divide-y divide-gray-200 dark:divide-gray-700 rounded-lg bg-white dark:bg-gray-800 shadow transition-shadow hover:shadow-md relative">
-          <div className="flex w-full items-center justify-between space-x-6 p-6">
-            <div className="flex-1 truncate">
-              <Link href={`/contacts/${contact.id}`} className="hover:text-blue-600 dark:hover:text-blue-400">
-                <div className="flex items-center space-x-3">
-                  <h3 className="truncate text-base font-medium text-gray-900 dark:text-white">
-                    {contact.firstName} {contact.lastName}
-                  </h3>
-                </div>
-              </Link>
-              
-              {contact.company && (
-                <p className="mt-1 flex items-center truncate text-sm text-gray-500 dark:text-gray-400">
-                  <BuildingOfficeIcon className="mr-1.5 h-4 w-4 flex-shrink-0 text-gray-400 dark:text-gray-500" />
-                  {contact.company}
-                </p>
-              )}
-              
-              {contact.tags && contact.tags.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-1">
-                  {contact.tags.map((tag) => (
-                    <span 
-                      key={tag.id} 
-                      className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-400 ring-1 ring-inset ring-blue-600/20 dark:ring-blue-400/30"
-                    >
-                      {tag.name}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div className="flex-shrink-0">
-              <div className={`h-12 w-12 rounded-full ${getAvatarColor(contact.firstName, contact.lastName)} flex items-center justify-center text-white text-sm font-medium`}>
-                {contact.firstName[0]}{contact.lastName[0]}
+  // Modifications à apporter uniquement à la partie "Mode grille" du composant ContactsList
+
+// Mode grille par défaut
+return (
+  <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    {contacts.map((contact, index) => (
+      <li key={contact.id} className="col-span-1 divide-y divide-gray-200 dark:divide-gray-600 rounded-lg bg-white dark:bg-gray-800/95 border border-transparent dark:border-gray-700 shadow-sm dark:shadow-gray-900/30 hover:shadow-md dark:hover:shadow-gray-900/50 transition-all relative">
+        <div className="flex w-full items-center justify-between space-x-6 p-6">
+          <div className="flex-1 truncate">
+            <Link href={`/contacts/${contact.id}`} className="hover:text-blue-600 dark:hover:text-blue-400">
+              <div className="flex items-center space-x-3">
+                <h3 className="truncate text-base font-medium text-gray-900 dark:text-white">
+                  {contact.firstName} {contact.lastName}
+                </h3>
               </div>
+            </Link>
+            
+            {contact.company && (
+              <p className="mt-1 flex items-center truncate text-sm text-gray-500 dark:text-gray-300">
+                <BuildingOfficeIcon className="mr-1.5 h-4 w-4 flex-shrink-0 text-gray-400 dark:text-gray-400" />
+                {contact.company}
+              </p>
+            )}
+            
+            {contact.tags && contact.tags.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1">
+                {contact.tags.map((tag) => (
+                  <span 
+                    key={tag.id} 
+                    className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/50 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-300 ring-1 ring-inset ring-blue-600/20 dark:ring-blue-400/40"
+                  >
+                    {tag.name}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="flex-shrink-0">
+            <div className={`h-12 w-12 rounded-full ${getAvatarColor(contact.firstName, contact.lastName)} flex items-center justify-center text-white text-sm font-medium border-2 border-white dark:border-gray-700 shadow-sm`}>
+              {contact.firstName[0]}{contact.lastName[0]}
             </div>
           </div>
-          <div>
-            <div className="-mt-px flex divide-x divide-gray-200 dark:divide-gray-700">
-              <div className="flex w-0 flex-1">
+        </div>
+        <div>
+          <div className="-mt-px flex divide-x divide-gray-200 dark:divide-gray-600">
+            <div className="flex w-0 flex-1">
+              <Link
+                href={`mailto:${contact.email}`}
+                className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 group bg-gray-50/50 dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700"
+              >
+                <EnvelopeIcon className="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
+                Email
+              </Link>
+            </div>
+            <div className="-ml-px flex w-0 flex-1">
+              {contact.phone ? (
                 <Link
-                  href={`mailto:${contact.email}`}
-                  className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 group"
+                  href={`tel:${contact.phone}`}
+                  className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 group bg-gray-50/50 dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700"
                 >
-                  <EnvelopeIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
-                  Email
-                </Link>
-              </div>
-              <div className="-ml-px flex w-0 flex-1">
-                {contact.phone ? (
-                  <Link
-                    href={`tel:${contact.phone}`}
-                    className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 group"
-                  ><PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-500 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
+                  <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
                   Appeler
                 </Link>
-
-) : (
-  <span className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm text-gray-400 dark:text-gray-500">
-    <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
-    Pas de téléphone
-  </span>
-)}
-</div>
-</div>
-</div>
-<div className="absolute top-2 right-2">
-<AdaptiveMenu 
-contact={contact} 
-onDelete={onDelete} 
-index={index} 
-totalContacts={contacts.length}
-/>
-</div>
-</li>
-))}
-</ul>
+              ) : (
+                <span className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm text-gray-400 dark:text-gray-500 bg-gray-50/50 dark:bg-gray-700/50">
+                  <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
+                  Pas de téléphone
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <div className="absolute top-2 right-2">
+          <AdaptiveMenu 
+            contact={contact} 
+            onDelete={onDelete} 
+            index={index} 
+            totalContacts={contacts.length}
+          />
+        </div>
+      </li>
+    ))}
+  </ul>
 );
 }
