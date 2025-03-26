@@ -214,7 +214,7 @@ export function ContactsList({ contacts, onDelete, viewMode = 'grid' }: Contacts
 return (
   <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {contacts.map((contact, index) => (
-      <li key={contact.id} className="col-span-1 divide-y divide-gray-200 dark:divide-gray-600 rounded-lg bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow hover:shadow-md dark:shadow-gray-900/30 dark:hover:shadow-gray-900/50 transition-all relative">
+      <li key={contact.id} className="col-span-1 divide-y divide-gray-400 dark:divide-gray-600 rounded-lg bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow hover:shadow-md dark:shadow-gray-900/30 dark:hover:shadow-gray-900/50 transition-all relative">
         <div className="flex w-full items-center justify-between space-x-6 p-6">
           <div className="flex-1 truncate">
             <Link href={`/contacts/${contact.id}`} className="hover:text-blue-600 dark:hover:text-blue-400">
