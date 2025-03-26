@@ -7,7 +7,8 @@ import { dealsApi, Deal } from '@/lib/api/deals';
 import { pipelinesApi, Pipeline } from '@/lib/api/pipelines';
 import { contactsApi, Contact } from '@/lib/api/contacts';
 import { ErrorAlert } from '@/components/ui/ErrorAlert';
-import { CalendarIcon, UserPlusIcon } from '@heroicons/react/24/outline';
+import { CalendarIcon, UserGroupIcon, UserPlusIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 interface DealFormProps {
   dealId?: string;
@@ -167,21 +168,23 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
   return (
     <form onSubmit={handleSubmit} className="space-y-8">
       {error && <ErrorAlert message={error} />}
-
+  
       <div className="space-y-6">
-        <div className="border-b border-gray-900/10 pb-6">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">
-            {dealId ? 'Modifier le deal' : 'Nouveau deal'}
-          </h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            {dealId
-              ? 'Modifiez les informations du deal'
-              : 'Créez un nouveau deal'}
-          </p>
-
+        <div className="border-b border-gray-200 dark:border-gray-700 pb-6">
+          <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6 mb-6">
+            <h2 className="text-xl font-semibold leading-7 text-gray-900 dark:text-white">
+              {dealId ? 'Modifier le deal' : 'Nouveau deal'}
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-300">
+              {dealId
+                ? 'Modifiez les informations du deal'
+                : 'Créez un nouveau deal et associez-le à un pipeline'}
+            </p>
+          </div>
+  
           <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-4 sm:grid-cols-6">
             <div className="sm:col-span-4">
-              <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
                 Nom du deal
               </label>
               <div className="mt-2">
@@ -192,16 +195,20 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:bg-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6"
+                  placeholder="Ex: Application mobile pour ABC Corp"
                 />
               </div>
             </div>
-
+  
             <div className="sm:col-span-2">
-              <label htmlFor="value" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="value" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
                 Valeur (€)
               </label>
-              <div className="mt-2">
+              <div className="mt-2 relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <span className="text-gray-500 dark:text-gray-400 sm:text-sm">€</span>
+                </div>
                 <input
                   type="number"
                   name="value"
@@ -211,13 +218,14 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                   step="0.01"
                   value={formData.value}
                   onChange={handleChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-2 pl-7 pr-3 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:bg-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6"
+                  placeholder="0.00"
                 />
               </div>
             </div>
-
+  
             <div className="sm:col-span-3">
-              <label htmlFor="pipelineId" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="pipelineId" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
                 Pipeline
               </label>
               <div className="mt-2">
@@ -227,7 +235,7 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                   required
                   value={formData.pipelineId}
                   onChange={handlePipelineChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6"
                 >
                   <option value="">Sélectionner un pipeline</option>
                   {pipelines.map(pipeline => (
@@ -238,9 +246,9 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                 </select>
               </div>
             </div>
-
+  
             <div className="sm:col-span-3">
-              <label htmlFor="stageId" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="stageId" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
                 Étape
               </label>
               <div className="mt-2">
@@ -251,7 +259,9 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                   value={formData.stageId}
                   onChange={handleChange}
                   disabled={!selectedPipeline}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  className={`block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ${
+                    !selectedPipeline ? 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400' : 'dark:bg-gray-700'
+                  } ring-gray-300 dark:ring-gray-600 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6`}
                 >
                   <option value="">Sélectionner une étape</option>
                   {selectedPipeline?.stages.map(stage => (
@@ -261,10 +271,15 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                   ))}
                 </select>
               </div>
+              {!selectedPipeline && (
+                <p className="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
+                  Sélectionnez d'abord un pipeline
+                </p>
+              )}
             </div>
-
+  
             <div className="sm:col-span-3">
-              <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="status" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
                 Statut
               </label>
               <div className="mt-2">
@@ -274,7 +289,7 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                   required
                   value={formData.status}
                   onChange={handleChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:bg-gray-700 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6"
                 >
                   <option value="active">En cours</option>
                   <option value="won">Gagné</option>
@@ -282,9 +297,9 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                 </select>
               </div>
             </div>
-
+  
             <div className="sm:col-span-3">
-              <label htmlFor="expectedCloseDate" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="expectedCloseDate" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
                 Date de clôture prévue
               </label>
               <div className="mt-2 relative">
@@ -294,38 +309,44 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                   id="expectedCloseDate"
                   value={formData.expectedCloseDate}
                   onChange={handleChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  className="block w-full rounded-md border-0 py-2 pl-3 pr-10 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:bg-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6"
                 />
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <CalendarIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                  <CalendarIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
                 </div>
               </div>
             </div>
-
+  
             <div className="col-span-full">
-              <label htmlFor="notes" className="block text-sm font-medium leading-6 text-gray-900">
+              <label htmlFor="notes" className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
                 Notes
               </label>
               <div className="mt-2">
                 <textarea
                   name="notes"
                   id="notes"
-                  rows={3}
+                  rows={4}
                   value={formData.notes}
                   onChange={handleChange}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
+                  placeholder="Ajoutez des détails importants sur ce deal..."
+                  className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 dark:text-white shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 dark:bg-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm sm:leading-6"
                 />
               </div>
             </div>
           </div>
         </div>
-
-        <div className="border-b border-gray-900/10 pb-6">
-          <h2 className="text-base font-semibold leading-7 text-gray-900">Contacts</h2>
-          <p className="mt-1 text-sm leading-6 text-gray-600">
-            Sélectionnez les contacts associés à ce deal
-          </p>
-
+  
+        <div className="border-b border-gray-200 dark:border-gray-700 pb-6">
+          <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg mb-4">
+            <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-white flex items-center">
+              <UserGroupIcon className="h-5 w-5 mr-2 text-gray-500 dark:text-gray-400" />
+              Contacts associés
+            </h2>
+            <p className="mt-1 text-sm leading-6 text-gray-600 dark:text-gray-400">
+              Sélectionnez les contacts associés à ce deal (cliquez pour sélectionner/désélectionner)
+            </p>
+          </div>
+  
           {contacts.length > 0 ? (
             <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {contacts.map(contact => (
@@ -333,19 +354,19 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                   key={contact.id}
                   className={`relative flex items-center space-x-3 rounded-lg border ${
                     formData.contactIds.includes(contact.id)
-                      ? 'bg-blue-50 border-blue-200'
-                      : 'bg-white border-gray-200'
-                  } px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-blue-500 hover:border-gray-300`}
+                      ? 'bg-blue-50 border-blue-200 dark:bg-blue-900/30 dark:border-blue-800'
+                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700'
+                  } px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-blue-500 hover:border-gray-300 dark:hover:border-gray-600 transition-colors`}
                 >
                   <div className={`flex-shrink-0 ${
                     formData.contactIds.includes(contact.id)
-                    ? 'bg-blue-500'
-                    : 'bg-gray-200'
+                    ? 'bg-blue-500 dark:bg-blue-600'
+                    : 'bg-gray-200 dark:bg-gray-700'
                   } flex items-center justify-center h-10 w-10 rounded-full`}>
                     <span className={`text-sm font-medium ${
                       formData.contactIds.includes(contact.id)
                       ? 'text-white'
-                      : 'text-gray-500'
+                      : 'text-gray-500 dark:text-gray-300'
                     }`}>
                       {contact.firstName[0]}{contact.lastName[0]}
                     </span>
@@ -357,41 +378,77 @@ export function DealForm({ dealId, initialPipelineId, initialStageId }: DealForm
                       onClick={() => handleContactToggle(contact.id)}
                     >
                       <span className="absolute inset-0" aria-hidden="true" />
-                      <p className="text-sm font-medium text-gray-900">{contact.firstName} {contact.lastName}</p>
-                      <p className="truncate text-sm text-gray-500">{contact.email}</p>
+                      <p className="text-sm font-medium text-gray-900 dark:text-white">{contact.firstName} {contact.lastName}</p>
+                      <p className="truncate text-sm text-gray-500 dark:text-gray-400">{contact.email}</p>
                     </button>
                   </div>
+                  {formData.contactIds.includes(contact.id) && (
+                    <div className="flex-shrink-0">
+                      <div className="h-5 w-5 text-blue-500 dark:text-blue-400">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           ) : (
-            <div className="text-center mt-4 p-4 bg-gray-50 rounded-lg">
-              <UserPlusIcon className="mx-auto h-12 w-12 text-gray-400" />
-              <h3 className="mt-2 text-sm font-medium text-gray-900">Aucun contact</h3>
-              <p className="mt-1 text-sm text-gray-500">
+            <div className="text-center mt-4 p-6 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <UserPlusIcon className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" />
+              <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">Aucun contact</h3>
+              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
                 Créez des contacts pour les associer à ce deal.
               </p>
+              <div className="mt-6">
+                <Link href="/contacts/new" className="inline-flex items-center rounded-md bg-blue-600 dark:bg-blue-500 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">
+                  <UserPlusIcon className="h-5 w-5 mr-2" />
+                  Créer un contact
+                </Link>
+              </div>
             </div>
           )}
         </div>
       </div>
-
-      <div className="flex justify-end gap-x-6">
-        <button
-          type="button"
-          onClick={() => router.back()}
-          className="text-sm font-semibold leading-6 text-gray-900"
-        >
-          Annuler
-        </button>
-        <button
-          type="submit"
-          disabled={isSaving}
-          className="rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-        >
-          {isSaving ? 'Enregistrement...' : 'Enregistrer'}
-        </button>
-      </div>
-    </form>
-  );
+      <div className="flex justify-end gap-x-4">
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 -ml-1 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Annuler
+      </button>
+      <button
+        type="submit"
+        disabled={isSaving}
+        className={`inline-flex items-center rounded-md px-4 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-500 ${
+          isSaving 
+            ? 'bg-blue-400 dark:bg-blue-500/70 cursor-not-allowed' 
+            : 'bg-blue-600 hover:bg-blue-500 dark:bg-blue-500 dark:hover:bg-blue-600'
+        }`}
+      >
+        {isSaving ? (
+          <>
+            <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Enregistrement...
+          </>
+        ) : (
+          <>
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 -ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            Enregistrer
+          </>
+        )}
+      </button>
+    </div>
+  </form>
+);
 }
