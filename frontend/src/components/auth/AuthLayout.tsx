@@ -162,7 +162,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               transition={{ duration: 0.5 }}
               className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white text-center"
             >
-              <span className="block text-blue-600 dark:text-blue-400">NotionCRM</span>
+              <span className="block text-blue-600 dark:text-blue-400">NovumCRM for Notion</span>
               <span className="block text-3xl sm:text-4xl mt-2">Simplifiez votre relation client</span>
             </motion.h1>
             <motion.p 
@@ -401,16 +401,16 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               <div className="h-8 w-8 rounded-md bg-blue-600 dark:bg-blue-500 flex items-center justify-center">
               <img 
                   src={logoImg.src} 
-                  alt="NotionCRM Logo"
+                  alt="NovumCRM Logo"
                   width={64}
                   height={64}
                   className="object-contain"
                 />
               </div>
-              <span className="ml-2 text-lg font-semibold text-gray-900 dark:text-white">NotionCRM</span>
+              <span className="ml-2 text-lg font-semibold text-gray-900 dark:text-white">NovumCRM for Notion</span>
             </div>
             <div className="mt-4 text-center text-sm text-gray-500 dark:text-gray-400">
-              © {new Date().getFullYear()} NotionCRM. Tous droits réservés.
+              © {new Date().getFullYear()} NovumCRM. Tous droits réservés.
             </div>
           </div>
         </div>
