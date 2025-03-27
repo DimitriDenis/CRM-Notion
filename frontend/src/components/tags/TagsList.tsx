@@ -75,12 +75,7 @@ export function TagsList({ tags, onEdit, onDelete, viewMode = 'grid' }: TagsList
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                   {new Date(tag.createdAt).toLocaleDateString()}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
-                    <UserGroupIcon className="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400 dark:text-gray-500" />
-                    <span>{getRandomCount(tag.name)} contacts</span>
-                  </div>
-                </td>
+              
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div className="flex justify-end space-x-3">
                     <button
