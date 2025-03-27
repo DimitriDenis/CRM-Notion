@@ -22,11 +22,8 @@ import {
 import { Disclosure, RadioGroup, Switch } from '@headlessui/react';
 
 const settingsSections = [
-  { id: 'account', name: 'Compte utilisateur', icon: UserIcon },
+  
   { id: 'integration', name: 'Intégration Notion', icon: CloudArrowUpIcon },
-  { id: 'notifications', name: 'Notifications', icon: BellIcon },
-  { id: 'security', name: 'Sécurité', icon: ShieldCheckIcon },
-  { id: 'api', name: 'Clés API', icon: KeyIcon },
   { id: 'appearance', name: 'Apparence', icon: Cog6ToothIcon },
   { id: 'legal', name: 'Mentions légales', icon: DocumentTextIcon },
 ];
