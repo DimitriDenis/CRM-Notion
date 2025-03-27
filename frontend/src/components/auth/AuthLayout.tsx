@@ -15,23 +15,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <motion.h1 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white"
-            >
-              <span className="block text-blue-600 dark:text-blue-400">NotionCRM</span>
-              <span className="block text-3xl sm:text-4xl mt-2">Simplifiez votre relation client</span>
-            </motion.h1>
-            <motion.p 
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-4 max-w-xl mx-auto text-xl text-gray-600 dark:text-gray-300"
-            >
-              Gérez vos contacts, deals et pipelines directement dans Notion.
-            </motion.p>
+            
           </div>
         </div>
       </div>
