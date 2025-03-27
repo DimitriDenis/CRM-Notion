@@ -7,6 +7,7 @@ import { ChartBarIcon, CubeTransparentIcon, DocumentTextIcon, UserGroupIcon } fr
 import { motion } from 'framer-motion';
 import { ReactNode, useEffect, useState } from 'react';
 import dashboardImg from '../../../public/dashboard.png'
+import logoImg from '../../../public/Notion_CRM-.png'
 
 
 const features = [
@@ -147,7 +148,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             >
               <div className="h-16 w-16 relative">
                 <img 
-                  src="/Notion_CRM-png" 
+                  src={logoImg.src} 
                   alt="NotionCRM Logo"
                   width={64}
                   height={64}
@@ -294,7 +295,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      
+
       {/* Preview Section à ajouter dans votre AuthLayout avant le footer */}
 <div className="bg-gray-50 dark:bg-gray-800 py-16">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -398,7 +399,13 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <div className="flex flex-col items-center justify-center">
             <div className="flex items-center">
               <div className="h-8 w-8 rounded-md bg-blue-600 dark:bg-blue-500 flex items-center justify-center">
-                <span className="text-white font-bold">N</span>
+              <img 
+                  src={logoImg.src} 
+                  alt="NotionCRM Logo"
+                  width={64}
+                  height={64}
+                  className="object-contain"
+                />
               </div>
               <span className="ml-2 text-lg font-semibold text-gray-900 dark:text-white">NotionCRM</span>
             </div>
