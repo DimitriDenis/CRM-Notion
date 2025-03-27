@@ -6,6 +6,7 @@
 import { ChartBarIcon, CubeTransparentIcon, DocumentTextIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
+import dashboardImg from '../../../public/dashboard.png'
 
 
 const features = [
@@ -177,7 +178,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       {/* Contenu de l'aperçu */}
       <div className="relative z-10 p-2 bg-white dark:bg-gray-900">
         <img
-          src="./dashboard.png"
+          src={dashboardImg.src}
           alt="NotionCRM Dashboard"
           className="rounded-md shadow-lg w-full"
         />
