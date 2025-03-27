@@ -104,24 +104,6 @@ export default function HelpPage() {
       )
     },
     {
-      question: "Comment fonctionne la synchronisation avec Notion ?",
-      answer: (
-        <div>
-          <p>
-            NotionCRM synchronise automatiquement vos données avec Notion. Cela signifie que :
-          </p>
-          <ul className="list-disc list-inside mt-2 space-y-1">
-            <li>Les contacts, deals et pipelines créés dans NotionCRM apparaissent dans vos bases de données Notion</li>
-            <li>Les modifications effectuées dans Notion sont reflétées dans NotionCRM</li>
-            <li>Vous pouvez exploiter la puissance de Notion pour personnaliser davantage vos vues et rapports</li>
-          </ul>
-          <p className="mt-2">
-            La synchronisation est bidirectionnelle et se fait automatiquement en arrière-plan.
-          </p>
-        </div>
-      )
-    },
-    {
       question: "Comment voir mes statistiques de vente ?",
       answer: (
         <div>
@@ -143,33 +125,6 @@ export default function HelpPage() {
     }
   ];
 
-  // Sections de ressources
-  const resources = [
-    {
-      title: "Démarrage rapide",
-      description: "Apprenez les bases pour commencer à utiliser NotionCRM efficacement.",
-      icon: PlayCircleIcon,
-      link: "#quick-start"
-    },
-    {
-      title: "Tutoriels vidéo",
-      description: "Visionnez nos tutoriels pour maîtriser les fonctionnalités avancées.",
-      icon: AcademicCapIcon,
-      link: "#video-tutorials"
-    },
-    {
-      title: "Bonnes pratiques",
-      description: "Conseils pour optimiser votre gestion de la relation client.",
-      icon: LightBulbIcon,
-      link: "#best-practices"
-    },
-    {
-      title: "Assistance",
-      description: "Besoin d'aide ? Contactez notre équipe de support.",
-      icon: ChatBubbleLeftRightIcon,
-      link: "#support"
-    }
-  ];
 
   return (
     <div className="max-w-5xl mx-auto">
@@ -218,7 +173,7 @@ export default function HelpPage() {
               <strong className="text-gray-900 dark:text-white">Tableau de bord</strong> - Visualisez vos performances et les tendances mensuelles.
             </li>
             <li className="text-gray-600 dark:text-gray-300">
-              <strong className="text-gray-900 dark:text-white">Intégration avec Notion</strong> - Synchronisation bidirectionnelle avec vos bases Notion.
+              <strong className="text-gray-900 dark:text-white">Export vers Notion</strong> - Exportation des données vers Notion.
             </li>
           </ul>
           
@@ -328,37 +283,6 @@ export default function HelpPage() {
         </div>
       </div>
   
-      {/* Ressources supplémentaires */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 p-6 mb-8">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
-          <BookOpenIcon className="h-6 w-6 text-blue-600 dark:text-blue-400 mr-2" />
-          Ressources supplémentaires
-        </h2>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {resources.map((resource, index) => (
-            <Link 
-              key={index} 
-              href={resource.link} 
-              className="group block p-5 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-300 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
-            >
-              <div className="flex items-start">
-                <div className="p-2 bg-blue-100 dark:bg-blue-900/50 rounded-lg group-hover:bg-blue-200 dark:group-hover:bg-blue-800/60 transition-colors">
-                  <resource.icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                </div>
-                <div className="ml-4">
-                  <h3 className="text-base font-medium text-gray-900 dark:text-white group-hover:text-blue-700 dark:group-hover:text-blue-400 transition-colors">
-                    {resource.title}
-                  </h3>
-                  <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                    {resource.description}
-                  </p>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
   
       {/* Contact support */}
       <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-6 mb-8 text-center">
