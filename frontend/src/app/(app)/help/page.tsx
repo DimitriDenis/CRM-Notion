@@ -191,7 +191,7 @@ export default function HelpPage() {
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-gray-50 dark:bg-gray-750/50 rounded-lg p-5">
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
             <h3 className="font-medium text-gray-900 dark:text-white text-lg mb-2">1. Gestion des contacts</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-3">
               Créez et organisez votre base de contacts pour centraliser les informations de vos clients et prospects.
@@ -205,7 +205,7 @@ export default function HelpPage() {
             </Link>
           </div>
           
-          <div className="bg-gray-50 dark:bg-gray-750/50 rounded-lg p-5">
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
             <h3 className="font-medium text-gray-900 dark:text-white text-lg mb-2">2. Configuration des pipelines</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-3">
               Créez des pipelines qui reflètent votre processus de vente avec des étapes personnalisées.
@@ -219,7 +219,7 @@ export default function HelpPage() {
             </Link>
           </div>
           
-          <div className="bg-gray-50 dark:bg-gray-750/50 rounded-lg p-5">
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
             <h3 className="font-medium text-gray-900 dark:text-white text-lg mb-2">3. Gestion des deals</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-3">
               Ajoutez des opportunités commerciales et suivez leur progression à travers votre pipeline.
@@ -233,7 +233,7 @@ export default function HelpPage() {
             </Link>
           </div>
           
-          <div className="bg-gray-50 dark:bg-gray-750/50 rounded-lg p-5">
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-5">
             <h3 className="font-medium text-gray-900 dark:text-white text-lg mb-2">4. Analyse des performances</h3>
             <p className="text-gray-600 dark:text-gray-300 mb-3">
               Consultez le tableau de bord pour analyser vos performances et suivre vos tendances mensuelles.
