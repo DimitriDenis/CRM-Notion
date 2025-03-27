@@ -5,7 +5,7 @@
 
 import { ChartBarIcon, CubeTransparentIcon, DocumentTextIcon, UserGroupIcon } from '@heroicons/react/24/outline';
 import { motion } from 'framer-motion';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import dashboardImg from '../../../public/dashboard.png'
 
 
@@ -32,9 +32,103 @@ const features = [
   },
 ];
 
-export default function AuthLayout({ children }: { children: ReactNode }) {
+const FloatingParticles = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {[...Array(15)].map((_, i) => (
+        <motion.div
+          key={i}
+          className={`absolute rounded-full ${
+            i % 3 === 0 
+              ? "bg-blue-400/20 dark:bg-blue-500/20" 
+              : i % 3 === 1 
+              ? "bg-indigo-400/20 dark:bg-indigo-500/20"
+              : "bg-purple-400/20 dark:bg-purple-500/20"
+          }`}
+          style={{
+            width: `${Math.random() * 30 + 10}px`,
+            height: `${Math.random() * 30 + 10}px`,
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+          }}
+          animate={{
+            x: [0, Math.random() * 50 - 25],
+            y: [0, Math.random() * 50 - 25],
+            opacity: [0.3, 0.8, 0.3],
+          }}
+          transition={{
+            duration: Math.random() * 5 + 10,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+};
+
+// Animation de fond avec des formes
+const BackgroundAnimation = () => {
+  return (
+    <div className="absolute inset-0 -z-10 overflow-hidden">
+      <motion.div 
+        className="absolute -top-20 -right-20 w-72 h-72 bg-blue-200/30 dark:bg-blue-900/20 rounded-full blur-3xl"
+        animate={{ 
+          scale: [1, 1.2, 1],
+          rotate: [0, 10, 0],
+          opacity: [0.4, 0.5, 0.4]
+        }}
+        transition={{ 
+          duration: 15, 
+          repeat: Infinity,
+          repeatType: "reverse" 
+        }}
+      />
+      <motion.div 
+        className="absolute -bottom-40 -left-20 w-80 h-80 bg-indigo-200/30 dark:bg-indigo-900/20 rounded-full blur-3xl"
+        animate={{ 
+          scale: [1, 1.3, 1],
+          rotate: [0, -10, 0],
+          opacity: [0.3, 0.4, 0.3]
+        }}
+        transition={{ 
+          duration: 18, 
+          repeat: Infinity,
+          repeatType: "reverse",
+          delay: 2
+        }}
+      />
+    </div>
+  );
+};
+
+// Animation du bouton "pulse"
+const PulseEffect = () => {
+  return (
+    <span className="absolute inset-0 rounded-md">
+      <span className="absolute inset-0 rounded-md bg-blue-400 dark:bg-blue-600 animate-ping opacity-20"></span>
+    </span>
+  );
+};
+
+export default function AuthLayout({ children }: { children: ReactNode }) {
+
+  const [animatedFeature, setAnimatedFeature] = useState(0);
+
+  // Rotation automatique de la fonctionnalité mise en évidence
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAnimatedFeature((prev) => (prev + 1) % features.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+  
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 relative">
+       <BackgroundAnimation />
+       <FloatingParticles />
+
       {/* Hero Section */}
       <div className="relative pt-12 pb-6 sm:pt-16 md:pt-20 lg:pt-24">
         <div className="absolute inset-0 overflow-hidden z-0">
@@ -43,12 +137,29 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
+          {/* Logo + Titre */}
+          <div className="flex flex-col items-center justify-center mb-8">
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="bg-white dark:bg-gray-800 p-3 rounded-xl shadow-lg mb-6"
+            >
+              <div className="h-16 w-16 relative">
+                <img 
+                  src="/Notion_CRM-png" 
+                  alt="NotionCRM Logo"
+                  width={64}
+                  height={64}
+                  className="object-contain"
+                />
+              </div>
+            </motion.div>
             <motion.h1 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white"
+              className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white text-center"
             >
               <span className="block text-blue-600 dark:text-blue-400">NotionCRM</span>
               <span className="block text-3xl sm:text-4xl mt-2">Simplifiez votre relation client</span>
@@ -57,7 +168,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="mt-4 max-w-xl mx-auto text-xl text-gray-600 dark:text-gray-300"
+              className="mt-4 max-w-xl mx-auto text-xl text-gray-600 dark:text-gray-300 text-center"
             >
               Gérez vos contacts, deals et pipelines directement dans Notion.
             </motion.p>
@@ -67,13 +178,23 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
 
       {/* Login Section */}
       <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10 -mt-6">
-        <div className="bg-white dark:bg-gray-800 py-8 px-4 shadow-lg sm:rounded-lg sm:px-10 border border-gray-200 dark:border-gray-700">
-          {children}
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="bg-white dark:bg-gray-800 py-8 px-4 shadow-xl sm:rounded-xl sm:px-10 border border-gray-200 dark:border-gray-700 relative"
+        >
+          <div className="absolute -top-3 right-3 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-3 py-1 rounded-full text-xs font-semibold">
+            Gratuit
+          </div>
+          <div className="relative">
+            {children}
+          </div>
+        </motion.div>
       </div>
 
-      {/* Features Section */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Features Section with Animation */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
             Tout ce dont vous avez besoin
@@ -91,8 +212,13 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="relative p-6 bg-white dark:bg-gray-800 rounded-xl overflow-hidden group hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700"
+              className={`relative p-6 bg-white dark:bg-gray-800 rounded-xl overflow-hidden group hover:shadow-md transition-shadow border border-gray-200 dark:border-gray-700 ${
+                animatedFeature === index ? 'ring-2 ring-blue-500 dark:ring-blue-400' : ''
+              }`}
             >
+              {animatedFeature === index && (
+                <PulseEffect />
+              )}
               <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-blue-600 dark:bg-blue-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
               <div className="flex items-start">
                 <div className="shrink-0">
@@ -110,9 +236,23 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
-      {/* How it works */}
-      <div className="bg-white dark:bg-gray-800 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+     {/* How it works */}
+     <div className="bg-white dark:bg-gray-800 py-16 relative overflow-hidden">
+        <motion.div 
+          className="absolute top-0 right-0 w-64 h-64 bg-blue-100/30 dark:bg-blue-900/20 rounded-full -translate-y-1/2 translate-x-1/3 blur-3xl"
+          animate={{ 
+            scale: [1, 1.2, 1],
+            y: [-150, -140, -150],
+            opacity: [0.3, 0.5, 0.3]
+          }}
+          transition={{ 
+            duration: 10, 
+            repeat: Infinity, 
+            repeatType: "reverse" 
+          }}
+        />
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
               Comment ça fonctionne
@@ -123,27 +263,38 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           </div>
 
           <div className="flex flex-col md:flex-row justify-between items-center md:items-start space-y-10 md:space-y-0 md:space-x-10">
-            <div className="text-center max-w-xs">
-              <div className="w-16 h-16 mx-auto bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl font-bold mb-4">1</div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Connectez-vous</h3>
-              <p className="text-gray-600 dark:text-gray-300">Utilisez votre compte Notion pour vous connecter en un clic</p>
-            </div>
-
-            <div className="text-center max-w-xs">
-              <div className="w-16 h-16 mx-auto bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl font-bold mb-4">2</div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Configurez</h3>
-              <p className="text-gray-600 dark:text-gray-300">Adaptez les pipelines et tags selon vos besoins</p>
-            </div>
-
-            <div className="text-center max-w-xs">
-              <div className="w-16 h-16 mx-auto bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl font-bold mb-4">3</div>
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Commencez</h3>
-              <p className="text-gray-600 dark:text-gray-300">Gérez vos contacts et deals efficacement au même endroit</p>
-            </div>
+            {[
+              { step: "1", title: "Connectez-vous", description: "Utilisez votre compte Notion pour vous connecter en un clic" },
+              { step: "2", title: "Configurez", description: "Adaptez les pipelines et tags selon vos besoins" },
+              { step: "3", title: "Commencez", description: "Gérez vos contacts et deals efficacement au même endroit" }
+            ].map((item, index) => (
+              <motion.div 
+                key={index}
+                className="text-center max-w-xs"
+                whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              >
+                <motion.div 
+                  className="w-16 h-16 mx-auto bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center text-blue-600 dark:text-blue-400 text-xl font-bold mb-4"
+                  animate={{ 
+                    boxShadow: ['0 0 0 0 rgba(59, 130, 246, 0)', '0 0 0 10px rgba(59, 130, 246, 0.1)', '0 0 0 0 rgba(59, 130, 246, 0)'],
+                  }}
+                  transition={{ 
+                    duration: 3,
+                    repeat: Infinity,
+                    delay: index * 1
+                  }}
+                >
+                  {item.step}
+                </motion.div>
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">{item.title}</h3>
+                <p className="text-gray-600 dark:text-gray-300">{item.description}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>
 
+      
       {/* Preview Section à ajouter dans votre AuthLayout avant le footer */}
 <div className="bg-gray-50 dark:bg-gray-800 py-16">
   <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
