@@ -1,7 +1,7 @@
 // src/app/(app)/settings/page.tsx
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { 
   Cog6ToothIcon, 
   BellIcon, 
@@ -11,9 +11,15 @@ import {
   ShieldCheckIcon,
   CloudArrowUpIcon,
   ScaleIcon,
-  ChevronDownIcon
+  ChevronDownIcon,
+  SunIcon,
+  PaintBrushIcon,
+  ComputerDesktopIcon,
+  MoonIcon,
+  CheckCircleIcon,
+  ArrowsPointingOutIcon
 } from '@heroicons/react/24/outline';
-import { Disclosure } from '@headlessui/react';
+import { Disclosure, RadioGroup, Switch } from '@headlessui/react';
 
 const settingsSections = [
   { id: 'account', name: 'Compte utilisateur', icon: UserIcon },
@@ -23,6 +29,46 @@ const settingsSections = [
   { id: 'api', name: 'Clés API', icon: KeyIcon },
   { id: 'appearance', name: 'Apparence', icon: Cog6ToothIcon },
   { id: 'legal', name: 'Mentions légales', icon: DocumentTextIcon },
+];
+
+// Types pour les personnalisations
+interface AppearanceSettings {
+  theme: 'light' | 'dark' | 'system';
+  primaryColor: string;
+  sidebarCompact: boolean;
+  enableAnimations: boolean;
+  fontSize: 'small' | 'default' | 'large';
+  borderRadius: 'none' | 'small' | 'default' | 'large';
+  denseMode: boolean;
+}
+
+// Couleurs primaires disponibles
+const colorOptions = [
+  { name: 'Bleu (Défaut)', value: 'blue', class: 'bg-blue-600' },
+  { name: 'Indigo', value: 'indigo', class: 'bg-indigo-600' },
+  { name: 'Violet', value: 'purple', class: 'bg-purple-600' },
+  { name: 'Rose', value: 'pink', class: 'bg-pink-600' },
+  { name: 'Rouge', value: 'red', class: 'bg-red-600' },
+  { name: 'Orange', value: 'orange', class: 'bg-orange-600' },
+  { name: 'Ambre', value: 'amber', class: 'bg-amber-500' },
+  { name: 'Vert', value: 'green', class: 'bg-green-600' },
+  { name: 'Émeraude', value: 'emerald', class: 'bg-emerald-600' },
+  { name: 'Cyan', value: 'cyan', class: 'bg-cyan-600' }
+];
+
+// Options de taille de police
+const fontSizeOptions = [
+  { name: 'Petite', value: 'small', description: '14px - Compact' },
+  { name: 'Moyenne', value: 'default', description: '16px - Recommandé' },
+  { name: 'Grande', value: 'large', description: '18px - Accessibilité' },
+];
+
+// Options de rayon des bordures
+const borderRadiusOptions = [
+  { name: 'Aucun', value: 'none', description: 'Coins carrés' },
+  { name: 'Petit', value: 'small', description: '4px - Subtil' },
+  { name: 'Moyen', value: 'default', description: '8px - Recommandé' },
+  { name: 'Grand', value: 'large', description: '12px - Arrondi' },
 ];
 
 export default function SettingsPage() {
@@ -349,13 +395,421 @@ function ApiSettings() {
 }
 
 function AppearanceSettings() {
+  // État des paramètres d'apparence avec valeurs par défaut
+  const [settings, setSettings] = useState<AppearanceSettings>({
+    theme: 'system',
+    primaryColor: 'blue',
+    sidebarCompact: false,
+    enableAnimations: true,
+    fontSize: 'default',
+    borderRadius: 'default',
+    denseMode: false,
+  });
+
+  // État pour indiquer si les paramètres ont été modifiés
+  const [hasChanges, setHasChanges] = useState(false);
+
+  // Charge les paramètres sauvegardés au chargement du composant
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('notionity-appearance');
+    if (savedSettings) {
+      try {
+        const parsedSettings = JSON.parse(savedSettings);
+        setSettings(parsedSettings);
+      } catch (error) {
+        console.error('Erreur lors du chargement des paramètres d\'apparence:', error);
+      }
+    }
+  }, []);
+
+  // Met à jour un paramètre spécifique
+  const updateSetting = (key: keyof AppearanceSettings, value: any) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
+    setHasChanges(true);
+  };
+
+  // Applique les paramètres
+  const applySettings = () => {
+    // Sauvegarde les paramètres dans le localStorage
+    localStorage.setItem('notionity-appearance', JSON.stringify(settings));
+
+    // Applique le thème
+    if (settings.theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else if (settings.theme === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      // Mode système - utilise la préférence du système
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    }
+
+    // Applique la couleur primaire - nécessite une configuration CSS adaptée
+    document.documentElement.dataset.primaryColor = settings.primaryColor;
+
+    // Applique la taille de police
+    document.documentElement.dataset.fontSize = settings.fontSize;
+
+    // Applique le rayon des bordures
+    document.documentElement.dataset.borderRadius = settings.borderRadius;
+
+    // Applique le mode dense
+    if (settings.denseMode) {
+      document.documentElement.classList.add('dense-mode');
+    } else {
+      document.documentElement.classList.remove('dense-mode');
+    }
+
+    // Applique les animations
+    if (!settings.enableAnimations) {
+      document.documentElement.classList.add('disable-animations');
+    } else {
+      document.documentElement.classList.remove('disable-animations');
+    }
+
+    // Applique le mode compact pour la sidebar - via localStorage, à gérer dans le composant Sidebar
+    localStorage.setItem('notionity-sidebar-compact', settings.sidebarCompact.toString());
+
+    // Réinitialise l'état des modifications
+    setHasChanges(false);
+
+    // Notification de succès (à implémenter selon votre système de notification)
+    alert("Les paramètres ont été appliqués avec succès.");
+  };
+
+  // Réinitialise les paramètres
+  const resetSettings = () => {
+    const defaultSettings: AppearanceSettings = {
+      theme: 'system',
+      primaryColor: 'blue',
+      sidebarCompact: false,
+      enableAnimations: true,
+      fontSize: 'default',
+      borderRadius: 'default',
+      denseMode: false,
+    };
+    setSettings(defaultSettings);
+    setHasChanges(true);
+  };
+
   return (
-    <div>
-      <h2 className="text-lg font-medium text-gray-900 dark:text-white">Paramètres d'apparence</h2>
-      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-        Personnalisez l'apparence de votre interface NotionCRM.
-      </p>
-      {/* Contenu à développer */}
+    <div className="space-y-8 max-w-3xl">
+      {/* En-tête */}
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6">
+        <div className="flex items-center">
+          <PaintBrushIcon className="h-8 w-8 text-blue-600 dark:text-blue-400 mr-3" />
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Paramètres d'apparence</h2>
+            <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+              Personnalisez l'apparence de votre interface Notionity pour qu'elle corresponde à vos préférences.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Thème */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="flex items-center mb-4">
+          <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 mr-3">
+            <SunIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Thème</h3>
+        </div>
+
+        <RadioGroup value={settings.theme} onChange={value => updateSetting('theme', value)} className="mt-2">
+          <RadioGroup.Label className="sr-only">Sélectionnez un thème</RadioGroup.Label>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {[
+              { value: 'light', icon: SunIcon, title: 'Clair', description: 'Mode lumineux' },
+              { value: 'dark', icon: MoonIcon, title: 'Sombre', description: 'Mode sombre' },
+              { value: 'system', icon: ComputerDesktopIcon, title: 'Système', description: 'Basé sur vos préférences' },
+            ].map((option) => (
+              <RadioGroup.Option
+                key={option.value}
+                value={option.value}
+                className={({ active, checked }) =>
+                  `${active ? 'ring-2 ring-blue-500 dark:ring-blue-400' : ''}
+                  ${checked ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'}
+                  relative flex cursor-pointer rounded-lg px-5 py-4 border shadow-sm focus:outline-none`
+                }
+              >
+                {({ checked }) => (
+                  <>
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="text-sm">
+                          <RadioGroup.Label
+                            as="p"
+                            className={`font-medium ${
+                              checked ? 'text-blue-800 dark:text-blue-300' : 'text-gray-900 dark:text-white'
+                            }`}
+                          >
+                            <div className="flex items-center">
+                              <option.icon className={`h-5 w-5 mr-2 ${checked ? 'text-blue-600 dark:text-blue-400' : 'text-gray-500 dark:text-gray-400'}`} />
+                              {option.title}
+                            </div>
+                          </RadioGroup.Label>
+                          <RadioGroup.Description
+                            as="span"
+                            className={`inline ${
+                              checked ? 'text-blue-700 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400'
+                            }`}
+                          >
+                            {option.description}
+                          </RadioGroup.Description>
+                        </div>
+                      </div>
+                      {checked && (
+                        <div className="flex-shrink-0 text-blue-600 dark:text-blue-400">
+                          <CheckCircleIcon className="h-5 w-5" aria-hidden="true" />
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </RadioGroup.Option>
+            ))}
+          </div>
+        </RadioGroup>
+      </div>
+
+      {/* Couleur primaire */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="flex items-center mb-4">
+          <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 mr-3">
+            <Cog6ToothIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Couleur principale</h3>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-2">
+          {colorOptions.map((color) => (
+            <button
+              key={color.value}
+              onClick={() => updateSetting('primaryColor', color.value)}
+              className={`flex flex-col items-center space-y-2 p-3 rounded-lg transition-all ${
+                settings.primaryColor === color.value 
+                  ? 'bg-gray-100 dark:bg-gray-700 ring-2 ring-offset-2 ring-blue-500 dark:ring-blue-400 dark:ring-offset-gray-800' 
+                  : 'hover:bg-gray-50 dark:hover:bg-gray-700'
+              }`}
+              type="button"
+            >
+              <div className={`w-8 h-8 rounded-full ${color.class}`}></div>
+              <span className="text-xs font-medium text-gray-900 dark:text-white">{color.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Options d'interface */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="flex items-center mb-4">
+          <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 mr-3">
+            <ArrowsPointingOutIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
+          </div>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Mise en page et interface</h3>
+        </div>
+
+        <div className="divide-y divide-gray-200 dark:divide-gray-700">
+          <div className="py-4 flex items-center justify-between">
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 dark:text-white">Barre latérale compacte</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Réduit la largeur de la barre latérale pour maximiser l'espace</p>
+            </div>
+            <Switch
+              checked={settings.sidebarCompact}
+              onChange={(value) => updateSetting('sidebarCompact', value)}
+              className={`${
+                settings.sidebarCompact ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-600'
+              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+            >
+              <span
+                className={`${
+                  settings.sidebarCompact ? 'translate-x-6' : 'translate-x-1'
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+              />
+            </Switch>
+          </div>
+
+          <div className="py-4 flex items-center justify-between">
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 dark:text-white">Animations d'interface</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Active les transitions et animations visuelles</p>
+            </div>
+            <Switch
+              checked={settings.enableAnimations}
+              onChange={(value) => updateSetting('enableAnimations', value)}
+              className={`${
+                settings.enableAnimations ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-600'
+              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+            >
+              <span
+                className={`${
+                  settings.enableAnimations ? 'translate-x-6' : 'translate-x-1'
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+              />
+            </Switch>
+          </div>
+
+          <div className="py-4 flex items-center justify-between">
+            <div>
+              <h4 className="text-sm font-medium text-gray-900 dark:text-white">Mode dense</h4>
+              <p className="text-sm text-gray-500 dark:text-gray-400">Réduit l'espacement pour afficher plus de contenu</p>
+            </div>
+            <Switch
+              checked={settings.denseMode}
+              onChange={(value) => updateSetting('denseMode', value)}
+              className={`${
+                settings.denseMode ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-600'
+              } relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2`}
+            >
+              <span
+                className={`${
+                  settings.denseMode ? 'translate-x-6' : 'translate-x-1'
+                } inline-block h-4 w-4 transform rounded-full bg-white transition-transform`}
+              />
+            </Switch>
+          </div>
+        </div>
+      </div>
+
+      {/* Typographie */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="flex items-center mb-4">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Taille de police</h3>
+        </div>
+
+        <RadioGroup value={settings.fontSize} onChange={value => updateSetting('fontSize', value)} className="mt-2">
+          <RadioGroup.Label className="sr-only">Sélectionnez une taille de police</RadioGroup.Label>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+            {fontSizeOptions.map((option) => (
+              <RadioGroup.Option
+                key={option.value}
+                value={option.value}
+                className={({ active, checked }) =>
+                  `${active ? 'ring-2 ring-blue-500 dark:ring-blue-400' : ''}
+                  ${checked ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'}
+                  relative flex cursor-pointer rounded-lg px-5 py-4 border shadow-sm focus:outline-none`
+                }
+              >
+                {({ checked }) => (
+                  <>
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="text-sm">
+                          <RadioGroup.Label
+                            as="p"
+                            className={`font-medium ${
+                              checked ? 'text-blue-800 dark:text-blue-300' : 'text-gray-900 dark:text-white'
+                            }`}
+                          >
+                            {option.name}
+                          </RadioGroup.Label>
+                          <RadioGroup.Description
+                            as="span"
+                            className={`inline ${
+                              checked ? 'text-blue-700 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400'
+                            }`}
+                          >
+                            {option.description}
+                          </RadioGroup.Description>
+                        </div>
+                      </div>
+                      {checked && (
+                        <div className="flex-shrink-0 text-blue-600 dark:text-blue-400">
+                          <CheckCircleIcon className="h-5 w-5" aria-hidden="true" />
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </RadioGroup.Option>
+            ))}
+          </div>
+        </RadioGroup>
+      </div>
+
+      {/* Arrondis */}
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+        <div className="flex items-center mb-4">
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Arrondis des éléments</h3>
+        </div>
+
+        <RadioGroup value={settings.borderRadius} onChange={value => updateSetting('borderRadius', value)} className="mt-2">
+          <RadioGroup.Label className="sr-only">Sélectionnez un style d'arrondis</RadioGroup.Label>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
+            {borderRadiusOptions.map((option) => (
+              <RadioGroup.Option
+                key={option.value}
+                value={option.value}
+                className={({ active, checked }) =>
+                  `${active ? 'ring-2 ring-blue-500 dark:ring-blue-400' : ''}
+                  ${checked ? 'bg-blue-50 dark:bg-blue-900/30 border-blue-200 dark:border-blue-800' : 'bg-white dark:bg-gray-700 border-gray-200 dark:border-gray-600'}
+                  relative flex cursor-pointer rounded-lg px-5 py-4 border shadow-sm focus:outline-none`
+                }
+              >
+                {({ checked }) => (
+                  <>
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex items-center">
+                        <div className="text-sm">
+                          <RadioGroup.Label
+                            as="p"
+                            className={`font-medium ${
+                              checked ? 'text-blue-800 dark:text-blue-300' : 'text-gray-900 dark:text-white'
+                            }`}
+                          >
+                            {option.name}
+                          </RadioGroup.Label>
+                          <RadioGroup.Description
+                            as="span"
+                            className={`inline ${
+                              checked ? 'text-blue-700 dark:text-blue-300' : 'text-gray-500 dark:text-gray-400'
+                            }`}
+                          >
+                            {option.description}
+                          </RadioGroup.Description>
+                        </div>
+                      </div>
+                      {checked && (
+                        <div className="flex-shrink-0 text-blue-600 dark:text-blue-400">
+                          <CheckCircleIcon className="h-5 w-5" aria-hidden="true" />
+                        </div>
+                      )}
+                    </div>
+                  </>
+                )}
+              </RadioGroup.Option>
+            ))}
+          </div>
+        </RadioGroup>
+      </div>
+
+      {/* Actions */}
+      <div className="flex justify-between items-center py-4">
+        <button
+          type="button"
+          onClick={resetSettings}
+          className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
+        >
+          Réinitialiser
+        </button>
+        <button
+          type="button"
+          onClick={applySettings}
+          disabled={!hasChanges}
+          className={`inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${
+            hasChanges 
+              ? 'bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer' 
+              : 'bg-blue-400 dark:bg-blue-500/70 cursor-not-allowed'
+          } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800`}
+        >
+          Appliquer les modifications
+        </button>
+      </div>
     </div>
   );
 }
@@ -445,8 +899,8 @@ function LegalSettings() {
                       <li>La gestion des contacts et des entreprises</li>
                       <li>La gestion des pipelines de vente et des deals</li>
                       <li>L'organisation par tags et catégories</li>
-                      <li>La synchronisation des données avec Notion</li>
-                      <li>Les rapports et analyses</li>
+                      <li>L'exportdes données vers Notion</li>
+                      <li>Les tableaux de bords</li>
                     </ul>
                   </Disclosure.Panel>
                 </>
@@ -463,7 +917,7 @@ function LegalSettings() {
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
-                    <p className="mb-2">Pour utiliser Notionity, vous devez créer un compte utilisateur. Vous êtes responsable de :</p>
+                    <p className="mb-2">Pour utiliser Notionity, vous devez créer un compte Notion. Vous êtes responsable de :</p>
                     <ul className="list-disc list-inside space-y-1 ml-2">
                       <li>Maintenir la confidentialité de vos informations de connexion</li>
                       <li>Toutes les activités qui se produisent sous votre compte</li>
@@ -849,77 +1303,6 @@ function LegalSettings() {
         </div>
       )}
 
-      {/* Company Information */}
-      {activeTab === 'company' && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Informations Légales</h3>
-          
-          <div className="space-y-6 text-sm text-gray-600 dark:text-gray-300">
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Société</h4>
-              <div className="space-y-1">
-                <p><span className="font-medium">Raison sociale:</span> Notionity SAS</p>
-                <p><span className="font-medium">Forme juridique:</span> Société par Actions Simplifiée</p>
-                <p><span className="font-medium">Capital social:</span> 10 000 €</p>
-                <p><span className="font-medium">SIRET:</span> 123 456 789 00012</p>
-                <p><span className="font-medium">RCS:</span> Paris B 123 456 789</p>
-                <p><span className="font-medium">N° TVA Intracommunautaire:</span> FR 12 123456789</p>
-              </div>
-            </div>
-            
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Siège social</h4>
-              <div className="space-y-1">
-                <p>123 Avenue des Champs-Élysées</p>
-                <p>75008 Paris</p>
-                <p>France</p>
-              </div>
-            </div>
-            
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Contact</h4>
-              <div className="space-y-1">
-                <p><span className="font-medium">E-mail:</span> contact@notionity.com</p>
-                <p><span className="font-medium">Téléphone:</span> +33 (0)1 23 45 67 89</p>
-              </div>
-            </div>
-            
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Direction</h4>
-              <div className="space-y-1">
-                <p><span className="font-medium">Directeur de la publication:</span> Jean Dupont, Président</p>
-                <p><span className="font-medium">Responsable de la protection des données:</span> Marie Martin</p>
-              </div>
-            </div>
-            
-            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Hébergement</h4>
-              <div className="space-y-1">
-                <p><span className="font-medium">Hébergeur:</span> Amazon Web Services (AWS)</p>
-                <p><span className="font-medium">Adresse:</span> 38 Avenue John F. Kennedy, L-1855 Luxembourg</p>
-              </div>
-            </div>
-            
-            <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Déclarations légales</h4>
-              <p className="mb-2">
-                Notionity est déclaré à la Commission Nationale de l'Informatique et des Libertés (CNIL) sous le numéro 1234567.
-              </p>
-              <p>
-                Le site et l'application Notionity respectent les dispositions du Règlement Général sur la Protection des Données (RGPD) 
-                et de la loi Informatique et Libertés.
-              </p>
-            </div>
-          </div>
-          
-          <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-            <p className="text-sm text-gray-600 dark:text-gray-300">
-              Ces informations sont fournies conformément aux articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la 
-              Confiance dans l'économie numérique, et au règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016.
-            </p>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
