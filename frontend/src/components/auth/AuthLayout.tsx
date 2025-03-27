@@ -177,7 +177,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
       {/* Contenu de l'aperçu */}
       <div className="relative z-10 p-2 bg-white dark:bg-gray-900">
         <img
-          src="/dashboard.png"
+          src="./dashboard.png"
           alt="NotionCRM Dashboard"
           className="rounded-md shadow-lg w-full"
         />
