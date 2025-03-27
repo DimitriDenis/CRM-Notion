@@ -69,7 +69,7 @@ export function TagModal({ open, tag, onClose, onSubmit }: TagModalProps) {
                       : "Les tags vous aident à organiser et filtrer facilement vos contacts et deals."}
                   </p>
                   
-                  <div className="mt-4 bg-gray-50 dark:bg-gray-750/50 p-5 rounded-lg border border-gray-100 dark:border-gray-700">
+                  <div className="mt-4 bg-gray-50 dark:bg-gray-700 p-5 rounded-lg border border-gray-100 dark:border-gray-700">
                     <TagForm tag={tag} onSubmit={onSubmit} onCancel={onClose} />
                   </div>
                 </div>

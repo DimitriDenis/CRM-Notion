@@ -9,8 +9,11 @@ import {
   KeyIcon, 
   DocumentTextIcon,
   ShieldCheckIcon,
-  CloudArrowUpIcon
+  CloudArrowUpIcon,
+  ScaleIcon,
+  ChevronDownIcon
 } from '@heroicons/react/24/outline';
+import { Disclosure } from '@headlessui/react';
 
 const settingsSections = [
   { id: 'account', name: 'Compte utilisateur', icon: UserIcon },
@@ -358,13 +361,565 @@ function AppearanceSettings() {
 }
 
 function LegalSettings() {
+  const [activeTab, setActiveTab] = useState('terms');
+  
   return (
-    <div>
-      <h2 className="text-lg font-medium text-gray-900 dark:text-white">Mentions légales</h2>
-      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-        Consultez les conditions d'utilisation et la politique de confidentialité.
-      </p>
-      {/* Contenu à développer */}
+    <div className="space-y-6">
+      <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Mentions légales</h2>
+        <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
+          Consultez les conditions d'utilisation et la politique de confidentialité de Notionity.
+        </p>
+      </div>
+
+      {/* Tabs */}
+      <div className="border-b border-gray-200 dark:border-gray-700">
+        <nav className="-mb-px flex space-x-8" aria-label="Tabs">
+          <button
+            onClick={() => setActiveTab('terms')}
+            className={`${
+              activeTab === 'terms'
+                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
+            } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+          >
+            <DocumentTextIcon className="h-5 w-5 mr-2" />
+            Conditions d'utilisation
+          </button>
+          <button
+            onClick={() => setActiveTab('privacy')}
+            className={`${
+              activeTab === 'privacy'
+                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
+            } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+          >
+            <ShieldCheckIcon className="h-5 w-5 mr-2" />
+            Politique de confidentialité
+          </button>
+          <button
+            onClick={() => setActiveTab('company')}
+            className={`${
+              activeTab === 'company'
+                ? 'border-blue-500 text-blue-600 dark:text-blue-400'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
+            } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
+          >
+            <ScaleIcon className="h-5 w-5 mr-2" />
+            Informations légales
+          </button>
+        </nav>
+      </div>
+
+      {/* Terms of Service */}
+      {activeTab === 'terms' && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Conditions Générales d'Utilisation</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+            Dernière mise à jour : {new Date().toLocaleDateString()}
+          </p>
+
+          <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300">
+            <p className="font-medium text-gray-900 dark:text-white">1. Introduction</p>
+            <p>
+              Bienvenue sur Notionity. Les présentes Conditions Générales d'Utilisation ("CGU") régissent votre utilisation de l'application Notionity 
+              ("l'Application"), qui est un outil de gestion de la relation client (CRM) s'intégrant avec Notion. En utilisant notre Application, 
+              vous acceptez d'être lié par ces CGU. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre Application.
+            </p>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>2. Description des services</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">
+                      Notionity est un service de CRM qui s'intègre avec Notion pour vous permettre de gérer vos contacts, vos pipelines, 
+                      vos deals et d'autres éléments liés à la gestion de la relation client. Nos services comprennent, sans s'y limiter :
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li>La gestion des contacts et des entreprises</li>
+                      <li>La gestion des pipelines de vente et des deals</li>
+                      <li>L'organisation par tags et catégories</li>
+                      <li>La synchronisation des données avec Notion</li>
+                      <li>Les rapports et analyses</li>
+                    </ul>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>3. Comptes utilisateurs</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">Pour utiliser Notionity, vous devez créer un compte utilisateur. Vous êtes responsable de :</p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li>Maintenir la confidentialité de vos informations de connexion</li>
+                      <li>Toutes les activités qui se produisent sous votre compte</li>
+                      <li>Nous informer immédiatement de toute utilisation non autorisée de votre compte</li>
+                    </ul>
+                    <p className="mt-2">
+                      Nous nous réservons le droit de suspendre ou de résilier votre compte si nous constatons une violation de ces CGU.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>4. Conditions d'utilisation</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">En utilisant Notionity, vous acceptez de :</p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li>Ne pas utiliser l'Application d'une manière qui pourrait endommager, désactiver ou surcharger nos services</li>
+                      <li>Ne pas tenter d'accéder à des zones restreintes de l'Application</li>
+                      <li>Ne pas utiliser l'Application pour stocker ou transmettre des virus ou d'autres codes malveillants</li>
+                      <li>Ne pas violer les lois applicables, y compris les lois sur la protection des données</li>
+                      <li>Ne pas utiliser l'Application pour stocker ou traiter des informations sensibles telles que des données médicales, des numéros de carte de crédit ou d'autres informations similaires sans notre autorisation écrite préalable</li>
+                    </ul>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>5. Propriété intellectuelle</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">
+                      Tous les droits de propriété intellectuelle relatifs à Notionity, y compris, mais sans s'y limiter, les droits d'auteur, 
+                      les marques, les logos, les conceptions, les textes, les graphiques et le code source, sont la propriété exclusive de 
+                      Notionity ou de ses concédants de licence.
+                    </p>
+                    <p>
+                      L'utilisation de l'Application ne vous confère aucun droit de propriété intellectuelle sur nos services ou sur le contenu auquel vous accédez.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>6. Limitation de responsabilité</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">
+                      Dans les limites autorisées par la loi, Notionity ne sera pas responsable des dommages directs, indirects, 
+                      accessoires, spéciaux, consécutifs ou punitifs, y compris, mais sans s'y limiter, la perte de profits, 
+                      de données, d'utilisation, de clientèle ou d'autres pertes intangibles, résultant de :
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li>Votre utilisation ou votre incapacité à utiliser l'Application</li>
+                      <li>Toute modification, suspension ou interruption de l'Application</li>
+                      <li>Tout accès non autorisé à vos transmissions ou données</li>
+                      <li>Toute erreur, omission ou inexactitude dans l'Application</li>
+                    </ul>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>7. Modifications des CGU</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p>
+                      Nous nous réservons le droit de modifier ces CGU à tout moment. Les modifications entreront en vigueur dès leur 
+                      publication sur notre site web ou notre Application. Votre utilisation continue de l'Application après la publication 
+                      des modifications constitue votre acceptation des nouvelles conditions.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>8. Résiliation</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p>
+                      Nous nous réservons le droit, à notre seule discrétion, de suspendre ou de résilier votre accès à l'Application 
+                      pour quelque raison que ce soit, y compris, sans limitation, si nous pensons que vous avez violé ces CGU. 
+                      Vous pouvez également résilier votre compte à tout moment en suivant les instructions sur notre site.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>9. Loi applicable</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p>
+                      Ces CGU sont régies par les lois françaises. Tout litige découlant de ces CGU sera soumis à la compétence 
+                      exclusive des tribunaux de Paris, France.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <p className="mt-6">
+              Pour toute question concernant ces CGU, veuillez nous contacter à legal@notionity.com.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Privacy Policy */}
+      {activeTab === 'privacy' && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Politique de Confidentialité</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+            Dernière mise à jour : {new Date().toLocaleDateString()}
+          </p>
+
+          <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300">
+            <p className="font-medium text-gray-900 dark:text-white">1. Introduction</p>
+            <p>
+              Chez Notionity, nous nous engageons à protéger votre vie privée. Cette Politique de Confidentialité explique comment nous collectons, 
+              utilisons, divulguons et protégeons vos informations personnelles lorsque vous utilisez notre application CRM Notionity. 
+              En utilisant notre application, vous consentez aux pratiques décrites dans cette politique.
+            </p>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>2. Informations que nous collectons</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">Nous collectons plusieurs types d'informations, notamment :</p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li><span className="font-medium">Informations d'inscription</span> : Lorsque vous créez un compte, nous collectons votre nom, adresse e-mail, mot de passe et autres informations de profil.</li>
+                      <li><span className="font-medium">Informations sur les contacts et les entreprises</span> : Les données que vous saisissez dans notre application concernant vos contacts professionnels et les entreprises.</li>
+                      <li><span className="font-medium">Données d'utilisation</span> : Informations sur la façon dont vous utilisez notre application, telles que les fonctionnalités auxquelles vous accédez, les actions que vous effectuez et les horodatages associés.</li>
+                      <li><span className="font-medium">Informations techniques</span> : Adresse IP, type d'appareil, navigateur, système d'exploitation et autres informations techniques.</li>
+                      <li><span className="font-medium">Données issues de Notion</span> : Lorsque vous connectez votre compte Notion, nous accédons aux données pertinentes conformément aux autorisations que vous accordez.</li>
+                    </ul>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>3. Comment nous utilisons vos informations</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">Nous utilisons vos informations pour :</p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li>Fournir, maintenir et améliorer notre application</li>
+                      <li>Synchroniser les données avec votre compte Notion</li>
+                      <li>Communiquer avec vous concernant votre compte, nos services et des mises à jour</li>
+                      <li>Vous envoyer des informations techniques, de sécurité et administratives</li>
+                      <li>Répondre à vos questions et demandes d'assistance</li>
+                      <li>Analyser l'utilisation pour améliorer notre application et votre expérience</li>
+                      <li>Détecter, prévenir et résoudre les problèmes techniques et de sécurité</li>
+                      <li>Se conformer aux obligations légales</li>
+                    </ul>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>4. Partage des informations</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">Nous pouvons partager vos informations dans les circonstances suivantes :</p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li><span className="font-medium">Avec Notion</span> : Pour permettre l'intégration et la synchronisation des données</li>
+                      <li><span className="font-medium">Avec nos fournisseurs de services</span> : Tiers qui nous aident à fournir nos services (hébergement, analyse, assistance client)</li>
+                      <li><span className="font-medium">Pour se conformer à la loi</span> : Lorsque nous croyons de bonne foi que la divulgation est nécessaire pour respecter les lois applicables, les procédures légales ou les demandes gouvernementales</li>
+                      <li><span className="font-medium">En cas de transfert d'entreprise</span> : Dans le cadre d'une fusion, acquisition, vente d'actifs ou toute autre transaction commerciale</li>
+                      <li><span className="font-medium">Avec votre consentement</span> : Lorsque vous nous donnez votre autorisation explicite</li>
+                    </ul>
+                    <p className="mt-2">
+                      Nous ne vendons pas vos informations personnelles à des tiers.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>5. Conservation des données</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p>
+                      Nous conservons vos informations personnelles aussi longtemps que nécessaire pour fournir nos services 
+                      et respecter nos obligations légales. Si vous supprimez votre compte, nous supprimerons ou anonymiserons 
+                      vos informations dans un délai raisonnable, sauf si la loi nous oblige à les conserver plus longtemps.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>6. Sécurité des données</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p>
+                      Nous mettons en œuvre des mesures de sécurité techniques et organisationnelles appropriées pour protéger 
+                      vos informations contre la perte, l'utilisation abusive, l'accès non autorisé, la divulgation, la modification 
+                      ou la destruction. Cependant, aucune méthode de transmission sur Internet ou de stockage électronique n'est 
+                      totalement sécurisée, et nous ne pouvons garantir une sécurité absolue.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>7. Transferts internationaux</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p>
+                      Vos informations peuvent être transférées et traitées dans des pays autres que celui où vous résidez. 
+                      Ces pays peuvent avoir des lois différentes sur la protection des données. Si nous transférons vos informations 
+                      en dehors de l'Espace économique européen ou de la Suisse, nous prendrons des mesures appropriées pour nous 
+                      assurer que vos informations sont protégées conformément à cette politique de confidentialité.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>8. Vos droits</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">
+                      Selon votre lieu de résidence, vous pouvez avoir certains droits concernant vos informations personnelles. Ces droits peuvent inclure :
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li>Le droit d'accéder à vos informations personnelles</li>
+                      <li>Le droit de rectifier ou de mettre à jour vos informations</li>
+                      <li>Le droit de supprimer vos informations (droit à l'oubli)</li>
+                      <li>Le droit de limiter le traitement de vos informations</li>
+                      <li>Le droit à la portabilité des données</li>
+                      <li>Le droit de vous opposer au traitement</li>
+                      <li>Le droit de retirer votre consentement</li>
+                    </ul>
+                    <p className="mt-2">
+                      Pour exercer ces droits, veuillez nous contacter à privacy@notionity.com. Nous répondrons à votre demande dans les délais prévus par la loi applicable.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>9. Cookies et technologies similaires</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p className="mb-2">
+                      Nous utilisons des cookies et des technologies similaires pour améliorer votre expérience, analyser l'utilisation de notre application et personnaliser nos services. Vous pouvez contrôler les cookies via les paramètres de votre navigateur.
+                    </p>
+                    <p>
+                      Types de cookies que nous utilisons :
+                    </p>
+                    <ul className="list-disc list-inside space-y-1 ml-2">
+                      <li><span className="font-medium">Cookies essentiels</span> : Nécessaires au fonctionnement de l'application</li>
+                      <li><span className="font-medium">Cookies analytiques</span> : Nous aident à comprendre comment vous utilisez notre application</li>
+                      <li><span className="font-medium">Cookies de préférences</span> : Permettent de mémoriser vos préférences et paramètres</li>
+                    </ul>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <Disclosure as="div" className="mt-2">
+              {({ open }) => (
+                <>
+                  <Disclosure.Button className="flex w-full justify-between rounded-lg bg-gray-50 dark:bg-gray-700 px-4 py-2 text-left text-sm font-medium text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600">
+                    <span>10. Modification de la politique de confidentialité</span>
+                    <ChevronDownIcon
+                      className={`${open ? 'rotate-180 transform' : ''} h-5 w-5 text-gray-500 dark:text-gray-400`}
+                    />
+                  </Disclosure.Button>
+                  <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
+                    <p>
+                      Nous pouvons mettre à jour cette politique de confidentialité de temps à autre pour refléter les changements dans nos pratiques ou pour d'autres raisons opérationnelles, légales ou réglementaires. Nous vous encourageons à consulter régulièrement cette politique. Si nous apportons des modifications importantes, nous vous en informerons par e-mail ou par une notification dans notre application.
+                    </p>
+                  </Disclosure.Panel>
+                </>
+              )}
+            </Disclosure>
+
+            <p className="mt-6">
+              Pour toute question ou préoccupation concernant cette politique de confidentialité ou nos pratiques en matière de données, veuillez nous contacter à privacy@notionity.com.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Company Information */}
+      {activeTab === 'company' && (
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Informations Légales</h3>
+          
+          <div className="space-y-6 text-sm text-gray-600 dark:text-gray-300">
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Société</h4>
+              <div className="space-y-1">
+                <p><span className="font-medium">Raison sociale:</span> Notionity SAS</p>
+                <p><span className="font-medium">Forme juridique:</span> Société par Actions Simplifiée</p>
+                <p><span className="font-medium">Capital social:</span> 10 000 €</p>
+                <p><span className="font-medium">SIRET:</span> 123 456 789 00012</p>
+                <p><span className="font-medium">RCS:</span> Paris B 123 456 789</p>
+                <p><span className="font-medium">N° TVA Intracommunautaire:</span> FR 12 123456789</p>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Siège social</h4>
+              <div className="space-y-1">
+                <p>123 Avenue des Champs-Élysées</p>
+                <p>75008 Paris</p>
+                <p>France</p>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Contact</h4>
+              <div className="space-y-1">
+                <p><span className="font-medium">E-mail:</span> contact@notionity.com</p>
+                <p><span className="font-medium">Téléphone:</span> +33 (0)1 23 45 67 89</p>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Direction</h4>
+              <div className="space-y-1">
+                <p><span className="font-medium">Directeur de la publication:</span> Jean Dupont, Président</p>
+                <p><span className="font-medium">Responsable de la protection des données:</span> Marie Martin</p>
+              </div>
+            </div>
+            
+            <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Hébergement</h4>
+              <div className="space-y-1">
+                <p><span className="font-medium">Hébergeur:</span> Amazon Web Services (AWS)</p>
+                <p><span className="font-medium">Adresse:</span> 38 Avenue John F. Kennedy, L-1855 Luxembourg</p>
+              </div>
+            </div>
+            
+            <div>
+              <h4 className="font-medium text-gray-900 dark:text-white mb-2">Déclarations légales</h4>
+              <p className="mb-2">
+                Notionity est déclaré à la Commission Nationale de l'Informatique et des Libertés (CNIL) sous le numéro 1234567.
+              </p>
+              <p>
+                Le site et l'application Notionity respectent les dispositions du Règlement Général sur la Protection des Données (RGPD) 
+                et de la loi Informatique et Libertés.
+              </p>
+            </div>
+          </div>
+          
+          <div className="mt-8 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <p className="text-sm text-gray-600 dark:text-gray-300">
+              Ces informations sont fournies conformément aux articles 6-III et 19 de la Loi n° 2004-575 du 21 juin 2004 pour la 
+              Confiance dans l'économie numérique, et au règlement (UE) 2016/679 du Parlement européen et du Conseil du 27 avril 2016.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
