@@ -70,7 +70,7 @@ export default function LoginForm() {
         <div className="relative">
           <div className="relative flex justify-center text-sm">
             <span className="px-2 bg-white text-gray-500">
-              Gérez vos relations directement dans Notion
+              Gérez vos relations commerciales
             </span>
           </div>
         </div>

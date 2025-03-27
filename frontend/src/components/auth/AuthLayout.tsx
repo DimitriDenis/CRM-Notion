@@ -28,7 +28,7 @@ const features = [
   },
   {
     name: 'Intégration Notion native',
-    description: 'Synchronisation bidirectionnelle avec vos bases Notion.',
+    description: 'Export de vos données possible vers Notion.',
     icon: DocumentTextIcon,
   },
 ];
@@ -162,7 +162,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               transition={{ duration: 0.5 }}
               className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white text-center"
             >
-              <span className="block text-blue-600 dark:text-blue-400">NovumCRM<span className="text-black"> for Notion</span></span> 
+              <span className="block text-blue-600 dark:text-blue-400">Novum<span className="text-blue-400">CRM</span><span className="text-black text-2xl sm:text-3xl"> for Notion</span></span> 
               <span className="block text-3xl sm:text-4xl mt-2">Simplifiez votre relation client</span>
             </motion.h1>
             <motion.p 
@@ -171,7 +171,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="mt-4 max-w-xl mx-auto text-xl text-gray-600 dark:text-gray-300 text-center"
             >
-              Gérez vos contacts, deals et pipelines directement dans Notion.
+              Gérez vos contacts, deals et pipelines directement gràce à ce CRM lié avec Notion.
             </motion.p>
           </div>
         </div>
@@ -304,7 +304,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         Une interface intuitive et élégante
       </h2>
       <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-        Découvrez comment NotionCRM vous aide à visualiser et gérer efficacement votre processus commercial.
+        Découvrez comment NovumCRM vous aide à visualiser et gérer efficacement votre processus commercial.
       </p>
     </div>
 
@@ -386,8 +386,8 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Synchronisation Notion</h3>
-        <p className="text-gray-600 dark:text-gray-300">Toutes vos données sont automatiquement synchronisées avec vos bases Notion existantes.</p>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Export vers Notion</h3>
+        <p className="text-gray-600 dark:text-gray-300">Toutes vos données peuvent etre transférés directement sur une page Notion.</p>
       </div>
     </div>
   </div>
@@ -398,7 +398,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col items-center justify-center">
             <div className="flex items-center">
-              <div className="h-8 w-8 rounded-md bg-blue-600 dark:bg-blue-500 flex items-center justify-center">
+              <div className="h-8 w-8 rounded-md bg-white dark:bg-blue-500 flex items-center justify-center">
               <img 
                   src={logoImg.src} 
                   alt="NovumCRM Logo"
