@@ -143,6 +143,103 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         </div>
       </div>
 
+      {/* Preview Section à ajouter dans votre AuthLayout avant le footer */}
+<div className="bg-gray-50 dark:bg-gray-800 py-16">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12">
+      <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+        Une interface intuitive et élégante
+      </h2>
+      <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+        Découvrez comment NotionCRM vous aide à visualiser et gérer efficacement votre processus commercial.
+      </p>
+    </div>
+
+    <motion.div 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="relative rounded-2xl overflow-hidden shadow-xl mx-auto max-w-4xl"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-600/10 to-indigo-600/10 dark:from-blue-500/20 dark:to-indigo-500/20 backdrop-blur-xl z-0"></div>
+      
+      {/* En-tête du faux navigateur */}
+      <div className="relative z-10 bg-gray-100 dark:bg-gray-800 h-8 flex items-center px-4">
+        <div className="flex space-x-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-500"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-500"></div>
+          <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
+        </div>
+        <div className="ml-4 bg-gray-200 dark:bg-gray-700 rounded-md h-5 w-64"></div>
+      </div>
+      
+      {/* Contenu de l'aperçu */}
+      <div className="relative z-10 p-2 bg-white dark:bg-gray-900">
+        <img
+          src="/dashboard.png"
+          alt="NotionCRM Dashboard"
+          className="rounded-md shadow-lg w-full"
+        />
+      </div>
+      
+      {/* Badges flottants qui soulignent les fonctionnalités clés */}
+      <div className="absolute -top-5 -right-5 bg-white dark:bg-gray-800 rounded-full shadow-lg px-3 py-1.5 flex items-center z-20">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
+        </svg>
+        <span className="text-sm font-semibold text-gray-800 dark:text-white">100% gratuit</span>
+      </div>
+      
+      <div className="absolute top-1/4 -left-4 bg-white dark:bg-gray-800 rounded-full shadow-lg px-3 py-1.5 flex items-center z-20">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M5 3a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2V5a2 2 0 00-2-2H5zM5 11a2 2 0 00-2 2v2a2 2 0 002 2h2a2 2 0 002-2v-2a2 2 0 00-2-2H5zM11 5a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V5zM14 11a1 1 0 011 1v1h1a1 1 0 110 2h-1v1a1 1 0 11-2 0v-1h-1a1 1 0 110-2h1v-1a1 1 0 011-1z" />
+        </svg>
+        <span className="text-sm font-semibold text-gray-800 dark:text-white">Vue intuitive</span>
+      </div>
+      
+      <div className="absolute bottom-1/4 -right-4 bg-white dark:bg-gray-800 rounded-full shadow-lg px-3 py-1.5 flex items-center z-20">
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-500 mr-1" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M12 7a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0V8.414l-4.293 4.293a1 1 0 01-1.414 0L8 10.414l-4.293 4.293a1 1 0 01-1.414-1.414l5-5a1 1 0 011.414 0L11 10.586 14.586 7H12z" clipRule="evenodd" />
+        </svg>
+        <span className="text-sm font-semibold text-gray-800 dark:text-white">Analyses détaillées</span>
+      </div>
+    </motion.div>
+    
+    <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+      <div className="bg-white dark:bg-gray-750 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <div className="h-12 w-12 mx-auto bg-indigo-100 dark:bg-indigo-900/30 rounded-full flex items-center justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Interface claire</h3>
+        <p className="text-gray-600 dark:text-gray-300">Visualisez en un coup d'œil l'état de vos deals et la progression de vos pipelines.</p>
+      </div>
+      
+      <div className="bg-white dark:bg-gray-750 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <div className="h-12 w-12 mx-auto bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Notes contextuelles</h3>
+        <p className="text-gray-600 dark:text-gray-300">Gardez vos informations importantes à portée de main dans chaque fiche client et deal.</p>
+      </div>
+      
+      <div className="bg-white dark:bg-gray-750 rounded-lg p-6 shadow-sm border border-gray-100 dark:border-gray-700">
+        <div className="h-12 w-12 mx-auto bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </div>
+        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">Synchronisation Notion</h3>
+        <p className="text-gray-600 dark:text-gray-300">Toutes vos données sont automatiquement synchronisées avec vos bases Notion existantes.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
       {/* Footer */}
       <footer className="bg-gray-50 dark:bg-gray-900 py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
