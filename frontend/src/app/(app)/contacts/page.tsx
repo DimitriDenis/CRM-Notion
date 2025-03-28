@@ -70,6 +70,15 @@ export default function ContactsPage() {
             </button>
           </div>
 
+          <button
+            type="button"
+            onClick={() => setShowExportModal(true)}
+            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
+          >
+            <DocumentArrowUpIcon className="-ml-1 mr-2 h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
+            Exporter vers Notion
+            </button>
+
           <Link
             href="/contacts/new"
             className="inline-flex items-center rounded-md bg-blue-600 dark:bg-blue-700 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-500 dark:hover:bg-blue-600 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-500"
@@ -78,14 +87,6 @@ export default function ContactsPage() {
             Nouveau contact
           </Link>
 
-          <button
-            type="button"
-            onClick={() => setShowExportModal(true)}
-            className="inline-flex items-center rounded-md bg-blue-600 dark:bg-blue-700 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-500 dark:hover:bg-blue-600"
-          >
-            <DocumentArrowUpIcon className="-ml-0.5 mr-1.5 h-5 w-5" />
-            Exporter vers Notion
-          </button>
         </div>
       </div>
 
