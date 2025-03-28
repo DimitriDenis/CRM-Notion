@@ -293,8 +293,14 @@ export class NotionExportService {
           Stage: { 
             rich_text: [{ text: { content: stageName } }] 
           },
-          'Expected Close Date': deal.expectedCloseDate ? { 
-            date: { start: deal.expectedCloseDate.toISOString() } 
+          'Expected Close Date': deal.expectedCloseDate ? {
+            date: { 
+              start: typeof deal.expectedCloseDate === 'string' 
+                ? deal.expectedCloseDate 
+                : (deal.expectedCloseDate instanceof Date)
+                  ? deal.expectedCloseDate.toISOString()
+                  : new Date(deal.expectedCloseDate).toISOString()
+            }
           } : null,
           'Created At': { 
             date: { start: deal.createdAt.toISOString() } 
