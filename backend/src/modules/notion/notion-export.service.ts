@@ -33,138 +33,111 @@ export class NotionExportService {
     }
 
     const notion = this.getNotionClient(user.notionAccessToken);
-    let workspaceId = null;
     
-    const isValidUUID = (id) => {
-        return id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
-      };
-      
-      if (!isValidUUID(workspaceId)) {
-        console.log('Invalid workspace ID detected:', workspaceId);
-        
-        try {
-          // Rechercher un espace de travail valide
-          console.log('Searching for valid workspaces...');
-          const response = await notion.search({
-            query: '',
-            filter: {
-              value: 'page',
-              property: 'object'
-            },
-            page_size: 10
-          });
-          
-          console.log('Search results:', response);
-          
-          // Trouver la première page valide pour l'utiliser comme parent
-          if (response.results && response.results.length > 0) {
-            // Rechercher la première page
-            const pagesResponse = await notion.search({
-              filter: {
-                value: 'page',
-                property: 'object'
-              },
-              page_size: 1
-            });
-            
-            if (pagesResponse.results && pagesResponse.results.length > 0) {
-              workspaceId = pagesResponse.results[0].id;
-              console.log('Found valid page ID:', workspaceId);
-            } else {
-              throw new Error('Aucune page valide trouvée dans l espace de travail');
-            }
-          } else {
-            throw new Error('Aucun espace de travail valide trouvé');
-          }
-        } catch (error) {
-          console.error('Error finding valid workspace/page:', error);
-          throw new NotFoundException('Impossible de trouver une page Notion valide à utiliser comme page parent. Veuillez d abord créer une page dans Notion.');
-        }
-      }
-      
-      if (!workspaceId) {
-        throw new NotFoundException('No valid Notion workspace or page found');
-      }
-    
-
-    // 2. Créer une page principale pour l'export
-    const mainPage = await notion.pages.create({
-      parent: { page_id: workspaceId },
-      properties: {
-        title: [{
-          type: 'text',
-          text: { content: `Export CRM - ${new Date().toLocaleString()}` }
-        }]
-      },
-      children: [
-        {
-          object: 'block',
-          type: 'heading_2',
-          heading_2: {
-            rich_text: [{ type: 'text', text: { content: 'CRM Data Export' } }]
-          }
+    try {
+      // Rechercher la page racine de l'utilisateur
+      const response = await notion.search({
+        query: '',
+        filter: {
+          value: 'page',
+          property: 'object'
         },
-        {
-          object: 'block',
-          type: 'paragraph',
-          paragraph: {
-            rich_text: [{ 
-              type: 'text', 
-              text: { content: 'Cette page contient les données exportées depuis votre CRM.' } 
-            }]
-          }
-        }
-      ]
-    });
-
-    const results = {
-      page_id: mainPage.id,
-      databases: {} as Record<string, string>
-    };
-
-    // 3. Exporter chaque entité demandée
-    for (const entity of options.entities) {
-      switch(entity) {
-        case 'contacts':
-          const contactsDb = await this.exportContacts(
-            notion, 
-            mainPage.id, 
-            userId, 
-            options.ids?.contacts
-          );
-          results.databases.contacts = contactsDb;
-          break;
-        case 'deals':
-          const dealsDb = await this.exportDeals(
-            notion, 
-            mainPage.id, 
-            userId, 
-            options.ids?.deals
-          );
-          results.databases.deals = dealsDb;
-          break;
-        case 'pipelines':
-          const pipelinesDb = await this.exportPipelines(
-            notion, 
-            mainPage.id, 
-            userId, 
-            options.ids?.pipelines
-          );
-          results.databases.pipelines = pipelinesDb;
-          break;
-        case 'tags':
-          const tagsDb = await this.exportTags(
-            notion, 
-            mainPage.id, 
-            userId, 
-            options.ids?.tags
-          );
-          results.databases.tags = tagsDb;
-          break;
+        sort: {
+          direction: 'ascending',
+          timestamp: 'last_edited_time'
+        },
+        page_size: 1
+      });
+      
+      if (!response.results || response.results.length === 0) {
+        throw new Error('Aucune page trouvée dans votre espace Notion');
       }
-    }
 
-    return results;
+      // Utiliser la première page comme parent
+      const rootPage = response.results[0];
+      
+      // 2. Créer une page principale pour l'export
+      const mainPage = await notion.pages.create({
+        parent: { page_id: rootPage.id },
+        properties: {
+          title: [{
+            type: 'text',
+            text: { content: `Export CRM - ${new Date().toLocaleString()}` }
+          }]
+        },
+        children: [
+          {
+            object: 'block',
+            type: 'heading_2',
+            heading_2: {
+              rich_text: [{ type: 'text', text: { content: 'CRM Data Export' } }]
+            }
+          },
+          {
+            object: 'block',
+            type: 'paragraph',
+            paragraph: {
+              rich_text: [{ 
+                type: 'text', 
+                text: { content: 'Cette page contient les données exportées depuis votre CRM.' } 
+              }]
+            }
+          }
+        ]
+      });
+
+      const results = {
+        page_id: mainPage.id,
+        databases: {} as Record<string, string>
+      };
+
+      // 3. Exporter chaque entité demandée
+      for (const entity of options.entities) {
+        switch(entity) {
+          case 'contacts':
+            const contactsDb = await this.exportContacts(
+              notion, 
+              mainPage.id, 
+              userId, 
+              options.ids?.contacts
+            );
+            results.databases.contacts = contactsDb;
+            break;
+          case 'deals':
+            const dealsDb = await this.exportDeals(
+              notion, 
+              mainPage.id, 
+              userId, 
+              options.ids?.deals
+            );
+            results.databases.deals = dealsDb;
+            break;
+          case 'pipelines':
+            const pipelinesDb = await this.exportPipelines(
+              notion, 
+              mainPage.id, 
+              userId, 
+              options.ids?.pipelines
+            );
+            results.databases.pipelines = pipelinesDb;
+            break;
+          case 'tags':
+            const tagsDb = await this.exportTags(
+              notion, 
+              mainPage.id, 
+              userId, 
+              options.ids?.tags
+            );
+            results.databases.tags = tagsDb;
+            break;
+        }
+      }
+
+      return results;
+    } catch (error) {
+      console.error('Error finding workspace root:', error);
+      throw new NotFoundException('Impossible de trouver la racine de votre espace de travail Notion.');
+    }
   }
 
   // Méthodes d'export spécifiques pour chaque entité
