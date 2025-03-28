@@ -220,7 +220,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               {animatedFeature === index && (
                 <PulseEffect />
               )}
-              <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-blue-600 dark:bg-blue-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
+              <div className="absolute top-0 right-0 bottom-0 w-1.5 bg-novum dark:bg-blue-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-bottom"></div>
               <div className="flex items-start">
                 <div className="shrink-0">
                   <div className="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400">
