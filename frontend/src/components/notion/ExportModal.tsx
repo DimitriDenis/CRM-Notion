@@ -100,17 +100,7 @@ export default function ExportModal({
               </p>
               
               <div className="mt-4">
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={exportAll}
-                    onChange={() => setExportAll(!exportAll)}
-                    className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">
-                    Export all {entityName.toLowerCase()}
-                  </span>
-                </label>
+               
                 
                 {!exportAll && selectedIds && (
                   <p className="mt-2 text-sm text-gray-500">
@@ -130,7 +120,7 @@ export default function ExportModal({
                   disabled={isExporting}
                   className="rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
                 >
-                  Cancel
+                  Annuler
                 </button>
                 <button
                   type="button"
@@ -138,7 +128,7 @@ export default function ExportModal({
                   disabled={isExporting}
                   className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
                 >
-                  Export to Notion
+                  Export vers Notion
                 </button>
               </div>
             </div>
