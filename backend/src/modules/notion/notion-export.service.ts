@@ -9,6 +9,8 @@ import { TagsService } from '../tags/tags.service';
 
 @Injectable()
 export class NotionExportService {
+  private rootPageId: string | null = null;
+
   constructor(
     private usersService: UsersService,
     private contactsService: ContactsService,
@@ -19,6 +21,40 @@ export class NotionExportService {
 
   private getNotionClient(accessToken: string) {
     return new Client({ auth: accessToken });
+  }
+
+  private async findOrCreateRootPage(notion: Client) {
+    if (this.rootPageId) {
+      try {
+        // Vérifier si la page existe toujours
+        await notion.pages.retrieve({ page_id: this.rootPageId });
+        return this.rootPageId;
+      } catch (error) {
+        // Si la page n'existe plus, réinitialiser rootPageId
+        this.rootPageId = null;
+      }
+    }
+
+    // Rechercher la page racine de l'utilisateur
+    const response = await notion.search({
+      query: '',
+      filter: {
+        value: 'page',
+        property: 'object'
+      },
+      sort: {
+        direction: 'ascending',
+        timestamp: 'last_edited_time'
+      },
+      page_size: 1
+    });
+    
+    if (!response.results || response.results.length === 0) {
+      throw new Error('Aucune page trouvée dans votre espace Notion');
+    }
+
+    this.rootPageId = response.results[0].id;
+    return this.rootPageId;
   }
 
   async exportToNotion(userId: string, options: {
@@ -35,30 +71,11 @@ export class NotionExportService {
     const notion = this.getNotionClient(user.notionAccessToken);
     
     try {
-      // Rechercher la page racine de l'utilisateur
-      const response = await notion.search({
-        query: '',
-        filter: {
-          value: 'page',
-          property: 'object'
-        },
-        sort: {
-          direction: 'ascending',
-          timestamp: 'last_edited_time'
-        },
-        page_size: 1
-      });
-      
-      if (!response.results || response.results.length === 0) {
-        throw new Error('Aucune page trouvée dans votre espace Notion');
-      }
-
-      // Utiliser la première page comme parent
-      const rootPage = response.results[0];
+      const rootPageId = await this.findOrCreateRootPage(notion);
       
       // 2. Créer une page principale pour l'export
       const mainPage = await notion.pages.create({
-        parent: { page_id: rootPage.id },
+        parent: { page_id: rootPageId },
         properties: {
           title: [{
             type: 'text',
