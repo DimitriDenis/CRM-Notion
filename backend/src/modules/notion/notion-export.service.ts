@@ -268,6 +268,8 @@ export class NotionExportService {
       ? await Promise.all(dealIds.map(id => this.dealsService.findOne(userId, id)))
       : (await this.dealsService.findAll(userId, { take: 1000 })).items;
 
+      console.log('Premier deal exemple:', JSON.stringify(dealsData[0]));
+
     // 3. Insérer les deals dans la base de données
     for (const deal of dealsData) {
       // Récupérer les informations liées si nécessaire
