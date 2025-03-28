@@ -42,13 +42,7 @@ export function Header({ openSidebar, isSidebarOpen, toggleSidebar }: HeaderProp
           {/* Bouton de thème ajouté ici */}
           <ThemeToggle />
           
-          <button
-            type="button"
-            className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500 dark:text-gray-400 dark:hover:text-gray-300"
-          >
-            <span className="sr-only">Voir les notifications</span>
-            <BellIcon className="h-6 w-6" aria-hidden="true" />
-          </button>
+          
           
           <UserMenu />
         </div>
