@@ -12,6 +12,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        novum: '#00adef',
 
         primary: {
           DEFAULT: "var(--primary)",

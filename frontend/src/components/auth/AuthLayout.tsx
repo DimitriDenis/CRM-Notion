@@ -162,7 +162,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               transition={{ duration: 0.5 }}
               className="text-4xl sm:text-5xl font-extrabold tracking-tight text-gray-900 dark:text-white text-center"
             >
-              <span className="block text-blue-600 dark:text-blue-400">Novum<span className="text-#00adef">CRM</span><span className="text-black text-2xl sm:text-3xl"> for Notion</span></span> 
+              <span className="block text-blue-600 dark:text-blue-400">Novum<span className="text-novum">CRM</span><span className="text-black text-2xl sm:text-3xl"> for Notion</span></span> 
               <span className="block text-3xl sm:text-4xl mt-2">Simplifiez votre relation client</span>
             </motion.h1>
             <motion.p 
