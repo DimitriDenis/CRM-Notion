@@ -271,7 +271,8 @@ export class NotionExportService {
       console.log('Premier deal exemple:', JSON.stringify(dealsData[0]));
 
     // 3. Insérer les deals dans la base de données
-    for (const deal of dealsData) {
+  for (const deal of dealsData) {
+    try {
       // Récupérer les informations liées si nécessaire
       const pipeline = deal.pipeline 
         ? deal.pipeline 
@@ -281,13 +282,44 @@ export class NotionExportService {
       
       const stageName = pipeline?.stages?.find(s => s.id === deal.stageId)?.name || 'Unknown';
       
+      // Convertir la valeur en nombre
+      const numericValue = typeof deal.value === 'string' 
+        ? parseFloat(deal.value) 
+        : (typeof deal.value === 'number' ? deal.value : 0);
+      
+      // Formater correctement la date de clôture prévue
+      let expectedCloseDateProperty = null;
+      if (deal.expectedCloseDate) {
+        // Assurer que la date est au format ISO
+        let dateString;
+        const expDateStr = String(deal.expectedCloseDate);
+        
+        // Si c'est une chaîne simple comme "2025-03-19", la convertir au format ISO
+        if (typeof deal.expectedCloseDate === 'string' && !expDateStr.includes('T')) {
+          dateString = `${deal.expectedCloseDate}T00:00:00.000Z`;
+        } else if (typeof deal.expectedCloseDate === 'string') {
+          // Déjà au format ISO
+          dateString = deal.expectedCloseDate;
+        } else if (deal.expectedCloseDate instanceof Date) {
+          dateString = deal.expectedCloseDate.toISOString();
+        } else {
+          // Essayer de créer une date
+          const date = new Date(deal.expectedCloseDate);
+          dateString = isNaN(date.getTime()) ? null : date.toISOString();
+        }
+        
+        if (dateString) {
+          expectedCloseDateProperty = { date: { start: dateString } };
+        }
+      }
+      
       await notion.pages.create({
         parent: { database_id: database.id },
         properties: {
           Name: { 
-            title: [{ text: { content: deal.name } }] 
+            title: [{ text: { content: deal.name || 'Sans nom' } }] 
           },
-          Value: { number: deal.value },
+          Value: { number: numericValue }, // Utiliser la valeur numérique
           Status: { select: { name: deal.status || 'active' } },
           Pipeline: { 
             rich_text: [{ text: { content: pipeline?.name || 'N/A' } }] 
@@ -295,30 +327,26 @@ export class NotionExportService {
           Stage: { 
             rich_text: [{ text: { content: stageName } }] 
           },
-          'Expected Close Date': deal.expectedCloseDate ? {
-            date: { 
-              start: typeof deal.expectedCloseDate === 'string' 
-                ? deal.expectedCloseDate 
-                : (deal.expectedCloseDate instanceof Date)
-                  ? deal.expectedCloseDate.toISOString()
-                  : new Date(deal.expectedCloseDate).toISOString()
-            }
-          } : null,
+          'Expected Close Date': expectedCloseDateProperty, // Utiliser la propriété formatée
           'Created At': { 
-            date: { start: deal.createdAt.toISOString() } 
+            date: { start: new Date(deal.createdAt).toISOString() } 
           },
           'Updated At': { 
-            date: { start: deal.updatedAt.toISOString() } 
+            date: { start: new Date(deal.updatedAt).toISOString() } 
           },
           'CRM ID': { 
             rich_text: [{ text: { content: deal.id } }] 
-          }
+          },
         }
       });
+    } catch (error) {
+      console.error(`Error exporting deal ${deal.id}:`, error);
+      // Continue with next deal
     }
-
-    return database.id;
   }
+
+  return database.id;
+}
 
   private async exportPipelines(
     notion: Client, 
