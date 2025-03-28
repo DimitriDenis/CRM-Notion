@@ -33,7 +33,7 @@ export class NotionExportService {
     }
 
     const notion = this.getNotionClient(user.notionAccessToken);
-    let workspaceId = options.workspaceId || user.notionWorkspaceId;
+    let workspaceId = user.notionWorkspaceId;
     
     const isValidUUID = (id) => {
         return id && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
