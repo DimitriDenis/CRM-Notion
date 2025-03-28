@@ -148,7 +148,7 @@ export function PipelineOverview({ pipelines, initialPipelineId }: PipelineOverv
               </div>
               <div className="h-2.5 bg-gray-100 dark:bg-gray-700 rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-blue-500 dark:bg-blue-600 rounded-full"
+                  className="h-full bg-novum dark:bg-novum rounded-full"
                   style={{
                     width: totalDeals > 0 
                       ? `${((stage.count || 0) / totalDeals) * 100}%` 
