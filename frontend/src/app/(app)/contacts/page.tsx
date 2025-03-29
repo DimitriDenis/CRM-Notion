@@ -34,17 +34,24 @@ export default function ContactsPage() {
   return (
     <div className="space-y-6">
       {/* En-tête de la page */}
-      <div className="sm:flex sm:items-center sm:justify-between bg-white dark:bg-gray-800 px-6 py-5 rounded-lg shadow-sm">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Contacts</h1>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            {isLoading
-              ? 'Chargement des contacts...'
-              : `Total: ${totalContacts} contact${totalContacts !== 1 ? 's' : ''}`}
-          </p>
-        </div>
-        <div className="mt-4 sm:mt-0 flex items-center gap-3">
-          {/* Boutons de changement de vue */}
+      <div className="bg-white dark:bg-gray-800 px-4 sm:px-6 py-4 sm:py-5 rounded-lg shadow-sm">
+  {/* En-tête avec titre et compteur */}
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Contacts</h1>
+      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+        {isLoading
+          ? 'Chargement des contacts...'
+          : `Total: ${totalContacts} contact${totalContacts !== 1 ? 's' : ''}`}
+      </p>
+    </div>
+    
+    {/* Contrôles de vue et boutons d'action */}
+    <div className="mt-4 sm:mt-0">
+      {/* Disposition en grille pour une meilleure adaptation mobile */}
+      <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 sm:gap-3">
+        {/* Boutons de changement de vue */}
+        <div className="col-span-2 sm:col-auto flex justify-between sm:justify-start">
           <div className="border border-gray-200 dark:border-gray-700 rounded-md p-1 flex items-center">
             <button
               onClick={() => setViewMode('grid')}
@@ -69,26 +76,32 @@ export default function ContactsPage() {
               <Bars3Icon className="h-5 w-5" />
             </button>
           </div>
-
-          <button
-            type="button"
-            onClick={() => setShowExportModal(true)}
-            className="inline-flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
-          >
-            <DocumentArrowUpIcon className="-ml-1 mr-2 h-5 w-5 text-gray-500 dark:text-gray-400" aria-hidden="true" />
-            Exporter vers Notion
-            </button>
-
-          <Link
-            href="/contacts/new"
-            className="inline-flex items-center rounded-md bg-blue-600 dark:bg-blue-700 px-3.5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-500 dark:hover:bg-blue-600 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-500"
-          >
-            <PlusIcon className="-ml-0.5 mr-1.5 h-5 w-5" aria-hidden="true" />
-            Nouveau contact
-          </Link>
-
         </div>
+
+        {/* Bouton Exporter */}
+        <button
+          type="button"
+          onClick={() => setShowExportModal(true)}
+          className="col-span-1 flex justify-center items-center px-3 sm:px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800"
+        >
+          <DocumentArrowUpIcon className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 dark:text-gray-400 sm:mr-2" aria-hidden="true" />
+          <span className="hidden sm:inline">Exporter vers Notion</span>
+          <span className="sm:hidden">Exporter</span>
+        </button>
+
+        {/* Bouton Nouveau contact */}
+        <Link
+          href="/contacts/new"
+          className="col-span-1 flex justify-center items-center rounded-md bg-blue-600 dark:bg-blue-700 px-3 sm:px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm font-medium text-white shadow-sm hover:bg-blue-500 dark:hover:bg-blue-600 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-500"
+        >
+          <PlusIcon className="h-4 w-4 sm:h-5 sm:w-5 sm:mr-1.5" aria-hidden="true" />
+          <span className="hidden sm:inline">Nouveau contact</span>
+          <span className="sm:hidden">Nouveau</span>
+        </Link>
       </div>
+    </div>
+  </div>
+</div>
 
       {/* Section des filtres */}
       <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
