@@ -129,79 +129,105 @@ export function ContactsList({ contacts, onDelete, viewMode = 'grid' }: Contacts
 
   if (viewMode === 'list') {
     return (
-      <div className="overflow-hidden">
-        <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-          <thead>
-            <tr>
-              <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">Nom</th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Entreprise</th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Email</th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Téléphone</th>
-              <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Tags</th>
-              <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                <span className="sr-only">Actions</span>
-              </th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
-            {contacts.map((contact, index) => (
-              <tr key={contact.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
-                  <div className="flex items-center">
-                    <div className={`h-10 w-10 flex-shrink-0 rounded-full ${getAvatarColor(contact.firstName, contact.lastName)} flex items-center justify-center text-white font-medium`}>
-                      {contact.firstName[0]}{contact.lastName[0]}
-                    </div>
-                    <div className="ml-4">
-                      <Link href={`/contacts/${contact.id}`} className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-                        {contact.firstName} {contact.lastName}
-                      </Link>
-                    </div>
-                  </div>
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                  {contact.company || '—'}
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm">
-                  {contact.email ? (
-                    <a href={`mailto:${contact.email}`} className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-                      {contact.email}
-                    </a>
-                  ) : (
-                    <span className="text-gray-500 dark:text-gray-400">—</span>
-                  )}
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm">
-                  {contact.phone ? (
-                    <a href={`tel:${contact.phone}`} className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
-                      {contact.phone}
-                    </a>
-                  ) : (
-                    <span className="text-gray-500 dark:text-gray-400">—</span>
-                  )}
-                </td>
-                <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                  {contact.tags && contact.tags.length > 0 ? (
-                    <div className="flex flex-wrap gap-1">
-                      {contact.tags.map((tag) => (
-                        <span key={tag.id} className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-1 text-xs font-medium text-blue-700 dark:text-blue-400 ring-1 ring-inset ring-blue-600/20 dark:ring-blue-400/30">
-                          {tag.name}
-                        </span>
-                      ))}
-                    </div>
-                  ) : '—'}
-                </td>
-                <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <AdaptiveMenu 
-                    contact={contact} 
-                    onDelete={onDelete} 
-                    index={index} 
-                    totalContacts={contacts.length}
-                  />
-                </td>
+      <div className="overflow-x-auto -mx-4 sm:mx-0">
+        <div className="inline-block min-w-full align-middle">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead>
+              <tr>
+                <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 dark:text-white sm:pl-6">Nom</th>
+                <th scope="col" className="hidden sm:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Entreprise</th>
+                <th scope="col" className="hidden md:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Email</th>
+                <th scope="col" className="hidden lg:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Téléphone</th>
+                <th scope="col" className="hidden lg:table-cell px-3 py-3.5 text-left text-sm font-semibold text-gray-900 dark:text-white">Tags</th>
+                <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                  <span className="sr-only">Actions</span>
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-800">
+              {contacts.map((contact, index) => (
+                <tr key={contact.id} className="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  {/* Colonne Nom - toujours visible */}
+                  <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6">
+                    <div className="flex items-center">
+                      <div className={`h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0 rounded-full ${getAvatarColor(contact.firstName, contact.lastName)} flex items-center justify-center text-white font-medium text-xs sm:text-sm`}>
+                        {contact.firstName[0]}{contact.lastName[0]}
+                      </div>
+                      <div className="ml-3 sm:ml-4">
+                        <Link href={`/contacts/${contact.id}`} className="font-medium text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 text-sm sm:text-base">
+                          {contact.firstName} {contact.lastName}
+                        </Link>
+                        {/* Information conditionnelle sur mobile */}
+                        <div className="flex flex-col sm:hidden text-xs mt-1">
+                          {contact.company && (
+                            <span className="text-gray-500 dark:text-gray-400">
+                              {contact.company}
+                            </span>
+                          )}
+                          {contact.email && (
+                            <a href={`mailto:${contact.email}`} className="text-blue-600 dark:text-blue-400 truncate max-w-[150px]">
+                              {contact.email}
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </td>
+                  
+                  {/* Colonne Entreprise - visible à partir de sm */}
+                  <td className="hidden sm:table-cell whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    {contact.company || '—'}
+                  </td>
+                  
+                  {/* Colonne Email - visible à partir de md */}
+                  <td className="hidden md:table-cell whitespace-nowrap px-3 py-4 text-sm">
+                    {contact.email ? (
+                      <a href={`mailto:${contact.email}`} className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                        {contact.email}
+                      </a>
+                    ) : (
+                      <span className="text-gray-500 dark:text-gray-400">—</span>
+                    )}
+                  </td>
+                  
+                  {/* Colonne Téléphone - visible à partir de lg */}
+                  <td className="hidden lg:table-cell whitespace-nowrap px-3 py-4 text-sm">
+                    {contact.phone ? (
+                      <a href={`tel:${contact.phone}`} className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400">
+                        {contact.phone}
+                      </a>
+                    ) : (
+                      <span className="text-gray-500 dark:text-gray-400">—</span>
+                    )}
+                  </td>
+                  
+                  {/* Colonne Tags - visible à partir de lg */}
+                  <td className="hidden lg:table-cell whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                    {contact.tags && contact.tags.length > 0 ? (
+                      <div className="flex flex-wrap gap-1">
+                        {contact.tags.map((tag) => (
+                          <span key={tag.id} className="inline-flex items-center rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs font-medium text-blue-700 dark:text-blue-400 ring-1 ring-inset ring-blue-600/20 dark:ring-blue-400/30">
+                            {tag.name}
+                          </span>
+                        ))}
+                      </div>
+                    ) : '—'}
+                  </td>
+                  
+                  {/* Colonne Actions - toujours visible */}
+                  <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                    <AdaptiveMenu 
+                      contact={contact} 
+                      onDelete={onDelete} 
+                      index={index} 
+                      totalContacts={contacts.length}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     );
   }
