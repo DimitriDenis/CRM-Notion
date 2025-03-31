@@ -9,10 +9,10 @@ interface DealCardProps {
 export function DealCard({ deal }: DealCardProps) {
   return (
     <Link href={`/deals/${deal.id}`}>
-      <div className="bg-white p-4 rounded-md shadow-sm border border-gray-200 hover:shadow-md transition-shadow">
-        <h4 className="font-medium text-gray-900 truncate">{deal.name}</h4>
+      <div className="bg-white dark:bg-gray-700 p-4 rounded-md shadow-sm border border-gray-200 dark:border-gray-600 hover:shadow-md dark:hover:shadow-gray-900 transition-shadow">
+        <h4 className="font-medium text-gray-900 dark:text-gray-100 truncate">{deal.name}</h4>
         <div className="mt-2 flex justify-between items-center">
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-gray-500 dark:text-gray-300">
             {deal.value.toLocaleString('fr-FR', {
               style: 'currency',
               currency: 'EUR',
@@ -27,7 +27,7 @@ export function DealCard({ deal }: DealCardProps) {
           </span>
         </div>
         {deal.expectedCloseDate && (
-          <div className="mt-2 text-xs text-gray-500">
+          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
             Clôture: {new Date(deal.expectedCloseDate).toLocaleDateString()}
           </div>
         )}
@@ -39,13 +39,13 @@ export function DealCard({ deal }: DealCardProps) {
 function getStatusClass(status: string): string {
   switch (status) {
     case 'active':
-      return 'bg-blue-100 text-blue-800';
+      return 'bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300';
     case 'won':
-      return 'bg-green-100 text-green-800';
+      return 'bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300';
     case 'lost':
-      return 'bg-red-100 text-red-800';
+      return 'bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-300';
   }
 }
 
