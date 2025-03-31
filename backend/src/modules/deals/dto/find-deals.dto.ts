@@ -24,7 +24,7 @@ export class FindDealsDto {
   stageId?: string;
 
   @IsOptional()
-  @IsEnum(['active', 'won', 'lost', '']) // Ajoutez une valeur vide pour permettre de réinitialiser le filtre
+  @IsEnum(['active', 'won', 'lost', '']) 
   status?: 'active' | 'won' | 'lost' | '';
 
   @IsOptional()

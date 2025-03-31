@@ -15,7 +15,7 @@ export class StatsService {
   ) {}
 
   async getDashboardStats(userId: string) {
-    // Récupérer la date actuelle et calculer les périodes
+    
     const today = new Date();
     
     // Début du mois actuel

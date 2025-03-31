@@ -13,7 +13,7 @@ export class PipelinesService {
   constructor(
     @InjectRepository(Pipeline)
     private pipelineRepository: Repository<Pipeline>,
-    @InjectRepository(Deal) // Ajoutez cette injection
+    @InjectRepository(Deal) 
     private dealRepository: Repository<Deal>,
   ) {}
 
@@ -131,7 +131,7 @@ export class PipelinesService {
       // Votre code existant pour trouver les pipelines
       const pipelines = await this.pipelineRepository.find({
         where: { userId },
-        relations: ['deals'], // Charger les deals associés
+        relations: ['deals'], 
       });
   
       // Si aucun pipeline n'est trouvé, renvoyer un objet vide
@@ -142,19 +142,18 @@ export class PipelinesService {
         };
       }
   
-      // Votre logique existante pour traiter les pipelines
-      const pipeline = pipelines[0]; // Prendre le premier pipeline (ou celui par défaut)
       
-      // Traitement des données...
+      const pipeline = pipelines[0]; 
       
-      // Renvoyer le résultat formaté
+    
+      
+      
       return {
         stages: pipeline.stages || [],
         deals: pipeline.deals || []
       };
     } catch (error) {
-      console.error('Error in getPipelineOverview:', error);
-      // En cas d'erreur, renvoyer un objet par défaut
+      
       return { 
         stages: [],
         deals: []

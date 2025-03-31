@@ -77,13 +77,13 @@ export class ContactSyncService {
       phone: properties.Phone?.phone_number || '',
       company: properties.Company?.rich_text[0]?.text.content || '',
       notes: properties.Notes?.rich_text[0]?.text.content || '',
-      // Tags seront gérés séparément
+      
     };
   }
 
   async initializeContactDatabase(userId: string, accessToken: string, workspaceId: string) {
     try {
-      // Créer la base de données Notion pour les contacts
+      
       const database = await this.notionService.createDatabase(
         accessToken,
         workspaceId,
@@ -91,8 +91,7 @@ export class ContactSyncService {
         CONTACT_DATABASE_SCHEMA,
       );
 
-      // Sauvegarder l'ID de la base de données dans les métadonnées de l'utilisateur
-      // Note: Il faudra ajouter un champ pour stocker cette information
+      
       await this.contactRepository.update(
         { userId },
         { notionMetadata: { databaseId: database.id, lastSync: new Date() } }

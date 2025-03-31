@@ -108,7 +108,7 @@ export class NotionExportService {
         databases: {} as Record<string, string>
       };
 
-      // 3. Exporter chaque entité demandée
+      
       for (const entity of options.entities) {
         switch(entity) {
           case 'contacts':
@@ -152,7 +152,7 @@ export class NotionExportService {
 
       return results;
     } catch (error) {
-      console.error('Error finding workspace root:', error);
+      
       throw new NotFoundException('Impossible de trouver la racine de votre espace de travail Notion.');
     }
   }
@@ -258,7 +258,7 @@ export class NotionExportService {
       ? await Promise.all(dealIds.map(id => this.dealsService.findOne(userId, id)))
       : (await this.dealsService.findAll(userId, { take: 1000 })).items;
 
-      console.log('Premier deal exemple:', JSON.stringify(dealsData[0]));
+      
 
     // 3. Insérer les deals dans la base de données
   for (const deal of dealsData) {
@@ -330,8 +330,7 @@ export class NotionExportService {
         }
       });
     } catch (error) {
-      console.error(`Error exporting deal ${deal.id}:`, error);
-      // Continue with next deal
+      
     }
   }
 

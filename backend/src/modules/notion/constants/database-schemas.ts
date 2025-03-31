@@ -48,7 +48,7 @@ export const PIPELINE_DATABASE_SCHEMA = {
   },
   Contacts: {
     relation: {
-      database_id: '', // À remplir dynamiquement
+      database_id: '', 
     },
   },
   CloseDate: {

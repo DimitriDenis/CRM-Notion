@@ -40,8 +40,7 @@ async getPipelineOverview(@CurrentUser() user: User) {
       deals: [] 
     };
   } catch (error) {
-    console.error('Error fetching pipeline overview:', error);
-    // En cas d'erreur, toujours renvoyer un objet par défaut
+    
     return { 
       stages: [], 
       deals: [] 

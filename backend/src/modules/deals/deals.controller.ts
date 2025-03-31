@@ -54,10 +54,7 @@ import { GetRecentDealsDto } from './dto/get-recent-deals.dto';
     @Get('recent')     
 @UseGuards(JwtAuthGuard) 
 async getRecentDeals(@CurrentUser() user: User) {   
-  console.log('=== getRecentDeals DEBUG ===');   
-  console.log('Entering getRecentDeals endpoint');
-  console.log('Request received');
-  console.log('User object:', JSON.stringify(user, null, 2));   
+     
   
   try {
     return this.dealsService.getRecentDeals(user.id); 
