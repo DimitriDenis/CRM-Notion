@@ -149,64 +149,68 @@ export function ContactForm({ contactId, initialData }: ContactFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-8">
+    <form onSubmit={handleSubmit} className="p-4 sm:p-8">
       {error && <ErrorAlert message={error} />}
-
-      <div className="bg-blue-50 dark:bg-blue-900/20 -mx-8 -mt-8 px-8 py-6 mb-8 border-b border-blue-100 dark:border-blue-900/30">
-        <h2 className="text-xl font-semibold leading-7 text-blue-800 dark:text-blue-300">
+  
+      <div className="bg-blue-50 dark:bg-blue-900/20 -mx-4 sm:-mx-8 -mt-4 sm:-mt-8 px-4 sm:px-8 py-4 sm:py-6 mb-6 sm:mb-8 border-b border-blue-100 dark:border-blue-900/30">
+        <h2 className="text-lg sm:text-xl font-semibold leading-7 text-blue-800 dark:text-blue-300">
           {contactId ? 'Modifier le contact' : 'Informations du contact'}
         </h2>
-        <p className="mt-1 text-sm leading-6 text-blue-600 dark:text-blue-400">
+        <p className="mt-1 text-xs sm:text-sm leading-6 text-blue-600 dark:text-blue-400">
           {contactId ? 'Modifiez les informations du contact' : 'Ajoutez un nouveau contact à votre CRM'}
         </p>
       </div>
-
-      <div className="space-y-8">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-          <div className="sm:col-span-1">
-            <label htmlFor="firstName" className="flex items-center text-sm font-medium leading-6 text-gray-900 dark:text-white">
-              <UserIcon className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
-              Prénom
-            </label>
-            <div className="mt-2">
-              <input
-                type="text"
-                name="firstName"
-                id="firstName"
-                required
-                value={formData.firstName}
-                onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm"
-                placeholder="Jean"
-              />
+  
+      <div className="space-y-6 sm:space-y-8">
+        <div className="grid grid-cols-1 gap-x-4 sm:gap-x-8 gap-y-4 sm:gap-y-6 sm:grid-cols-2">
+          {/* Nom et prénom - sur la même ligne en mobile sur les très petits écrans */}
+          <div className="grid grid-cols-2 sm:grid-cols-1 gap-x-2 col-span-1">
+            <div className="col-span-1">
+              <label htmlFor="firstName" className="flex items-center text-xs sm:text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <UserIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-500 dark:text-gray-400" />
+                Prénom
+              </label>
+              <div className="mt-1 sm:mt-2">
+                <input
+                  type="text"
+                  name="firstName"
+                  id="firstName"
+                  required
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  className="block w-full rounded-lg border-0 py-1.5 sm:py-2.5 px-2 sm:px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 text-xs sm:text-sm"
+                  placeholder="Jean"
+                />
+              </div>
+            </div>
+  
+            <div className="col-span-1">
+              <label htmlFor="lastName" className="flex items-center text-xs sm:text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <UserIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-500 dark:text-gray-400" />
+                Nom
+              </label>
+              <div className="mt-1 sm:mt-2">
+                <input
+                  type="text"
+                  name="lastName"
+                  id="lastName"
+                  required
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  className="block w-full rounded-lg border-0 py-1.5 sm:py-2.5 px-2 sm:px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 text-xs sm:text-sm"
+                  placeholder="Dupont"
+                />
+              </div>
             </div>
           </div>
-
-          <div className="sm:col-span-1">
-            <label htmlFor="lastName" className="flex items-center text-sm font-medium leading-6 text-gray-900 dark:text-white">
-              <UserIcon className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
-              Nom
-            </label>
-            <div className="mt-2">
-              <input
-                type="text"
-                name="lastName"
-                id="lastName"
-                required
-                value={formData.lastName}
-                onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm"
-                placeholder="Dupont"
-              />
-            </div>
-          </div>
-
-          <div className="sm:col-span-2">
-            <label htmlFor="email" className="flex items-center text-sm font-medium leading-6 text-gray-900 dark:text-white">
-              <EnvelopeIcon className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+  
+          {/* Email - pleine largeur sur tous les écrans */}
+          <div className="col-span-1 sm:col-span-2">
+            <label htmlFor="email" className="flex items-center text-xs sm:text-sm font-medium leading-6 text-gray-900 dark:text-white">
+              <EnvelopeIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-500 dark:text-gray-400" />
               Email
             </label>
-            <div className="mt-2">
+            <div className="mt-1 sm:mt-2">
               <input
                 type="email"
                 name="email"
@@ -214,84 +218,89 @@ export function ContactForm({ contactId, initialData }: ContactFormProps) {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-lg border-0 py-1.5 sm:py-2.5 px-2 sm:px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 text-xs sm:text-sm"
                 placeholder="jean.dupont@exemple.com"
               />
             </div>
           </div>
-
-          <div className="sm:col-span-1">
-            <label htmlFor="phone" className="flex items-center text-sm font-medium leading-6 text-gray-900 dark:text-white">
-              <PhoneIcon className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
-              Téléphone
-            </label>
-            <div className="mt-2">
-              <input
-                type="tel"
-                name="phone"
-                id="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm"
-                placeholder="06 12 34 56 78"
-              />
+  
+          {/* Téléphone et Entreprise - sur la même ligne en mobile sur les très petits écrans */}
+          <div className="grid grid-cols-2 gap-x-2 col-span-1 sm:grid-cols-1 sm:col-span-1">
+            <div className="col-span-1">
+              <label htmlFor="phone" className="flex items-center text-xs sm:text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <PhoneIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-500 dark:text-gray-400" />
+                Tél.
+              </label>
+              <div className="mt-1 sm:mt-2">
+                <input
+                  type="tel"
+                  name="phone"
+                  id="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  className="block w-full rounded-lg border-0 py-1.5 sm:py-2.5 px-2 sm:px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 text-xs sm:text-sm"
+                  placeholder="06 12 34 56 78"
+                />
+              </div>
+            </div>
+  
+            <div className="col-span-1">
+              <label htmlFor="company" className="flex items-center text-xs sm:text-sm font-medium leading-6 text-gray-900 dark:text-white">
+                <BuildingOfficeIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-500 dark:text-gray-400" />
+                Entreprise
+              </label>
+              <div className="mt-1 sm:mt-2">
+                <input
+                  type="text"
+                  name="company"
+                  id="company"
+                  value={formData.company}
+                  onChange={handleChange}
+                  className="block w-full rounded-lg border-0 py-1.5 sm:py-2.5 px-2 sm:px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 text-xs sm:text-sm"
+                  placeholder="Société ABC"
+                />
+              </div>
             </div>
           </div>
-
-          <div className="sm:col-span-1">
-            <label htmlFor="company" className="flex items-center text-sm font-medium leading-6 text-gray-900 dark:text-white">
-              <BuildingOfficeIcon className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
-              Entreprise
-            </label>
-            <div className="mt-2">
-              <input
-                type="text"
-                name="company"
-                id="company"
-                value={formData.company}
-                onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm"
-                placeholder="Société ABC"
-              />
-            </div>
-          </div>
-
-          <div className="col-span-2">
-            <label htmlFor="notes" className="flex items-center text-sm font-medium leading-6 text-gray-900 dark:text-white">
-              <DocumentTextIcon className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+  
+          {/* Notes - toujours pleine largeur */}
+          <div className="col-span-1 sm:col-span-2">
+            <label htmlFor="notes" className="flex items-center text-xs sm:text-sm font-medium leading-6 text-gray-900 dark:text-white">
+              <DocumentTextIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-500 dark:text-gray-400" />
               Notes
             </label>
-            <div className="mt-2">
+            <div className="mt-1 sm:mt-2">
               <textarea
                 name="notes"
                 id="notes"
-                rows={4}
+                rows={3}
                 value={formData.notes}
                 onChange={handleChange}
-                className="block w-full rounded-lg border-0 py-2.5 px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-lg border-0 py-1.5 sm:py-2.5 px-2 sm:px-3 text-gray-900 dark:text-white bg-white dark:bg-gray-800 shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-700 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-600 dark:focus:ring-blue-500 text-xs sm:text-sm"
                 placeholder="Ajouter des notes concernant ce contact..."
               />
             </div>
           </div>
         </div>
-
-        <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-          <label className="flex items-center text-sm font-medium leading-6 text-gray-900 dark:text-white">
-            <TagIcon className="h-4 w-4 mr-2 text-gray-500 dark:text-gray-400" />
+  
+        {/* Tags */}
+        <div className="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6">
+          <label className="flex items-center text-xs sm:text-sm font-medium leading-6 text-gray-900 dark:text-white">
+            <TagIcon className="h-3 w-3 sm:h-4 sm:w-4 mr-1 sm:mr-2 text-gray-500 dark:text-gray-400" />
             Tags
           </label>
-          <p className="mt-1 text-sm leading-6 text-gray-500 dark:text-gray-400">
+          <p className="mt-1 text-xs leading-5 text-gray-500 dark:text-gray-400">
             Sélectionnez les tags pour ce contact
           </p>
-
-          <div className="mt-4 flex flex-wrap gap-2">
+  
+          <div className="mt-3 sm:mt-4 flex flex-wrap gap-1.5 sm:gap-2">
             {tags.length > 0 ? (
               tags.map((tag) => (
                 <button
                   key={tag.id}
                   type="button"
                   onClick={() => handleTagToggle(tag.id)}
-                  className={`inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-medium transition-colors ${
+                  className={`inline-flex items-center rounded-full px-2.5 sm:px-3.5 py-1 sm:py-1.5 text-xs sm:text-sm font-medium transition-colors ${
                     formData.tagIds.includes(tag.id)
                       ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-300 border border-blue-300 dark:border-blue-700'
                       : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'
@@ -301,35 +310,36 @@ export function ContactForm({ contactId, initialData }: ContactFormProps) {
                 </button>
               ))
             ) : (
-              <p className="text-sm text-gray-500 dark:text-gray-400">Aucun tag disponible</p>
+              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Aucun tag disponible</p>
             )}
           </div>
         </div>
       </div>
-
-      <div className="mt-10 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-x-4">
+  
+      {/* Boutons d'action */}
+      <div className="mt-6 sm:mt-10 pt-4 sm:pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-x-2 sm:gap-x-4">
         <button
           type="button"
           onClick={() => router.push('/contacts')}
-          className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+          className="px-3 sm:px-4 py-1.5 sm:py-2.5 rounded-lg text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
         >
           Annuler
         </button>
         <button
           type="submit"
           disabled={isSaving}
-          className="rounded-lg bg-blue-600 dark:bg-blue-700 px-5 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-500 dark:hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-500 transition-colors disabled:opacity-70"
+          className="rounded-lg bg-blue-600 dark:bg-blue-700 px-3 sm:px-5 py-1.5 sm:py-2.5 text-xs sm:text-sm font-medium text-white shadow-sm hover:bg-blue-500 dark:hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 dark:focus-visible:outline-blue-500 transition-colors disabled:opacity-70"
         >
           {isSaving ? (
             <span className="flex items-center">
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin -ml-1 mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
-              Enregistrement...
+              {window.innerWidth < 640 ? 'Enregistrement...' : 'Enregistrement...'}
             </span>
           ) : (
-            'Enregistrer le contact'
+            <>{window.innerWidth < 640 ? 'Enregistrer' : 'Enregistrer le contact'}</>
           )}
         </button>
       </div>
