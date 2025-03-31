@@ -345,126 +345,138 @@ const [selectedDeals, setSelectedDeals] = useState<string[]>([]);
       </div>
 
       {/* Vue liste */}
-      {viewMode === 'list' && (
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
-              <thead>
-                <tr className="bg-gray-50 dark:bg-gray-700">
-                  <th 
-                    scope="col" 
-                    className="py-3.5 pl-4 pr-3 text-left text-sm font-medium text-gray-900 dark:text-gray-200 sm:pl-6 cursor-pointer"
-                    onClick={() => handleSort('name')}
+{viewMode === 'list' && (
+  <div className="bg-white dark:bg-gray-800 shadow rounded-lg overflow-hidden border border-gray-100 dark:border-gray-700">
+    <div className="overflow-x-auto">
+      <table className="min-w-full divide-y divide-gray-300 dark:divide-gray-600">
+        <thead>
+          <tr className="bg-gray-50 dark:bg-gray-700">
+            <th 
+              scope="col" 
+              className="py-3.5 pl-4 pr-3 text-left text-sm font-medium text-gray-900 dark:text-gray-200 sm:pl-6 cursor-pointer"
+              onClick={() => handleSort('name')}
+            >
+              <span className="group inline-flex items-center">
+                Nom
+                {getSortIcon('name')}
+              </span>
+            </th>
+            {/* Pipeline/Étape - caché sur mobile */}
+            <th scope="col" className="hidden sm:table-cell px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200">
+              Pipeline / Étape
+            </th>
+            <th 
+              scope="col" 
+              className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200 cursor-pointer"
+              onClick={() => handleSort('value')}
+            >
+              <span className="group inline-flex items-center">
+                Valeur
+                {getSortIcon('value')}
+              </span>
+            </th>
+            <th scope="col" className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200">
+              Statut
+            </th>
+            {/* Date de mise à jour - caché sur mobile */}
+            <th 
+              scope="col" 
+              className="hidden md:table-cell px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200 cursor-pointer"
+              onClick={() => handleSort('updatedAt')}
+            >
+              <span className="group inline-flex items-center">
+                Mise à jour
+                {getSortIcon('updatedAt')}
+              </span>
+            </th>
+            <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
+              <span className="sr-only">Actions</span>
+            </th>
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+          {isLoading ? (
+            Array.from({ length: 5 }).map((_, i) => (
+              <tr key={i} className="animate-pulse">
+                <td className="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-24"></div>
+                </td>
+                <td className="hidden sm:table-cell whitespace-nowrap px-3 py-4">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-32"></div>
+                </td>
+                <td className="whitespace-nowrap px-3 py-4">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-16"></div>
+                </td>
+                <td className="whitespace-nowrap px-3 py-4">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-20"></div>
+                </td>
+                <td className="hidden md:table-cell whitespace-nowrap px-3 py-4">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-24"></div>
+                </td>
+                <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-8"></div>
+                </td>
+              </tr>
+            ))
+          ) : deals.length === 0 ? (
+            <tr>
+              <td colSpan={6} className="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                <div className="flex flex-col items-center justify-center">
+                  <ShoppingBagIcon className="h-10 w-10 text-gray-400 dark:text-gray-500 mb-2" />
+                  <p>Aucun deal trouvé</p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Modifiez vos filtres ou créez un nouveau deal</p>
+                </div>
+              </td>
+            </tr>
+          ) : (
+            deals.map(deal => (
+              <tr key={deal.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                <td className="py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100 sm:pl-6">
+                  <Link href={`/deals/${deal.id}`} className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline line-clamp-1">
+                    {deal.name}
+                  </Link>
+                  {/* Affichage mobile: info sur la partie cachée du tableau */}
+                  <div className="mt-1 sm:hidden text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                    {deal.pipeline?.name || 'N/A'} / {deal.stage?.name || 'N/A'}
+                  </div>
+                  <div className="md:hidden text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
+                    {new Date(deal.updatedAt).toLocaleDateString()}
+                  </div>
+                </td>
+                <td className="hidden sm:table-cell whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                  {deal.pipeline?.name || 'N/A'} / {deal.stage?.name || 'N/A'}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
+                  {formatCurrency(deal.value)}
+                </td>
+                <td className="whitespace-nowrap px-3 py-4 text-sm">
+                  <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusBadgeClass(deal.status)}`}>
+                    {getStatusIcon(deal.status)}
+                    <span className="hidden xs:inline">{getStatusLabel(deal.status)}</span>
+                  </span>
+                </td>
+                <td className="hidden md:table-cell whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
+                  {new Date(deal.updatedAt).toLocaleDateString()}
+                </td>
+                <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+                  <Link 
+                    href={`/deals/${deal.id}/edit`} 
+                    className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-800/40 px-2.5 py-1 rounded transition-colors"
                   >
-                    <span className="group inline-flex items-center">
-                      Nom
-                      {getSortIcon('name')}
-                    </span>
-                  </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200">
-                    Pipeline / Étape
-                  </th>
-                  <th 
-                    scope="col" 
-                    className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200 cursor-pointer"
-                    onClick={() => handleSort('value')}
-                  >
-                    <span className="group inline-flex items-center">
-                      Valeur
-                      {getSortIcon('value')}
-                    </span>
-                  </th>
-                  <th scope="col" className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200">
-                    Statut
-                  </th>
-                  <th 
-                    scope="col" 
-                    className="px-3 py-3.5 text-left text-sm font-medium text-gray-900 dark:text-gray-200 cursor-pointer"
-                    onClick={() => handleSort('updatedAt')}
-                  >
-                    <span className="group inline-flex items-center">
-                      Mise à jour
-                      {getSortIcon('updatedAt')}
-                    </span>
-                  </th>
-                  <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                    <span className="sr-only">Actions</span>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-                {isLoading ? (
-                  Array.from({ length: 5 }).map((_, i) => (
-                    <tr key={i} className="animate-pulse">
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 sm:pl-6">
-                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-24"></div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4">
-                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-32"></div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4">
-                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-16"></div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4">
-                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-20"></div>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4">
-                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-24"></div>
-                      </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <div className="h-4 bg-gray-200 dark:bg-gray-600 rounded w-8"></div>
-                      </td>
-                    </tr>
-                  ))
-                ) : deals.length === 0 ? (
-                  <tr>
-                    <td colSpan={6} className="py-8 text-center text-sm text-gray-500 dark:text-gray-400">
-                      <div className="flex flex-col items-center justify-center">
-                        <ShoppingBagIcon className="h-10 w-10 text-gray-400 dark:text-gray-500 mb-2" />
-                        <p>Aucun deal trouvé</p>
-                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Modifiez vos filtres ou créez un nouveau deal</p>
-                      </div>
-                    </td>
-                  </tr>
-                ) : (
-                  deals.map(deal => (
-                    <tr key={deal.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 dark:text-gray-100 sm:pl-6">
-                        <Link href={`/deals/${deal.id}`} className="hover:text-blue-600 dark:hover:text-blue-400 hover:underline">
-                          {deal.name}
-                        </Link>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                        {deal.pipeline?.name || 'N/A'} / {deal.stage?.name || 'N/A'}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
-                        {formatCurrency(deal.value)}
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm">
-                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${getStatusBadgeClass(deal.status)}`}>
-                          {getStatusIcon(deal.status)}
-                          {getStatusLabel(deal.status)}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-gray-400">
-                        {new Date(deal.updatedAt).toLocaleDateString()}
-                      </td>
-                      <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                        <Link 
-                          href={`/deals/${deal.id}/edit`} 
-                          className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-800/40 px-2.5 py-1 rounded transition-colors"
-                        >
-                          Modifier
-                        </Link>
-                      </td>
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+                    <span className="hidden xs:inline">Modifier</span>
+                    <svg className="h-4 w-4 inline xs:hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+                    </svg>
+                  </Link>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+    </div>
+  </div>
+)}
 
       {/* Vue cartes */}
       {viewMode === 'cards' && (
