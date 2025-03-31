@@ -85,7 +85,7 @@ export function KanbanBoard({ pipeline }: KanbanBoardProps) {
   };
 
   if (isLoading) {
-    return <div className="animate-pulse p-4 h-96 bg-gray-100 rounded-lg"></div>;
+    return <div className="animate-pulse p-4 h-96 bg-gray-100 dark:bg-gray-800 rounded-lg"></div>;
   }
 
   if (error) {
@@ -105,11 +105,11 @@ export function KanbanBoard({ pipeline }: KanbanBoardProps) {
           return (
             <div
               key={stageId}
-              className="flex-shrink-0 w-72 bg-gray-50 rounded-lg p-3"
+              className="flex-shrink-0 w-72 bg-gray-50 dark:bg-gray-800 rounded-lg p-3"
             >
-              <h3 className="text-sm font-medium text-gray-900 mb-3 flex justify-between items-center">
+              <h3 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-3 flex justify-between items-center">
                 <span>{stage.name}</span>
-                <span className="text-gray-500 text-xs">
+                <span className="text-gray-500 dark:text-gray-400 text-xs">
                   {getDealsForStage(stageId).length} deals
                 </span>
               </h3>
@@ -120,7 +120,7 @@ export function KanbanBoard({ pipeline }: KanbanBoardProps) {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     className={`min-h-[12rem] space-y-3 ${
-                      snapshot.isDraggingOver ? 'bg-blue-50' : ''
+                      snapshot.isDraggingOver ? 'bg-blue-50 dark:bg-blue-900/30' : ''
                     }`}
                   >
                     {getDealsForStage(stageId).map((deal, index) => (
@@ -135,7 +135,7 @@ export function KanbanBoard({ pipeline }: KanbanBoardProps) {
                             {...provided.draggableProps}
                             {...provided.dragHandleProps}
                             className={`${
-                              snapshot.isDragging ? 'shadow-lg' : ''
+                              snapshot.isDragging ? 'shadow-lg dark:shadow-gray-900' : ''
                             }`}
                           >
                             <DealCard deal={deal} />
@@ -146,7 +146,7 @@ export function KanbanBoard({ pipeline }: KanbanBoardProps) {
                     {provided.placeholder}
                     <Link
                       href={`/deals/new?pipelineId=${pipeline.id || ''}&stageId=${stageId}`}
-                      className="flex items-center p-2 text-sm text-gray-500 hover:text-gray-700"
+                      className="flex items-center p-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300"
                     >
                       <PlusIcon className="h-4 w-4 mr-1" />
                       Ajouter un deal
