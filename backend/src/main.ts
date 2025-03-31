@@ -12,7 +12,7 @@ async function bootstrap() {
     whitelist: true,
     enableDebugMessages: true, // Pour voir plus de détails sur les erreurs
     exceptionFactory: (errors) => {
-      console.log('Validation Errors:', JSON.stringify(errors, null, 2));
+      
       return errors;
     }
   }));

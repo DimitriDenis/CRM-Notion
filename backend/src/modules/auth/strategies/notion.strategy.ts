@@ -23,11 +23,6 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
     const clientSecret = configService.get('NOTION_OAUTH_CLIENT_SECRET');
     const callbackURL = configService.get('NOTION_OAUTH_REDIRECT_URI');
 
-    console.log('=== Notion Strategy Configuration ===', {
-      clientIDExists: !!clientID,
-      clientSecretExists: !!clientSecret,
-      callbackURL
-    });
 
     super({
       authorizationURL: 'https://api.notion.com/v1/oauth/authorize',
@@ -45,14 +40,10 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
     // Override de la méthode d'échange de token
     this._oauth2.getOAuthAccessToken = async (code, params, callback) => {
       try {
-        console.log('=== Detailed OAuth Exchange ===');
+        
         const authString = Buffer.from(`${clientID}:${clientSecret}`).toString('base64');
     
-        console.log('Request details:', {
-          url: 'https://api.notion.com/v1/oauth/token',
-          code,
-          redirect_uri: callbackURL
-        });
+        
 
 
         const tokenResponse = await fetch('https://api.notion.com/v1/oauth/token', {
@@ -70,10 +61,7 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
         });
 
         const responseData = await tokenResponse.json();
-    console.log('Detailed Token Response:', {
-      status: tokenResponse.status,
-      data: responseData
-    });
+   
 
     if (!tokenResponse.ok) {
       return callback(new Error(`Token exchange failed: ${JSON.stringify(responseData)}`));
@@ -87,10 +75,7 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
         return callback(null, access_token, null, { bot_id, workspace_id, owner });
 
       } catch (error) {
-        console.error('Token Exchange Error:', {
-          name: error.name,
-          message: error.message
-        });
+        
         return callback(error);
       }
     };
@@ -98,7 +83,7 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
 
   async validate(req: any, accessToken: string, refreshToken: string): Promise<any> {
     try {
-      console.log('=== Starting Validation ===');
+     
       const response = await fetch('https://api.notion.com/v1/users/me', {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
@@ -107,11 +92,11 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
       });
   
       const userData = await response.json();
-      console.log('Raw Notion User Data:', JSON.stringify(userData, null, 2));
+     
   
       // Si c'est un bot, regardons qui est le propriétaire
       if (userData.type === 'bot') {
-        console.log('Bot Owner:', userData.bot?.owner);
+        
       }
   
       // Récupérons les informations essentielles
@@ -121,7 +106,7 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
         name: userData.bot?.owner?.user?.name || userData.name,
       };
   
-      console.log('Extracted User Info:', userInfo);
+      
   
       // Créer ou mettre à jour l'utilisateur
       const validatedUser = await this.authService.validateNotionUser({
@@ -132,13 +117,13 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
   
       return validatedUser;
     } catch (error) {
-      console.error('Validation Error:', error);
+      
       return null;
     }
   }
 
   private async getNotionUserInfo(token: string) {
-    console.log('=== Getting Notion User Info ===');
+    
     try {
       const response = await fetch('https://api.notion.com/v1/users/me', {
         headers: {
@@ -147,13 +132,10 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
         },
       });
   
-      console.log('Notion API Response:', {
-        status: response.status,
-        ok: response.ok
-      });
+     
   
       const data = await response.json();
-      console.log('Notion API Data:', data);
+      
   
       if (!response.ok) {
         throw new Error(`Notion API error: ${response.status} - ${data.message}`);
@@ -161,10 +143,7 @@ export class NotionStrategy extends PassportStrategy(Strategy, 'notion') {
   
       return data;
     } catch (error) {
-      console.error('getNotionUserInfo Error:', {
-        message: error.message,
-        stack: error.stack
-      });
+      
       throw error;
     }
   }
