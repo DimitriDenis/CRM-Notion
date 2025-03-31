@@ -440,7 +440,7 @@ function LegalSettings() {
           >
             <ScaleIcon className="h-5 w-5 mr-2 flex-shrink-0" />
             <span className="hidden xs:inline">Informations légales</span>
-            <span className="inline xs:hidden">Infos légales</span>
+            
           </button>
         </div>
       </div>
