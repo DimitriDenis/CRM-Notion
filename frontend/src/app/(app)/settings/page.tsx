@@ -17,7 +17,8 @@ import {
   ComputerDesktopIcon,
   MoonIcon,
   CheckCircleIcon,
-  ArrowsPointingOutIcon
+  ArrowsPointingOutIcon,
+  ChevronRightIcon
 } from '@heroicons/react/24/outline';
 import { Disclosure, RadioGroup, Switch } from '@headlessui/react';
 
@@ -70,6 +71,7 @@ const borderRadiusOptions = [
 
 export default function SettingsPage() {
   const [activeSection, setActiveSection] = useState('account');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="space-y-6">
@@ -88,10 +90,63 @@ export default function SettingsPage() {
         </div>
       </div>
 
-      {/* Contenu principal */}
-      <div className="flex flex-col lg:flex-row gap-6">
-        {/* Sidebar des sections de paramètres */}
-        <div className="w-full lg:w-64 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+       {/* Contenu principal */}
+       <div className="flex flex-col lg:flex-row gap-6">
+        {/* Menu mobile */}
+        <div className="block lg:hidden bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
+          <div className="p-4">
+                <button 
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="flex items-center justify-between w-full text-left text-sm font-medium text-gray-900 dark:text-white"
+                >
+                  <div className="flex items-center">
+                    {activeSection && (() => {
+                      const currentSection = settingsSections.find(section => section.id === activeSection);
+                      if (currentSection) {
+                        const IconComponent = currentSection.icon;
+                        return <IconComponent className="mr-3 h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0" />;
+                      }
+                      return null;
+                    })()}
+                    <span>{settingsSections.find(section => section.id === activeSection)?.name || 'Paramètres'}</span>
+                  </div>
+                  <ChevronDownIcon 
+                    className={`h-5 w-5 text-gray-500 dark:text-gray-400 transition-transform ${mobileMenuOpen ? 'transform rotate-180' : ''}`}
+                  />
+                </button>
+
+            {mobileMenuOpen && (
+              <div className="mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
+                <ul className="space-y-2">
+                  {settingsSections.map((section) => (
+                    <li key={section.id}>
+                      <button
+                        onClick={() => {
+                          setActiveSection(section.id);
+                          setMobileMenuOpen(false);
+                        }}
+                        className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                          activeSection === section.id
+                            ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300'
+                            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white'
+                        }`}
+                      >
+                        <section.icon className="mr-3 h-5 w-5 flex-shrink-0" aria-hidden="true" />
+                        {section.name}
+                        {activeSection === section.id && (
+                          <ChevronRightIcon className="ml-auto h-5 w-5 text-blue-600 dark:text-blue-400" />
+                        )}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Sidebar des sections de paramètres - visible uniquement sur desktop */}
+        <div className="hidden lg:block w-64 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700 overflow-hidden">
           <nav className="p-2">
             <ul className="space-y-1">
               {settingsSections.map((section) => (
