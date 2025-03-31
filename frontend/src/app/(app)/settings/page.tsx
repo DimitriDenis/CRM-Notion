@@ -438,8 +438,7 @@ function LegalSettings() {
                 : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 dark:text-gray-400 dark:hover:text-gray-300 dark:hover:border-gray-600'
             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
           >
-            <ScaleIcon className="h-5 w-5 mr-2 flex-shrink-0" />
-            <span className="hidden xs:inline">Informations légales</span>
+            
             
           </button>
         </div>
