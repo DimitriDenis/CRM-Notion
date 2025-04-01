@@ -25,10 +25,10 @@ export class AuthController {
       const { access_token, user } = await this.authService.login(req.user);
       
       let frontendUrl = this.configService.get('FRONTEND_URL');
-      // Supprimer le www si présent pour assurer la cohérence
-      frontendUrl = frontendUrl.replace('www.', '');
       
+      // Construire l'URL avec le token
       const redirectUrl = new URL('/dashboard', frontendUrl);
+      redirectUrl.searchParams.set('token', access_token);
       
       if (user.plan === 'pro') {
         redirectUrl.searchParams.set('premium', 'true');
@@ -39,7 +39,7 @@ export class AuthController {
       
     } catch (error) {
       console.error('Auth callback error:', error);
-      const frontendUrl = this.configService.get('FRONTEND_URL').replace('www.', '');
+      const frontendUrl = this.configService.get('FRONTEND_URL');
       const errorMessage = encodeURIComponent(error.message || 'Authentication failed');
       res.redirect(`${frontendUrl}/auth/error?message=${errorMessage}`);
     }
