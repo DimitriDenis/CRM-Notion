@@ -22,28 +22,24 @@ export class AuthController {
   @UseGuards(AuthGuard('notion'))
   async notionCallback(@Req() req, @Res() res) {
     try {
-      
-      
       const { access_token, user } = await this.authService.login(req.user);
       
-      
-      const frontendUrl = this.configService.get('FRONTEND_URL');
-      
+      let frontendUrl = this.configService.get('FRONTEND_URL');
+      // Supprimer le www si présent pour assurer la cohérence
+      frontendUrl = frontendUrl.replace('www.', '');
       
       const redirectUrl = new URL('/dashboard', frontendUrl);
-      
       
       if (user.plan === 'pro') {
         redirectUrl.searchParams.set('premium', 'true');
       }
 
-      
+      console.log('Redirecting to:', redirectUrl.toString());
       res.redirect(redirectUrl.toString());
       
     } catch (error) {
-      
-      
-      const frontendUrl = this.configService.get('FRONTEND_URL');
+      console.error('Auth callback error:', error);
+      const frontendUrl = this.configService.get('FRONTEND_URL').replace('www.', '');
       const errorMessage = encodeURIComponent(error.message || 'Authentication failed');
       res.redirect(`${frontendUrl}/auth/error?message=${errorMessage}`);
     }
