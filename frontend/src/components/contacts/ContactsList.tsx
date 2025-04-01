@@ -240,8 +240,8 @@ export function ContactsList({ contacts, onDelete, viewMode = 'grid' }: Contacts
 return (
   <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
     {contacts.map((contact, index) => (
-      <li key={contact.id} className="col-span-1 divide-y divide-gray-400 dark:divide-gray-600 rounded-lg bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow hover:shadow-md dark:shadow-gray-900/30 dark:hover:shadow-gray-900/50 transition-all relative">
-        <div className="flex w-full items-center justify-between space-x-6 p-6">
+      <li key={contact.id} className="col-span-1 divide-y divide-gray-400 dark:divide-gray-600 rounded-lg bg-white dark:bg-gray-800 border border-gray-100 dark:border-gray-700 shadow hover:shadow-md dark:shadow-gray-900/30 dark:hover:shadow-gray-900/50 transition-all relative flex flex-col">
+        <div className="flex w-full items-center justify-between space-x-6 p-6 flex-grow">
           <div className="flex-1 truncate">
             <Link href={`/contacts/${contact.id}`} className="hover:text-blue-600 dark:hover:text-blue-400">
               <div className="flex items-center space-x-3">
@@ -277,35 +277,35 @@ return (
             </div>
           </div>
         </div>
-        <div>
-          <div className="-mt-px flex divide-x divide-gray-200 dark:divide-gray-600">
-            <div className="flex w-0 flex-1">
+        
+        <div className="flex divide-x divide-gray-200 dark:divide-gray-600 mt-auto">
+          <div className="flex w-0 flex-1">
+            <Link
+              href={`mailto:${contact.email}`}
+              className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 group dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700"
+            >
+              <EnvelopeIcon className="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
+              Email
+            </Link>
+          </div>
+          <div className="-ml-px flex w-0 flex-1">
+            {contact.phone ? (
               <Link
-                href={`mailto:${contact.email}`}
-                className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 group dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700"
+                href={`tel:${contact.phone}`}
+                className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 group dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700"
               >
-                <EnvelopeIcon className="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
-                Email
+                <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
+                Appeler
               </Link>
-            </div>
-            <div className="-ml-px flex w-0 flex-1">
-              {contact.phone ? (
-                <Link
-                  href={`tel:${contact.phone}`}
-                  className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900 dark:text-gray-100 hover:text-blue-600 dark:hover:text-blue-400 group dark:bg-gray-700/50 hover:bg-gray-50 dark:hover:bg-gray-700"
-                >
-                  <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-300 group-hover:text-blue-600 dark:group-hover:text-blue-400" aria-hidden="true" />
-                  Appeler
-                </Link>
-              ) : (
-                <span className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm text-gray-400 dark:text-gray-500 dark:bg-gray-700/50">
-                  <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
-                  Pas de téléphone
-                </span>
-              )}
-            </div>
+            ) : (
+              <span className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-2 rounded-br-lg border border-transparent py-4 text-sm text-gray-400 dark:text-gray-500 dark:bg-gray-700/50">
+                <PhoneIcon className="h-5 w-5 text-gray-400 dark:text-gray-500" aria-hidden="true" />
+                Pas de téléphone
+              </span>
+            )}
           </div>
         </div>
+        
         <div className="absolute top-2 right-2">
           <AdaptiveMenu 
             contact={contact} 
