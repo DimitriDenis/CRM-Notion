@@ -192,7 +192,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
                         required
                         value={stage.name}
                         onChange={(e) => handleStageChange(index, 'name', e.target.value)}
-                        placeholder={`Étape ${index + 1}`}
+                        placeholder={`Donnez un nom à l'étape ${index + 1} (ex: Premier contact, Négociation...)`}
                         className="block w-full border-0 p-0 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 bg-transparent focus:ring-0 sm:text-sm"
                       />
                     </div>
@@ -200,6 +200,7 @@ export function PipelineForm({ pipelineId }: PipelineFormProps) {
                       type="button"
                       onClick={() => removeStage(index)}
                       className="opacity-0 group-hover:opacity-100 rounded-full p-1.5 text-gray-400 dark:text-gray-500 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
+                      title="Supprimer cette étape"
                     >
                       <XMarkIcon className="h-5 w-5" />
                     </button>
