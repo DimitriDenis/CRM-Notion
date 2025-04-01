@@ -46,7 +46,7 @@ async function bootstrap() {
   app.use(passport.session());
 
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://crm-notion-b6j8.vercel.app'],
+    origin: ['http://localhost:3000', 'https://www.novumcrm.fr/'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     allowedHeaders: ['Content-Type', 'Accept', 'Authorization'],
     credentials: true,
