@@ -14,8 +14,10 @@ export default async function EditContactPage(props: EditContactPageProps) {
   
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-semibold text-gray-900">Modifier le Contact</h1>
-      <ContactForm contactId={contactId} />
+      <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">Modifier le Contact</h1>
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
+        <ContactForm contactId={contactId} />
+      </div>
     </div>
   );
 }
