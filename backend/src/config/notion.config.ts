@@ -11,9 +11,9 @@ export const notionConfig = {
     production: {
       clientId: process.env.NOTION_OAUTH_CLIENT_ID,
       clientSecret: process.env.NOTION_OAUTH_CLIENT_SECRET,
-      redirectUri: 'https://votre-domaine.com/api/auth/callback/notion',
-      appUrl: 'https://votre-domaine.com',
-      privacyUrl: 'https://votre-domaine.com/legal/privacy',
-      termsUrl: 'https://votre-domaine.com/legal/terms',
+      redirectUri: 'https://novumcrm.fr/auth/callback/notion',
+      appUrl: 'https://novumcrm.fr',
+      privacyUrl: 'https://novumcrm.fr/legal/privacy',
+      termsUrl: 'https://novumcrm.fr/legal/terms',
     },
   };
