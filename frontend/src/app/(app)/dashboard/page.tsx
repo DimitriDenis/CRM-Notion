@@ -72,8 +72,8 @@ export default function DashboardPage() {
         
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-8">
           <StatCard
-            title="Total Contacts"
-            value={stats.totalContacts}
+            title="Contacts du mois"
+            value={stats.currentMonth.contacts}
             icon={UserGroupIcon}
             trend={{ 
               value: stats.trends?.contacts || 0, 
@@ -83,8 +83,8 @@ export default function DashboardPage() {
             className="bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-shadow"
           />
           <StatCard
-            title="Deals en cours"
-            value={stats.totalDeals}
+            title="Deals en cours du mois"
+            value={stats.currentMonth.deals}
             icon={FunnelIcon}
             trend={{ 
               value: stats.trends?.deals || 0, 
@@ -94,8 +94,8 @@ export default function DashboardPage() {
             className="bg-white dark:bg-gray-800 shadow-md border border-gray-100 dark:border-gray-700 hover:shadow-lg transition-shadow"
           />
           <StatCard
-            title="Valeur Totale"
-            value={formatCurrency(Number(stats.totalValue) || 0)}
+            title="Valeur du mois"
+            value={formatCurrency(Number(stats.currentMonth.value) || 0)}
             icon={CurrencyDollarIcon}
             trend={{
               value: stats.trends?.value || 0,
