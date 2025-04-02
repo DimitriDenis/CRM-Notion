@@ -4,24 +4,15 @@ NotionCRM est une solution CRM intégrée à Notion, permettant aux utilisateurs
 
 ## 🌟 Fonctionnalités
 
-### Plan Gratuit
-- 50 contacts maximum
-- 1 pipeline de vente
+- Contacts illimités
+- Pipeline de vente
 - Gestion basique des deals
 - Interface intégrée à Notion
-- Tags basiques (limité à 5)
+- Tags basiques 
 - Champs de contact standards
 - Statistiques simples
 
-### Plan Pro (9.99€/mois)
-- Contacts illimités
-- Pipelines multiples
-- Tags illimités
-- Champs personnalisables
-- Export des données
-- Rapports de performance
-- Templates de suivi
-- Tableaux de bord personnalisables
+
 
 ## 🛠️ Stack Technique
 

@@ -295,7 +295,7 @@ function AppearanceSettings() {
           <div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Paramètres d'apparence</h2>
             <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-              Personnalisez l'apparence de votre interface Notionity pour qu'elle corresponde à vos préférences.
+              Personnalisez l'apparence de votre interface NovumCRM pour qu'elle corresponde à vos préférences.
             </p>
           </div>
         </div>
@@ -399,7 +399,7 @@ function LegalSettings() {
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6">
         <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Mentions légales</h2>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-          Consultez les conditions d'utilisation et la politique de confidentialité de Notionity.
+          Consultez les conditions d'utilisation et la politique de confidentialité de NovumCRM.
         </p>
       </div>
 
@@ -455,7 +455,7 @@ function LegalSettings() {
           <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300">
             <p className="font-medium text-gray-900 dark:text-white">1. Introduction</p>
             <p>
-              Bienvenue sur Notionity. Les présentes Conditions Générales d'Utilisation ("CGU") régissent votre utilisation de l'application Notionity 
+              Bienvenue sur NovumCRM. Les présentes Conditions Générales d'Utilisation ("CGU") régissent votre utilisation de l'application NovumCRM
               ("l'Application"), qui est un outil de gestion de la relation client (CRM) s'intégrant avec Notion. En utilisant notre Application, 
               vous acceptez d'être lié par ces CGU. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre Application.
             </p>
@@ -471,14 +471,14 @@ function LegalSettings() {
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
                     <p className="mb-2">
-                      Notionity est un service de CRM qui s'intègre avec Notion pour vous permettre de gérer vos contacts, vos pipelines, 
+                      NovumCRM est un service de CRM qui s'intègre avec Notion pour vous permettre de gérer vos contacts, vos pipelines, 
                       vos deals et d'autres éléments liés à la gestion de la relation client. Nos services comprennent, sans s'y limiter :
                     </p>
                     <ul className="list-disc list-inside space-y-1 ml-2">
                       <li>La gestion des contacts et des entreprises</li>
                       <li>La gestion des pipelines de vente et des deals</li>
                       <li>L'organisation par tags et catégories</li>
-                      <li>L'exportdes données vers Notion</li>
+                      <li>L'export des données vers Notion</li>
                       <li>Les tableaux de bords</li>
                     </ul>
                   </Disclosure.Panel>
@@ -496,7 +496,7 @@ function LegalSettings() {
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
-                    <p className="mb-2">Pour utiliser Notionity, vous devez créer un compte Notion. Vous êtes responsable de :</p>
+                    <p className="mb-2">Pour utiliser NovumCRM, vous devez créer un compte Notion. Vous êtes responsable de :</p>
                     <ul className="list-disc list-inside space-y-1 ml-2">
                       <li>Maintenir la confidentialité de vos informations de connexion</li>
                       <li>Toutes les activités qui se produisent sous votre compte</li>
@@ -520,7 +520,7 @@ function LegalSettings() {
                     />
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
-                    <p className="mb-2">En utilisant Notionity, vous acceptez de :</p>
+                    <p className="mb-2">En utilisant NovumCRM, vous acceptez de :</p>
                     <ul className="list-disc list-inside space-y-1 ml-2">
                       <li>Ne pas utiliser l'Application d'une manière qui pourrait endommager, désactiver ou surcharger nos services</li>
                       <li>Ne pas tenter d'accéder à des zones restreintes de l'Application</li>
@@ -544,9 +544,9 @@ function LegalSettings() {
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
                     <p className="mb-2">
-                      Tous les droits de propriété intellectuelle relatifs à Notionity, y compris, mais sans s'y limiter, les droits d'auteur, 
+                      Tous les droits de propriété intellectuelle relatifs à NovumCRM, y compris, mais sans s'y limiter, les droits d'auteur, 
                       les marques, les logos, les conceptions, les textes, les graphiques et le code source, sont la propriété exclusive de 
-                      Notionity ou de ses concédants de licence.
+                      NovumCRM ou de ses concédants de licence.
                     </p>
                     <p>
                       L'utilisation de l'Application ne vous confère aucun droit de propriété intellectuelle sur nos services ou sur le contenu auquel vous accédez.
@@ -567,7 +567,7 @@ function LegalSettings() {
                   </Disclosure.Button>
                   <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm">
                     <p className="mb-2">
-                      Dans les limites autorisées par la loi, Notionity ne sera pas responsable des dommages directs, indirects, 
+                      Dans les limites autorisées par la loi, NovumCRM ne sera pas responsable des dommages directs, indirects, 
                       accessoires, spéciaux, consécutifs ou punitifs, y compris, mais sans s'y limiter, la perte de profits, 
                       de données, d'utilisation, de clientèle ou d'autres pertes intangibles, résultant de :
                     </p>
@@ -642,7 +642,7 @@ function LegalSettings() {
             </Disclosure>
 
             <p className="mt-6">
-              Pour toute question concernant ces CGU, veuillez nous contacter à legal@notionity.com.
+              Pour toute question concernant ces CGU, veuillez nous contacter à support@novumcrm.fr.
             </p>
           </div>
         </div>
@@ -659,8 +659,8 @@ function LegalSettings() {
           <div className="space-y-4 text-sm text-gray-600 dark:text-gray-300">
             <p className="font-medium text-gray-900 dark:text-white">1. Introduction</p>
             <p>
-              Chez Notionity, nous nous engageons à protéger votre vie privée. Cette Politique de Confidentialité explique comment nous collectons, 
-              utilisons, divulguons et protégeons vos informations personnelles lorsque vous utilisez notre application CRM Notionity. 
+              Chez NovumCRM, nous nous engageons à protéger votre vie privée. Cette Politique de Confidentialité explique comment nous collectons, 
+              utilisons, divulguons et protégeons vos informations personnelles lorsque vous utilisez notre application CRM NovumCRM. 
               En utilisant notre application, vous consentez aux pratiques décrites dans cette politique.
             </p>
 
@@ -824,7 +824,7 @@ function LegalSettings() {
                       <li>Le droit de retirer votre consentement</li>
                     </ul>
                     <p className="mt-2">
-                      Pour exercer ces droits, veuillez nous contacter à privacy@notionity.com. Nous répondrons à votre demande dans les délais prévus par la loi applicable.
+                      Pour exercer ces droits, veuillez nous contacter à support@novumcrm.fr. Nous répondrons à votre demande dans les délais prévus par la loi applicable.
                     </p>
                   </Disclosure.Panel>
                 </>
@@ -876,7 +876,7 @@ function LegalSettings() {
             </Disclosure>
 
             <p className="mt-6">
-              Pour toute question ou préoccupation concernant cette politique de confidentialité ou nos pratiques en matière de données, veuillez nous contacter à privacy@notionity.com.
+              Pour toute question ou préoccupation concernant cette politique de confidentialité ou nos pratiques en matière de données, veuillez nous contacter à support@novumcrm.fr.
             </p>
           </div>
         </div>

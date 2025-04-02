@@ -59,7 +59,7 @@ export function Sidebar({ isOpen, setIsOpen, isMobile = false, id = 'sidebar' }:
           <div className="h-8 w-8 rounded-md bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
           <Image 
               src="/Notion_CRM-.png" 
-              alt="Notionity" 
+              alt="NovumCRM" 
               width={24} 
               height={24} 
               className="object-contain"
@@ -67,7 +67,7 @@ export function Sidebar({ isOpen, setIsOpen, isMobile = false, id = 'sidebar' }:
             
           </div>
           {(isOpen || isMobile) && (
-            <span className="text-xl font-semibold text-gray-900 dark:text-white">NotionCRM</span>
+            <span className="text-xl font-semibold text-gray-900 dark:text-white">NovumCRM</span>
           )}
         </Link>
       </div>
