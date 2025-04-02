@@ -66,6 +66,18 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
     return (stageNum / totalNum) * 100;
   };
 
+  // Calculer la valeur totale d'une étape
+  const calculateStageTotal = (stage: any) => {
+    // S'assurer que la valeur est un nombre
+    const value = typeof stage.value === 'string' ? parseFloat(stage.value) : stage.value;
+    return isNaN(value) ? 0 : value;
+  };
+
+  // Calculer la valeur totale du pipeline
+  const calculatePipelineTotal = (stages: any[]) => {
+    return stages.reduce((total, stage) => total + calculateStageTotal(stage), 0);
+  };
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -230,9 +242,12 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
         
         <ul className="divide-y divide-gray-200 dark:divide-gray-700">
           {pipeline.stages.map((stage) => {
-            // Convertir la valeur en nombre
-            const stageValueNum = typeof stage.value === 'string' ? parseFloat(stage.value) : stage.value;
-            const percentage = calculatePercentage(stageValueNum, totalValueNum);
+            // Calculer la valeur totale de l'étape
+            const stageTotal = calculateStageTotal(stage);
+            // Calculer la valeur totale du pipeline
+            const pipelineTotal = calculatePipelineTotal(pipeline.stages);
+            // Calculer le pourcentage
+            const percentage = calculatePercentage(stageTotal, pipelineTotal);
             
             return (
               <li key={stage.id} className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
@@ -241,14 +256,14 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
                     <h4 className="text-base font-medium text-gray-900 dark:text-white">{stage.name}</h4>
                     <div className="flex items-center">
                       <span className="mr-4 text-sm text-gray-500 dark:text-gray-400">{stage.count} deals</span>
-                      <span className="font-medium text-gray-900 dark:text-white">{formatCurrency(stage.value)}</span>
+                      <span className="font-medium text-gray-900 dark:text-white">{formatCurrency(stageTotal)}</span>
                     </div>
                   </div>
                   
                   <div className="mt-2">
                     <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
                       <span>{Math.round(percentage)}% de la valeur totale</span>
-                      <span>{formatCurrency(stage.value)}</span>
+                      <span>{formatCurrency(stageTotal)}</span>
                     </div>
                     <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
                       <div 
