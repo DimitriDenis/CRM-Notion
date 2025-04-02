@@ -131,7 +131,7 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
                 <span className="mr-2 font-medium">{pipeline.totalDeals} deals</span>
                 <span className="mx-2 text-gray-400 dark:text-gray-500">•</span>
                 <CurrencyDollarIcon className="mr-1 h-4 w-4 text-gray-500 dark:text-gray-400" />
-                <span className="font-medium">{formatCurrency(pipeline.totalValue)}</span>
+                <span className="font-medium">{formatCurrency(calculatePipelineTotal(pipeline.stages))}</span>
               </p>
             </div>
           </div>
@@ -202,7 +202,9 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
                 <dl>
                   <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Valeur totale</dt>
                   <dd>
-                    <div className="text-lg font-semibold text-gray-900 dark:text-white">{formatCurrency(pipeline.totalValue)}</div>
+                    <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                      {formatCurrency(calculatePipelineTotal(pipeline.stages))}
+                    </div>
                   </dd>
                 </dl>
               </div>
@@ -221,7 +223,7 @@ export function PipelineView({ pipelineId }: PipelineViewProps) {
                   <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">Valeur moyenne</dt>
                   <dd>
                     <div className="text-lg font-semibold text-gray-900 dark:text-white">
-                      {formatCurrency(pipeline.totalDeals > 0 ? totalValueNum / pipeline.totalDeals : 0)}
+                      {formatCurrency(pipeline.totalDeals > 0 ? calculatePipelineTotal(pipeline.stages) / pipeline.totalDeals : 0)}
                     </div>
                   </dd>
                 </dl>
