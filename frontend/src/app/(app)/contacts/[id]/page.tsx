@@ -34,7 +34,7 @@ export default function ContactDetailsPage({ params }: ContactDetailsPageProps) 
         const data = await contactsApi.getContact(params.id);
         setContact(data);
       } catch (err) {
-        console.error('Error fetching contact:', err);
+        
         setError('Erreur lors du chargement du contact');
       } finally {
         setIsLoading(false);
@@ -53,7 +53,7 @@ export default function ContactDetailsPage({ params }: ContactDetailsPageProps) 
       await contactsApi.deleteContact(params.id);
       router.push('/contacts');
     } catch (err) {
-      console.error('Error deleting contact:', err);
+      
       setError('Erreur lors de la suppression du contact');
     }
   };

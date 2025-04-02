@@ -38,7 +38,7 @@ export default function DashboardPage() {
           setPipelines(statsData.pipeline);
         }
       } catch (error) {
-        console.error('Error fetching dashboard data:', error);
+        
       } finally {
         setLoading(false);
       }
