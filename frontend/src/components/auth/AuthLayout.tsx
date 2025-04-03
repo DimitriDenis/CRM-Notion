@@ -201,7 +201,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             Tout ce dont vous avez besoin
           </h2>
           <p className="mt-4 text-gray-600 ">
-            NotionCRM combine la simplicité de Notion avec les fonctionnalités essentielles d'un CRM.
+            NovumCRM combine la simplicité de Notion avec les fonctionnalités essentielles d'un CRM.
           </p>
         </div>
 
