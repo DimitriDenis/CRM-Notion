@@ -2,6 +2,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { 
   Cog6ToothIcon, 
   BellIcon, 
@@ -23,10 +24,9 @@ import {
 import { Disclosure, RadioGroup, Switch } from '@headlessui/react';
 
 const settingsSections = [
-  
-  { id: 'integration', name: 'Intégration Notion', icon: CloudArrowUpIcon },
-  { id: 'appearance', name: 'Apparence', icon: Cog6ToothIcon },
-  { id: 'legal', name: 'Mentions légales', icon: DocumentTextIcon },
+  { id: 'integration', name: 'settings.sections.integration.title', icon: CloudArrowUpIcon },
+  { id: 'appearance', name: 'settings.sections.appearance.title', icon: Cog6ToothIcon },
+  { id: 'legal', name: 'settings.sections.legal.title', icon: DocumentTextIcon },
 ];
 
 // Types pour les personnalisations
@@ -70,6 +70,7 @@ const borderRadiusOptions = [
 ];
 
 export default function SettingsPage() {
+  const t = useTranslations();
   const [activeSection, setActiveSection] = useState('account');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -82,9 +83,9 @@ export default function SettingsPage() {
             <Cog6ToothIcon className="h-8 w-8 text-blue-600 dark:text-blue-400" />
           </div>
           <div className="ml-4">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Paramètres</h1>
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{t('settings.title')}</h1>
             <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-              Configurez votre espace de travail et vos préférences personnelles
+              {t('settings.description')}
             </p>
           </div>
         </div>
@@ -186,13 +187,13 @@ export default function SettingsPage() {
 
 // Composant simple pour les autres sections
 function NotionIntegrationSettings() {
+  const t = useTranslations();
   return (
     <div>
-      <h2 className="text-lg font-medium text-gray-900 dark:text-white">Paramètres de synchronisation avec Notion</h2>
+      <h2 className="text-lg font-medium text-gray-900 dark:text-white">{t('settings.sections.integration.title')}</h2>
       <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-        Cette configuration arrive prochainement.
+        {t('settings.sections.integration.description')}
       </p>
-      {/* Contenu à développer */}
     </div>
   );
 }
@@ -200,6 +201,7 @@ function NotionIntegrationSettings() {
 
 
 function AppearanceSettings() {
+  const t = useTranslations();
   // État des paramètres d'apparence avec valeurs par défaut
   const [settings, setSettings] = useState<AppearanceSettings>({
     theme: 'system',
@@ -293,9 +295,9 @@ function AppearanceSettings() {
         <div className="flex items-center">
           <PaintBrushIcon className="h-8 w-8 text-blue-600 dark:text-blue-400 mr-3" />
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Paramètres d'apparence</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('settings.sections.appearance.title')}</h2>
             <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-              Personnalisez l'apparence de votre interface NovumCRM pour qu'elle corresponde à vos préférences.
+              {t('settings.sections.appearance.description')}
             </p>
           </div>
         </div>
@@ -307,16 +309,16 @@ function AppearanceSettings() {
           <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/30 mr-3">
             <SunIcon className="h-6 w-6 text-blue-600 dark:text-blue-400" aria-hidden="true" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 dark:text-white">Thème</h3>
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white">{t('settings.sections.appearance.theme.title')}</h3>
         </div>
 
-        <RadioGroup value={settings.theme} onChange={value => updateSetting('theme', value)} className="mt-2">
-          <RadioGroup.Label className="sr-only">Sélectionnez un thème</RadioGroup.Label>
+        <RadioGroup value={settings.theme} onChange={(value) => updateSetting('theme', value)} className="mt-2">
+          <RadioGroup.Label className="sr-only">{t('settings.sections.appearance.theme.title')}</RadioGroup.Label>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             {[
-              { value: 'light', icon: SunIcon, title: 'Clair', description: 'Mode lumineux' },
-              { value: 'dark', icon: MoonIcon, title: 'Sombre', description: 'Mode sombre' },
-              { value: 'system', icon: ComputerDesktopIcon, title: 'Système', description: 'Basé sur vos préférences' },
+              { value: 'light', icon: SunIcon, title: t('settings.sections.appearance.theme.light'), description: t('settings.sections.appearance.theme.lightDescription') },
+              { value: 'dark', icon: MoonIcon, title: t('settings.sections.appearance.theme.dark'), description: t('settings.sections.appearance.theme.darkDescription') },
+              { value: 'system', icon: ComputerDesktopIcon, title: t('settings.sections.appearance.theme.system'), description: t('settings.sections.appearance.theme.systemDescription') },
             ].map((option) => (
               <RadioGroup.Option
                 key={option.value}
@@ -373,7 +375,7 @@ function AppearanceSettings() {
       
      
       {/* Actions */}
-      <div className="flex justify-between items-center py-4">
+      <div className="flex justify-end">
         <button
           type="button"
           onClick={applySettings}
@@ -384,7 +386,7 @@ function AppearanceSettings() {
               : 'bg-blue-400 dark:bg-blue-500/70 cursor-not-allowed'
           } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 dark:focus:ring-offset-gray-800`}
         >
-          Appliquer les modifications
+          {t('settings.sections.appearance.applyChanges')}
         </button>
       </div>
     </div>
@@ -392,14 +394,15 @@ function AppearanceSettings() {
 }
 
 function LegalSettings() {
+  const t = useTranslations();
   const [activeTab, setActiveTab] = useState('terms');
   
   return (
     <div className="space-y-6">
       <div className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 rounded-xl p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Mentions légales</h2>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">{t('settings.sections.legal.title')}</h2>
         <p className="mt-1 text-sm text-gray-600 dark:text-gray-300">
-          Consultez les conditions d'utilisation et la politique de confidentialité de NovumCRM.
+          {t('settings.sections.legal.description')}
         </p>
       </div>
 
@@ -415,8 +418,8 @@ function LegalSettings() {
             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
           >
             <DocumentTextIcon className="h-5 w-5 mr-2 flex-shrink-0" />
-            <span className="hidden xs:inline">Conditions d'utilisation</span>
-            <span className="inline xs:hidden">CGU</span>
+            <span className="hidden xs:inline">{t('settings.sections.legal.terms.title')}</span>
+            <span className="inline xs:hidden">{t('settings.sections.legal.terms.shortTitle')}</span>
           </button>
           <button
             onClick={() => setActiveTab('privacy')}
@@ -427,8 +430,8 @@ function LegalSettings() {
             } whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm flex items-center`}
           >
             <ShieldCheckIcon className="h-5 w-5 mr-2 flex-shrink-0" />
-            <span className="hidden xs:inline">Politique de confidentialité</span>
-            <span className="inline xs:hidden">Confidentialité</span>
+            <span className="hidden xs:inline">{t('settings.sections.legal.privacy.title')}</span>
+            <span className="inline xs:hidden">{t('settings.sections.legal.privacy.shortTitle')}</span>
           </button>
           <button
             onClick={() => setActiveTab('company')}

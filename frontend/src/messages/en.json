@@ -48,5 +48,43 @@
     "stages": "Stages",
     "addStage": "Add Stage",
     "actions": "Actions"
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Configure your workspace and personal preferences",
+    "sections": {
+      "integration": {
+        "title": "Notion Integration",
+        "description": "This configuration is coming soon."
+      },
+      "appearance": {
+        "title": "Appearance Settings",
+        "description": "Customize your NovumCRM interface to match your preferences.",
+        "theme": {
+          "title": "Theme",
+          "light": "Light",
+          "lightDescription": "Light mode",
+          "dark": "Dark",
+          "darkDescription": "Dark mode",
+          "system": "System",
+          "systemDescription": "Based on your preferences"
+        },
+        "applyChanges": "Apply changes"
+      },
+      "legal": {
+        "title": "Legal",
+        "description": "View NovumCRM's terms of use and privacy policy.",
+        "terms": {
+          "title": "Terms of Service",
+          "shortTitle": "Terms",
+          "lastUpdate": "Last updated: {date}"
+        },
+        "privacy": {
+          "title": "Privacy Policy",
+          "shortTitle": "Privacy",
+          "lastUpdate": "Last updated: {date}"
+        }
+      }
+    }
   }
 } 

@@ -48,5 +48,43 @@
     "stages": "Étapes",
     "addStage": "Ajouter une étape",
     "actions": "Actions"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "description": "Configurez votre espace de travail et vos préférences personnelles",
+    "sections": {
+      "integration": {
+        "title": "Intégration Notion",
+        "description": "Cette configuration arrive prochainement."
+      },
+      "appearance": {
+        "title": "Paramètres d'apparence",
+        "description": "Personnalisez l'apparence de votre interface NovumCRM pour qu'elle corresponde à vos préférences.",
+        "theme": {
+          "title": "Thème",
+          "light": "Clair",
+          "lightDescription": "Mode lumineux",
+          "dark": "Sombre",
+          "darkDescription": "Mode sombre",
+          "system": "Système",
+          "systemDescription": "Basé sur vos préférences"
+        },
+        "applyChanges": "Appliquer les modifications"
+      },
+      "legal": {
+        "title": "Mentions légales",
+        "description": "Consultez les conditions d'utilisation et la politique de confidentialité de NovumCRM.",
+        "terms": {
+          "title": "Conditions d'utilisation",
+          "shortTitle": "CGU",
+          "lastUpdate": "Dernière mise à jour : {date}"
+        },
+        "privacy": {
+          "title": "Politique de confidentialité",
+          "shortTitle": "Confidentialité",
+          "lastUpdate": "Dernière mise à jour : {date}"
+        }
+      }
+    }
   }
 } 
