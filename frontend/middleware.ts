@@ -1,14 +1,18 @@
 import createMiddleware from 'next-intl/middleware';
 
+// Configuration du middleware
 export default createMiddleware({
   // Liste des locales supportées
   locales: ['en', 'fr'],
-
+  
   // Locale par défaut
-  defaultLocale: 'fr'
+  defaultLocale: 'fr',
+  
+  // Activer la détection automatique de la locale
+  localeDetection: true
 });
 
+// Configuration des routes à gérer par le middleware
 export const config = {
-  // Matcher pour les routes qui doivent être gérées par le middleware
   matcher: ['/((?!api|_next|.*\\..*).*)']
 }; 

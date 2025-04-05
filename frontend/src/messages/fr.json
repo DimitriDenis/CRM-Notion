@@ -8,7 +8,10 @@
     "edit": "Modifier",
     "add": "Ajouter",
     "search": "Rechercher",
-    "noResults": "Aucun résultat trouvé"
+    "noResults": "Aucun résultat trouvé",
+    "language": "Langue",
+    "french": "Français",
+    "english": "Anglais"
   },
   "navigation": {
     "dashboard": "Tableau de bord",

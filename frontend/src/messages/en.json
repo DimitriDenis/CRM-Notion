@@ -8,7 +8,10 @@
     "edit": "Edit",
     "add": "Add",
     "search": "Search",
-    "noResults": "No results found"
+    "noResults": "No results found",
+    "language": "Language",
+    "french": "French",
+    "english": "English"
   },
   "navigation": {
     "dashboard": "Dashboard",
