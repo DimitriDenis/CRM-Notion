@@ -1,0 +1,52 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "search": "Search",
+    "noResults": "No results found"
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "contacts": "Contacts",
+    "deals": "Deals",
+    "pipelines": "Pipelines",
+    "settings": "Settings"
+  },
+  "contacts": {
+    "title": "Contacts",
+    "addContact": "Add Contact",
+    "editContact": "Edit Contact",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "email": "Email",
+    "phone": "Phone",
+    "company": "Company",
+    "tags": "Tags",
+    "actions": "Actions"
+  },
+  "deals": {
+    "title": "Deals",
+    "addDeal": "Add Deal",
+    "editDeal": "Edit Deal",
+    "name": "Name",
+    "value": "Value",
+    "stage": "Stage",
+    "pipeline": "Pipeline",
+    "contact": "Contact",
+    "actions": "Actions"
+  },
+  "pipelines": {
+    "title": "Pipelines",
+    "addPipeline": "Add Pipeline",
+    "editPipeline": "Edit Pipeline",
+    "name": "Name",
+    "stages": "Stages",
+    "addStage": "Add Stage",
+    "actions": "Actions"
+  }
+} 
