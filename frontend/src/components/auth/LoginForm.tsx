@@ -15,7 +15,7 @@ export default function LoginForm() {
   useEffect(() => {
     setIsClient(true);
     
-    // Logging des variables d'environnement
+   
     
   }, []);
 
@@ -40,10 +40,7 @@ export default function LoginForm() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
     const redirectUri = encodeURIComponent('https://crm-notion-production.up.railway.app/auth/notion/callback');
     
-    console.log('=== Debug Auth Flow ===');
-    console.log('API URL:', apiUrl);
-    console.log('Redirect URI:', redirectUri);
-    console.log('Full Auth URL:', `https://api.notion.com/v1/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`);
+    
     
     window.location.href = `https://api.notion.com/v1/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
   };
