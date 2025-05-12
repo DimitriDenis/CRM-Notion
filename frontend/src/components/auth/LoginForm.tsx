@@ -16,11 +16,7 @@ export default function LoginForm() {
     setIsClient(true);
     
     // Logging des variables d'environnement
-    console.log('All env variables:', {
-      clientId: process.env.NEXT_PUBLIC_NOTION_OAUTH_CLIENT_ID,
-      nodeEnv: process.env.NODE_ENV,
-      apiUrl: process.env.NEXT_PUBLIC_API_URL,
-    });
+    
   }, []);
 
   // Effet pour traiter l'erreur des paramètres d'URL
