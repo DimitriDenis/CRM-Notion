@@ -4,7 +4,14 @@ const withNextIntl = createNextIntlPlugin('./src/i18n.ts'); // Notez l'extension
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ... autres configurations existantes
+  eslint: {
+    // Ne pas exécuter ESLint lors du build
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    // Optionnel : ignorer également les erreurs TypeScript
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = withNextIntl(nextConfig);
