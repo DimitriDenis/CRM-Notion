@@ -1,6 +1,6 @@
 const createNextIntlPlugin = require('next-intl/plugin');
 
-const withNextIntl = createNextIntlPlugin('./i18n.ts'); // Notez l'extension .ts ici
+const withNextIntl = createNextIntlPlugin('./src/i18n.ts'); // Notez l'extension .ts ici
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
